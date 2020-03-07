@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,6 +12,13 @@ import (
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+}
+
+type Message struct {
+	Type string
+	Text string
+	ID   string
+	Date int
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +33,22 @@ func reader(conn *websocket.Conn) {
 			return
 		}
 
-		log.Println(string(p))
+		var message Message
+		err = json.Unmarshal(p, &message)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		log.Println(message)
+
+		message = Message{
+			Type: "message",
+			Text: "Hi from server!",
+			ID:   "server",
+			Date: 0,
+		}
+		p, _ = json.Marshal(message)
 
 		err = conn.WriteMessage(messageType, p)
 		if err != nil {
