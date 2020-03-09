@@ -14,11 +14,27 @@ body {
 }
 
 header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    place-items: center;
+
     padding: 1px 10px;
     background: #ff9f1c;
 }
 
 header h1 {
+    width: 100%;
+}
+
+header #connection-indicator {
+    background: red;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+}
+
+header #connection-indicator.active {
+    background: green;
 }
 
 main {

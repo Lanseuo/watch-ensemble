@@ -4,7 +4,10 @@ let clientID = Math.random().toString(36).substring(7)
 let socket = new WebSocket('ws://localhost:8080/ws')
 console.log('Attempting WebSocket Connection')
 
+let connectionIndicator = document.getElementById('connection-indicator')
+
 socket.onopen = () => {
+    connectionIndicator.classList.add('active')
     console.log('Successfully connected')
 }
 
@@ -37,6 +40,7 @@ socket.onmessage = event => {
 }
 
 socket.onclose = event => {
+    connectionIndicator.classList.remove('active')
     console.log('Socket closed connection', event)
 }
 
