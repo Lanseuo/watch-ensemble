@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,53 +8,19 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-}
+var clients = make(map[*websocket.Conn]bool) // connected clients
+var broadcast = make(chan Message)           // broadcast channel
+var upgrader = websocket.Upgrader{}
 
 type Message struct {
-	Type string
-	Text string
-	ID   string
-	Date int
+	Type     string `json:"type"`
+	Text     string `json:"text"`
+	ClientID string `json:"clientID"`
+	Date     int    `json:"date"`
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Home Page")
-}
-
-func reader(conn *websocket.Conn) {
-	for {
-		messageType, p, err := conn.ReadMessage()
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		var message Message
-		err = json.Unmarshal(p, &message)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		log.Println(message)
-
-		message = Message{
-			Type: "message",
-			Text: "Hi from server!",
-			ID:   "server",
-			Date: 0,
-		}
-		p, _ = json.Marshal(message)
-
-		err = conn.WriteMessage(messageType, p)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-	}
 }
 
 func wsEndpoint(w http.ResponseWriter, r *http.Request) {
@@ -65,19 +30,44 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+	defer ws.Close()
 
 	log.Println("Client successfully connected")
+	clients[ws] = true
 
-	reader(ws)
+	for {
+		var msg Message
+		err := ws.ReadJSON(&msg)
+		if err != nil {
+			log.Println(err)
+			delete(clients, ws)
+			break
+		}
+		log.Println("New message", msg)
+		broadcast <- msg
+	}
 }
 
-func setupRoutes() {
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/ws", wsEndpoint)
+func handleMessages() {
+	for {
+		msg := <-broadcast
+		for client := range clients {
+			err := client.WriteJSON(msg)
+			if err != nil {
+				log.Println(err)
+				client.Close()
+				delete(clients, client)
+			}
+		}
+	}
 }
 
 func main() {
-	fmt.Println("Go WebSockets")
-	setupRoutes()
+	go handleMessages()
+
+	http.HandleFunc("/", homePage)
+	http.HandleFunc("/ws", wsEndpoint)
+
+	log.Println("Server running on http://localhost:8080")
 	log.Fatalln(http.ListenAndServe(":8080", nil))
 }
