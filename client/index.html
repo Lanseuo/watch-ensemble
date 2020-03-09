@@ -6,11 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Watch Ensemble</title>
     <link rel="stylesheet" href="style.css">
-    <script src="app.js" defer></script>
+    <script src="app.js" type="module" defer></script>
 </head>
 
 <body>
-    <button id="button">Press Me</button>
+    <div class="set-video-wrapper">
+        <input id="url" type="url"
+            value="https://arteptweb-a.akamaihd.net/am/ptweb/092000/092900/092972-001-A_SQ_0_VA-STA_04842234_MP4-2200_AMM-PTWEB_1IqOtKdxpl.mp4">
+        <button id="set-video-button">Set Video</button>
+    </div>
+
+
+    <div class="video-wrapper">
+        <p>No video selected!</p>
+        <video id="video" style="width: 500px" controls></video>
+    </div>
 </body>
 
 </html>

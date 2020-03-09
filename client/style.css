@@ -1,0 +1,16 @@
+* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.video-wrapper video {
+    display: none;
+}
+
+.video-wrapper.active video {
+    display: block;
+}
+
+.video-wrapper.active p {
+    display: none;
+}
