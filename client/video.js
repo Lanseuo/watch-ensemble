@@ -60,9 +60,14 @@ export function handleReportStatus(timeStamp, status) {
 
 video.ontimeupdate = () => {
     let percentage = video.currentTime / video.duration
-    timeSlider.value = percentage * 100
+    timeSlider.value = percentage * 1000
 
     currentTimeLabel.textContent = formatTime(video.currentTime)
+}
+
+timeSlider.oninput = () => {
+    let percentage = timeSlider.value / 1000
+    video.currentTime = parseInt(percentage * video.duration)
 }
 
 video.ondurationchange = () => {
