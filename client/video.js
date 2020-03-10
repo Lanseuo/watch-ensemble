@@ -1,7 +1,10 @@
 import { sendMessage } from './socket.js'
+import { formatTime } from './utils.js'
 let video = document.getElementById('video')
 let playPauseButton = document.getElementById('play-pause')
 let timeSlider = document.getElementById('time-slider')
+let currentTimeLabel = document.getElementById('current-time')
+let durationLabel = document.getElementById('duration')
 
 let waitingForClients = false
 
@@ -32,6 +35,8 @@ export function pause() {
     video.pause()
 }
 
+export function jumpToTime() { }
+
 export function handleReportStatus(timeStamp, status) {
     if (status == 'waitingForClients') {
         return
@@ -53,11 +58,16 @@ export function handleReportStatus(timeStamp, status) {
     }
 }
 
-video.ontimeupdate = event => {
+video.ontimeupdate = () => {
     let percentage = video.currentTime / video.duration
     timeSlider.value = percentage * 100
+
+    currentTimeLabel.textContent = formatTime(video.currentTime)
 }
 
+video.ondurationchange = () => {
+    durationLabel.textContent = formatTime(video.duration)
+}
 
 setInterval(() => {
     let videoURL = video.getAttribute('src')

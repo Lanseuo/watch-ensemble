@@ -30,7 +30,7 @@ video {
 
 .controls {
     display: grid;
-    grid-template-columns: auto auto 1fr;
+    grid-template-columns: auto auto 1fr auto;
     grid-gap: 5px;
     place-items: center;
     padding: 0 5px;
