@@ -35,7 +35,9 @@ export function pause() {
     video.pause()
 }
 
-export function jumpToTime() { }
+export function jumpToTime(seconds) {
+    video.currentTime = seconds
+}
 
 export function handleReportStatus(timeStamp, status) {
     if (status == 'waitingForClients') {
@@ -68,6 +70,8 @@ video.ontimeupdate = () => {
 timeSlider.oninput = () => {
     let percentage = timeSlider.value / 1000
     video.currentTime = parseInt(percentage * video.duration)
+
+    sendMessage('jumpToTime', video.currentTime.toString())
 }
 
 video.ondurationchange = () => {
