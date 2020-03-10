@@ -29,11 +29,16 @@ video {
 }
 
 .controls {
+    visibility: hidden;
     display: grid;
     grid-template-columns: auto auto 1fr auto;
     grid-gap: 5px;
     place-items: center;
     padding: 0 5px;
+}
+
+.controls.active {
+    visibility: visible;
 }
 
 button#play-pause .pause {
@@ -122,3 +127,12 @@ main {
     color: white;
 }
 
+#waiting-for-clients {
+    color: red;
+    display: none;
+}
+
+#waiting-for-clients.active {
+    display: block;
+    text-align: center;
+}

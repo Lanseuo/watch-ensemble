@@ -1,16 +1,19 @@
 import { sendMessage } from './socket.js'
 import { formatTime } from './utils.js'
 let video = document.getElementById('video')
+let controls = document.getElementsByClassName('controls')[0]
 let playPauseButton = document.getElementById('play-pause')
 let timeSlider = document.getElementById('time-slider')
 let currentTimeLabel = document.getElementById('current-time')
 let durationLabel = document.getElementById('duration')
+let waitingForClientsLabel = document.getElementById('waiting-for-clients')
 
 let waitingForClients = false
 
 export function setVideo(url) {
     video.setAttribute('src', url)
     timeSlider.value = 0
+    controls.classList.add('active')
 }
 
 playPauseButton.addEventListener('click', () => {
@@ -50,11 +53,13 @@ export function handleReportStatus(timeStamp, status) {
     }
 
     if (status == 'playing') {
-        if (timeDifference > 5) {
+        if (timeDifference > 10) {
             waitingForClients = true
+            waitingForClientsLabel.classList.add('active')
             video.pause()
         } else {
             waitingForClients = false
+            waitingForClientsLabel.classList.remove('active')
             video.play()
         }
     }
