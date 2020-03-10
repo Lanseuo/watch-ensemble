@@ -10,26 +10,35 @@
 </head>
 
 <body>
-    <header>
-        <h1>WatchEnsemble</h1>
-        <div id="connection-indicator"></div>
-    </header>
+    <div class="left">
+        <div class="left-inner">
+            <video id="video"></video>
+            <div class="controls">
+                <button id="play-pause">
+                    <span class="play">Play</span>
+                    <span class="pause">Pause</span>
+                </button>
+                <p id="time-duration">00:00 / 00:00</p>
+                <input type="range" min="1" max="1000" value="0" class="slider" id="time-slider">
+            </div>
+        </div>
+    </div>
 
-    <main>
-        <div class="main-wrapper">
+    <nav>
+        <h1>
+            <span>WatchEnsemble</span>
+            <div id="connection-indicator"></div>
+        </h1>
+
+        <main>
             <div class="set-video-wrapper">
                 <input id="url" type="url"
-                    value="https://arteptweb-a.akamaihd.net/am/ptweb/092000/092900/092972-001-A_SQ_0_VA-STA_04842234_MP4-2200_AMM-PTWEB_1IqOtKdxpl.mp4">
+                    value="https://pdvideosdaserste-a.akamaihd.net/de/2019/11/29/7d53ce2b-8662-4c07-85e6-090d7e7f1760/512-1_565546.mp4">
                 <button id="set-video-button">Set Video</button>
             </div>
 
-            <div class="video-wrapper">
-                <p>No video selected!</p>
-                <video id="video" controls></video>
-            </div>
-        </div>
-    </main>
-
+        </main>
+    </nav>
 </body>
 
 </html>

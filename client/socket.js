@@ -1,4 +1,4 @@
-import { setVideo, play, pause, jumpToTime } from "./video.js"
+import { setVideo, play, pause, jumpToTime, handleReportStatus } from "./video.js"
 
 let clientID = Math.random().toString(36).substring(7)
 let socket = new WebSocket('ws://localhost:8080/ws')
@@ -25,13 +25,18 @@ socket.onmessage = event => {
             break
         case 'play':
             play()
-            break;
+            break
         case 'pause':
             pause()
-            break;
+            break
         case 'jumpToTime':
             jumpToTime(message.text)
             break;
+        case 'reportStatus':
+            let timeStamp = parseFloat(message.text.split("-")[0])
+            let status = message.text.split("-")[1]
+            handleReportStatus(timeStamp, status)
+            break
         default:
             console.log('Message of unknown type', message.type);
 
@@ -45,6 +50,7 @@ socket.onclose = event => {
 }
 
 socket.onerror = error => {
+    connectionIndicator.classList.remove('active')
     console.log('Socket error', error)
 }
 
@@ -57,4 +63,4 @@ export function sendMessage(type, text) {
     }
 
     socket.send(JSON.stringify(message))
-}   
+}
