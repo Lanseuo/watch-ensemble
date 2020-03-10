@@ -1,17 +1,38 @@
 import { setVideo, play, pause, jumpToTime, handleReportStatus } from "./video.js"
 
 let clientID = Math.random().toString(36).substring(7)
-let socket = new WebSocket('ws://localhost:8080/ws')
-console.log('Attempting WebSocket Connection')
+let socket
 
 let connectionIndicator = document.getElementById('connection-indicator')
 
-socket.onopen = () => {
+function connect() {
+    console.log('Attempting WebSocket connection ...')
+    socket = new WebSocket(`ws://${window.location.hostname}:8080/ws`)
+    socket.onopen = handleOpen
+    socket.onerror = handleError
+    socket.onclose = handleClose
+    socket.onmessage = handleMessage
+}
+connect()
+
+function handleOpen() {
     connectionIndicator.classList.add('active')
     console.log('Successfully connected')
 }
 
-socket.onmessage = event => {
+function handleError(error) {
+    connectionIndicator.classList.remove('active')
+    console.log('Socket error', error)
+}
+
+function handleClose(event) {
+    connectionIndicator.classList.remove('active')
+    console.log('Socket closed connection', event)
+
+    setTimeout(connect, 1000)
+}
+
+function handleMessage(event) {
     let message = JSON.parse(event.data)
 
     let sentFromCurrentClient = message.clientID == clientID
@@ -42,16 +63,6 @@ socket.onmessage = event => {
 
     }
     console.log('Got message', message)
-}
-
-socket.onclose = event => {
-    connectionIndicator.classList.remove('active')
-    console.log('Socket closed connection', event)
-}
-
-socket.onerror = error => {
-    connectionIndicator.classList.remove('active')
-    console.log('Socket error', error)
 }
 
 export function sendMessage(type, text) {
