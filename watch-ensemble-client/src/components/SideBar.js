@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 
 class SideBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isWebsocketConnected: false,
             waitingForClients: false
         }
     }
@@ -14,7 +14,7 @@ class SideBar extends Component {
             <div className="side-bar" style={styles.container}>
                 <h1 style={styles.heading}>
                     <span>WatchEnsemble</span>
-                    <div style={{ ...styles, background: this.state.isWebsocketConnected ? 'green' : 'red' }}></div>
+                    <div style={{ ...styles.connectionIndicator, background: this.props.isWebsocketConnected ? 'green' : 'red' }}></div>
                 </h1>
 
                 <main style={styles.main}>
@@ -81,4 +81,8 @@ const styles = {
     }
 }
 
-export default SideBar;
+const mapStateToProps = state => ({
+    isWebsocketConnected: state.isWebsocketConnected
+})
+
+export default connect(mapStateToProps)(SideBar)

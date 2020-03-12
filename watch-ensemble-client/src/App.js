@@ -1,16 +1,29 @@
-import React from 'react';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
 
 import MainPart from './components/MainPart'
 import SideBar from './components/SideBar'
 
-function App() {
-    return (
-        <div style={styles.container}>
-            <MainPart />
-            <SideBar />
-        </div>
-    );
+import { connect } from 'react-redux'
+import { connectToWebsocket } from './redux/actions'
+
+class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.props.connectToWebsocket()
+
+        this.state = {}
+    }
+
+    render() {
+        return (
+            <div style={styles.container}>
+                <MainPart />
+                <SideBar />
+            </div>
+        )
+    }
 }
 
 let styles = {
@@ -20,4 +33,8 @@ let styles = {
     }
 }
 
-export default App;
+const mapDispatchToProps = {
+    connectToWebsocket
+}
+
+export default connect(null, mapDispatchToProps)(App)
