@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Controls from './Controls'
+import Video from './Video'
 
 class MainPart extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class MainPart extends Component {
         return (
             <div className="main-part" style={styles.container}>
                 <div style={styles.inner}>
-                    <video style={styles.video}></video>
+                    <Video />
                     <Controls />
                 </div>
             </div>
@@ -29,10 +30,6 @@ const styles = {
     },
 
     inner: {
-        width: '100%'
-    },
-
-    video: {
         width: '100%'
     }
 }

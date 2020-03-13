@@ -69,7 +69,7 @@ export function sendMessage(type, text) {
     let message = {
         type,
         text,
-        clientID,
+        clientId,
         date: Date.now()
     }
 
