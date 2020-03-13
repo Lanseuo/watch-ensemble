@@ -80,6 +80,12 @@ function handleMessage(event) {
             })
             break
 
+        case 'reportStatus':
+            let timeStamp = parseFloat(message.text.split("-")[0])
+            let status = message.text.split("-")[1]
+            handleReportStatus(timeStamp, status)
+            break
+
         default:
             console.error('Message of unknown type', message.type);
     }
@@ -145,4 +151,39 @@ export function sendMessageToWebsocket(type, text) {
     }
 
     store.getState().ws.send(JSON.stringify(message))
+}
+
+setInterval(() => {
+    let { videoUrl, videoCurrentTime, videoPlaybackState } = store.getState()
+
+    if (!videoUrl) {
+        return
+    }
+
+    sendMessageToWebsocket('reportStatus', `${videoCurrentTime}-${videoPlaybackState}`)
+}, 5000)
+
+export function handleReportStatus(timeStamp, status) {
+    if (status === 'waiting') {
+        return
+    }
+
+    let timeDifference = store.getState().videoCurrentTime - parseInt(timeStamp)
+    if (Math.abs(timeDifference) < 5) {
+        return
+    }
+
+    if (status === 'playing') {
+        if (timeDifference > 10) {
+            store.dispatch({
+                type: SET_PLAYBACK_STATE,
+                payload: 'waiting'
+            })
+        } else {
+            store.dispatch({
+                type: SET_PLAYBACK_STATE,
+                payload: 'playing'
+            })
+        }
+    }
 }

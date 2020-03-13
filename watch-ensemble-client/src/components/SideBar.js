@@ -16,6 +16,8 @@ class SideBar extends Component {
     }
 
     render() {
+        let waitingForClients = this.props.videoPlaybackState === 'waiting'
+
         return (
             <div className="side-bar" style={styles.container}>
                 <h1 style={styles.heading}>
@@ -29,7 +31,7 @@ class SideBar extends Component {
                         <button style={styles.setVideoButton} onClick={this.submitVideoURL}>Set Video</button>
                     </div>
 
-                    {this.state.waitingForClients && <p style={styles.waitingForClients}>Waiting for other clients ...</p>}
+                    {waitingForClients && <p style={styles.waitingForClients}>Waiting for other clients ...</p>}
                 </main>
             </div>
         )
@@ -87,7 +89,8 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    isWebsocketConnected: state.isWebsocketConnected
+    isWebsocketConnected: state.isWebsocketConnected,
+    videoPlaybackState: state.videoPlaybackState
 })
 
 const mapDispatchToProps = {

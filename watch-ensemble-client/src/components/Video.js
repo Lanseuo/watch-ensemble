@@ -29,8 +29,11 @@ class Video extends Component {
                     this.videoRef.current.play()
                     break
                 case 'paused':
+                case 'waiting':
                     this.videoRef.current.pause()
                     break
+                default:
+                    console.error('Playback state of unknown type', nextProps.videoPlaybackState)
             }
         }
 
