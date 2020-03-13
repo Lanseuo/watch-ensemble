@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { setPlaybackState } from '../redux/actions'
+import { formatTime } from '../utils'
 
 class Controls extends Component {
     constructor() {
@@ -31,9 +32,9 @@ class Controls extends Component {
         return (
             <div className="controls" style={{ ...styles.container, visibility: visible ? 'visible' : 'hidden' }}>
                 <button onClick={this.handleButton}>{buttonText}</button>
-                <p style={styles.time}>00:00</p>
+                <p style={styles.time}>{formatTime(this.props.videoCurrentTime)}</p>
                 <input style={styles.slider} type="range" min="1" max="1000" defaultValue="0" />
-                <p style={styles.time}>00:00</p>
+                <p style={styles.time}>{formatTime(this.props.videoTotalTime)}</p>
             </div>
         )
     }
@@ -77,7 +78,9 @@ const styles = {
 
 const mapStateToProps = state => ({
     videoPlaybackState: state.videoPlaybackState,
-    videoUrl: state.videoUrl
+    videoUrl: state.videoUrl,
+    videoCurrentTime: state.videoCurrentTime,
+    videoTotalTime: state.videoTotalTime
 })
 
 const mapDispatchToProps = {

@@ -1,4 +1,7 @@
-import { SET_PLAYBACK_STATE, SET_WEBSOCKET, SET_IS_WEBSOCKET_CONNECTED, SET_VIDEO_URL } from './actionTypes'
+import {
+    SET_PLAYBACK_STATE, SET_WEBSOCKET, SET_IS_WEBSOCKET_CONNECTED,
+    SET_VIDEO_URL, SET_VIDEO_CURRENT_TIME, SET_VIDEO_TOTAL_TIME
+} from './actionTypes'
 import store from './store'
 
 export const connectToWebsocket = () => {
@@ -41,7 +44,7 @@ function handleClose(event) {
 function handleMessage(event) {
     let message = JSON.parse(event.data)
 
-    let sentFromCurrentClient = message.clientId == store.getState().clientId
+    let sentFromCurrentClient = message.clientId === store.getState().clientId
     if (sentFromCurrentClient) {
         return
     }
@@ -101,6 +104,16 @@ export const setVideoUrl = url => {
         payload: url
     }
 }
+
+export const setVideoCurrentTime = seconds => ({
+    type: SET_VIDEO_CURRENT_TIME,
+    payload: seconds
+})
+
+export const setVideoTotalTime = seconds => ({
+    type: SET_VIDEO_TOTAL_TIME,
+    payload: seconds
+})
 
 export function sendMessageToWebsocket(type, text) {
     let message = {

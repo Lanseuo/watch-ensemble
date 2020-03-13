@@ -1,14 +1,25 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { setVideoCurrentTime, setVideoTotalTime } from '../redux/actions'
 
 class Video extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-
-        }
 
         this.videoRef = React.createRef()
+    }
+
+    componentDidMount() {
+        this.videoRef.current.addEventListener('timeupdate', this.timeUpdate)
+        this.videoRef.current.addEventListener('durationchange', this.durationChange)
+    }
+
+    timeUpdate = () => {
+        this.props.setVideoCurrentTime(this.videoRef.current.currentTime)
+    }
+
+    durationChange = () => {
+        this.props.setVideoTotalTime(this.videoRef.current.duration)
     }
 
     componentWillReceiveProps = nextProps => {
@@ -42,4 +53,9 @@ const mapStateToProps = state => ({
     videoUrl: state.videoUrl
 })
 
-export default connect(mapStateToProps)(Video)
+const mapDispatchToProps = {
+    setVideoCurrentTime,
+    setVideoTotalTime
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Video)
