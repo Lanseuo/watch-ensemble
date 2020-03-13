@@ -41,13 +41,57 @@ function handleClose(event) {
 function handleMessage(event) {
     let message = JSON.parse(event.data)
 
+    let sentFromCurrentClient = message.clientId == store.getState().clientId
+    if (sentFromCurrentClient) {
+        return
+    }
+
     console.log('Got message', message)
+
+    switch (message.type) {
+        case 'setVideo':
+            store.dispatch({
+                type: SET_VIDEO_URL,
+                payload: message.text
+            })
+            break
+
+        case 'play':
+            store.dispatch({
+                type: SET_PLAYBACK_STATE,
+                payload: 'playing'
+            })
+            break
+
+        case 'pause':
+            store.dispatch({
+                type: SET_PLAYBACK_STATE,
+                payload: 'paused'
+            })
+            break
+
+        default:
+            console.error('Message of unknown type', message.type);
+    }
 }
 
-export const setPlaybackState = content => ({
-    type: SET_PLAYBACK_STATE,
-    payload: content
-})
+export const setPlaybackState = content => {
+    switch (content) {
+        case 'playing':
+            sendMessageToWebsocket('play')
+            break
+        case 'paused':
+            sendMessageToWebsocket('pause')
+            break
+        default:
+            console.error('Playback state of unknown type', content);
+    }
+
+    return {
+        type: SET_PLAYBACK_STATE,
+        payload: content
+    }
+}
 
 export const setVideoUrl = url => {
     sendMessageToWebsocket('setVideo', url)

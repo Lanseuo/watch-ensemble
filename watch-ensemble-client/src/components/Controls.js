@@ -25,10 +25,11 @@ class Controls extends Component {
     }
 
     render() {
+        let visible = this.props.videoUrl !== null
         let buttonText = { paused: 'Play', playing: 'Pause', waiting: 'Waiting' }[this.props.videoPlaybackState]
 
         return (
-            <div className="controls" style={{ ...styles.container, visibility: this.state.visible ? 'visible' : 'hidden' }}>
+            <div className="controls" style={{ ...styles.container, visibility: visible ? 'visible' : 'hidden' }}>
                 <button onClick={this.handleButton}>{buttonText}</button>
                 <p style={styles.time}>00:00</p>
                 <input style={styles.slider} type="range" min="1" max="1000" defaultValue="0" />
@@ -75,7 +76,8 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    videoPlaybackState: state.videoPlaybackState
+    videoPlaybackState: state.videoPlaybackState,
+    videoUrl: state.videoUrl
 })
 
 const mapDispatchToProps = {
