@@ -18,3 +18,27 @@ body {
 #root {
     width: 100vw;
 }
+
+input[type="range"] {
+    appearance: null;
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.7);
+    opacity: 0.7;
+    transition: opacity .2s;
+    cursor: pointer;
+}
+
+input[type="range"]:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 1);
+}
+
+input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    background: #ff9f1c;
+    cursor: pointer;
+}

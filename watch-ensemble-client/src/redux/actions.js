@@ -28,11 +28,11 @@ function handleOpen() {
 }
 
 function handleError(error) {
-    console.log('Socket error', error)
+    console.error('Socket error', error)
 }
 
 function handleClose(event) {
-    console.log('Socket closed connection', event)
+    console.error('Socket closed connection', event)
     store.dispatch({
         type: SET_IS_WEBSOCKET_CONNECTED,
         payload: false
