@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { setPlaybackState } from '../redux/actions'
+import { setPlaybackState, jumpToTime } from '../redux/actions'
 import { formatTime } from '../utils'
 
 class Controls extends Component {
-    constructor() {
-        super()
-        this.state = {
-            visible: true,
-            playing: false
-        }
-    }
-
     handleButton = () => {
         switch (this.props.videoPlaybackState) {
             case 'playing':
@@ -25,15 +17,22 @@ class Controls extends Component {
         }
     }
 
+    handleSlider = event => {
+        let percentage = event.target.value / 1000
+        let seconds = parseInt(percentage * this.props.videoTotalTime)
+        this.props.jumpToTime(seconds)
+    }
+
     render() {
         let visible = this.props.videoUrl !== null
         let buttonText = { paused: 'Play', playing: 'Pause', waiting: 'Waiting' }[this.props.videoPlaybackState]
+        let sliderPercentage = this.props.videoCurrentTime / this.props.videoTotalTime
 
         return (
             <div className="controls" style={{ ...styles.container, visibility: visible ? 'visible' : 'hidden' }}>
                 <button onClick={this.handleButton}>{buttonText}</button>
                 <p style={styles.time}>{formatTime(this.props.videoCurrentTime)}</p>
-                <input style={styles.slider} type="range" min="1" max="1000" defaultValue="0" />
+                <input style={styles.slider} onInput={this.handleSlider} type="range" min="1" max="1000" value={sliderPercentage * 1000} />
                 <p style={styles.time}>{formatTime(this.props.videoTotalTime)}</p>
             </div>
         )
@@ -84,7 +83,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    setPlaybackState
+    setPlaybackState,
+    jumpToTime
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Controls)

@@ -1,6 +1,6 @@
 import {
     SET_PLAYBACK_STATE, SET_WEBSOCKET, SET_IS_WEBSOCKET_CONNECTED,
-    SET_VIDEO_URL, SET_VIDEO_CURRENT_TIME, SET_VIDEO_TOTAL_TIME
+    SET_VIDEO_URL, SET_VIDEO_CURRENT_TIME, SET_VIDEO_TOTAL_TIME, SET_VIDEO_JUMP_TO_TIME_LAST_UPDATE
 } from './actionTypes'
 import store from './store'
 
@@ -73,6 +73,13 @@ function handleMessage(event) {
             })
             break
 
+        case 'jumpToTime':
+            store.dispatch({
+                type: SET_VIDEO_JUMP_TO_TIME_LAST_UPDATE,
+                payload: message.text
+            })
+            break
+
         default:
             console.error('Message of unknown type', message.type);
     }
@@ -112,6 +119,20 @@ export const setVideoCurrentTime = seconds => ({
 
 export const setVideoTotalTime = seconds => ({
     type: SET_VIDEO_TOTAL_TIME,
+    payload: seconds
+})
+
+export const jumpToTime = seconds => {
+    sendMessageToWebsocket('jumpToTime', seconds.toString())
+
+    return {
+        type: SET_VIDEO_JUMP_TO_TIME_LAST_UPDATE,
+        payload: seconds
+    }
+}
+
+export const setVideoJumpToTimeLastUpdate = seconds => ({
+    type: SET_VIDEO_JUMP_TO_TIME_LAST_UPDATE,
     payload: seconds
 })
 

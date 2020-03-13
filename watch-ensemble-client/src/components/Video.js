@@ -33,6 +33,10 @@ class Video extends Component {
                     break
             }
         }
+
+        if (nextProps.videoJumpToTimeLastUpdate !== this.props.videoJumpToTimeLastUpdate) {
+            this.videoRef.current.currentTime = nextProps.videoJumpToTimeLastUpdate
+        }
     }
 
     render() {
@@ -50,7 +54,8 @@ const styles = {
 
 const mapStateToProps = state => ({
     videoPlaybackState: state.videoPlaybackState,
-    videoUrl: state.videoUrl
+    videoUrl: state.videoUrl,
+    videoJumpToTimeLastUpdate: state.videoJumpToTimeLastUpdate
 })
 
 const mapDispatchToProps = {

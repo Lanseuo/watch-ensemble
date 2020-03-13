@@ -1,6 +1,7 @@
 import {
     SET_PLAYBACK_STATE, SET_WEBSOCKET, SET_IS_WEBSOCKET_CONNECTED,
-    SET_VIDEO_URL, SET_VIDEO_CURRENT_TIME, SET_VIDEO_TOTAL_TIME
+    SET_VIDEO_URL, SET_VIDEO_CURRENT_TIME, SET_VIDEO_TOTAL_TIME,
+    SET_VIDEO_JUMP_TO_TIME_LAST_UPDATE
 } from "../actionTypes"
 
 const initialState = {
@@ -10,7 +11,8 @@ const initialState = {
     clientId: Math.random().toString(36).substring(7),
     videoUrl: null,
     videoCurrentTime: 0,
-    videoTotalTime: 0
+    videoTotalTime: 0,
+    videoJumpToTimeLastUpdate: 0
 }
 
 export default function (state = initialState, action) {
@@ -49,6 +51,12 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 videoTotalTime: action.payload
+            }
+
+        case SET_VIDEO_JUMP_TO_TIME_LAST_UPDATE:
+            return {
+                ...state,
+                videoJumpToTimeLastUpdate: action.payload
             }
 
         default:
