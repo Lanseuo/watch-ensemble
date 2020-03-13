@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { setVideoUrl } from '../redux/actions';
 
 class SideBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            waitingForClients: false
+            waitingForClients: false,
+            videoURL: 'https://pdvideosdaserste-a.akamaihd.net/de/2019/11/29/7d53ce2b-8662-4c07-85e6-090d7e7f1760/512-1_565546.mp4'
         }
+    }
+
+    submitVideoURL = () => {
+        this.props.setVideoUrl(this.state.videoURL)
     }
 
     render() {
@@ -19,9 +25,8 @@ class SideBar extends Component {
 
                 <main style={styles.main}>
                     <div style={styles.setVideoWrapper}>
-                        <input style={styles.setVideoInput} type="url"
-                            defaultValue="https://pdvideosdaserste-a.akamaihd.net/de/2019/11/29/7d53ce2b-8662-4c07-85e6-090d7e7f1760/512-1_565546.mp4" />
-                        <button style={styles.setVideoButton}>Set Video</button>
+                        <input style={styles.setVideoInput} value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" />
+                        <button style={styles.setVideoButton} onClick={this.submitVideoURL}>Set Video</button>
                     </div>
 
                     {this.state.waitingForClients && <p style={styles.waitingForClients}>Waiting for other clients ...</p>}
@@ -85,4 +90,8 @@ const mapStateToProps = state => ({
     isWebsocketConnected: state.isWebsocketConnected
 })
 
-export default connect(mapStateToProps)(SideBar)
+const mapDispatchToProps = {
+    setVideoUrl
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SideBar)

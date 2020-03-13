@@ -1,4 +1,4 @@
-import { SET_PLAYBACK_STATE, SET_WEBSOCKET, SET_IS_WEBSOCKET_CONNECTED } from './actionTypes'
+import { SET_PLAYBACK_STATE, SET_WEBSOCKET, SET_IS_WEBSOCKET_CONNECTED, SET_VIDEO_URL } from './actionTypes'
 import store from './store'
 
 export const connectToWebsocket = () => {
@@ -48,3 +48,23 @@ export const setPlaybackState = content => ({
     type: SET_PLAYBACK_STATE,
     payload: content
 })
+
+export const setVideoUrl = url => {
+    sendMessageToWebsocket('setVideo', url)
+
+    return {
+        type: SET_VIDEO_URL,
+        payload: url
+    }
+}
+
+export function sendMessageToWebsocket(type, text) {
+    let message = {
+        type,
+        text,
+        clientId: store.getState().clientId,
+        date: Date.now()
+    }
+
+    store.getState().ws.send(JSON.stringify(message))
+}

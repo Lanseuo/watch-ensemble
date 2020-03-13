@@ -1,9 +1,11 @@
-import { SET_PLAYBACK_STATE, SET_WEBSOCKET, SET_IS_WEBSOCKET_CONNECTED } from "../actionTypes"
+import { SET_PLAYBACK_STATE, SET_WEBSOCKET, SET_IS_WEBSOCKET_CONNECTED, SET_VIDEO_URL } from "../actionTypes"
 
 const initialState = {
     videoPlaybackState: 'paused',
     ws: null,
-    isWebsocketConnected: false
+    isWebsocketConnected: false,
+    videoUrl: null,
+    clientId: Math.random().toString(36).substring(7)
 }
 
 export default function (state = initialState, action) {
@@ -24,6 +26,12 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 isWebsocketConnected: action.payload
+            }
+
+        case SET_VIDEO_URL:
+            return {
+                ...state,
+                videoUrl: action.payload
             }
 
         default:
