@@ -6,7 +6,8 @@ import store from '../store'
 export const connectToWebsocket = () => {
     console.log('Attempting WebSocket connection ...')
     let protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
-    let socket = new WebSocket(`${protocol}://${window.location.host}/ws`)
+    let host = process.env.NODE_ENV === 'development' ? 'localhost:8080' : window.location.host
+    let socket = new WebSocket(`${protocol}://${host}/ws`)
 
     socket.onopen = handleOpen
     socket.onerror = handleError
@@ -95,7 +96,7 @@ export function sendMessageToWebsocket(type, text) {
     let message = {
         type,
         text,
-        clientId: store.getState().clientId,
+        clientId: store.getState().websocket.clientId,
         date: Date.now()
     }
 
