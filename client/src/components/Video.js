@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
+import { setPlaybackState, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
 
 class Video extends Component {
     constructor(props) {
@@ -23,22 +23,35 @@ class Video extends Component {
     }
 
     componentWillReceiveProps = nextProps => {
+        if (nextProps.language != this.props.language) {
+            let previousPlaybackState = this.props.videoPlaybackState
+            let previousCurrentTime = this.videoRef.current.currentTime
+            setTimeout(() => {
+                this.handlePlaybackState(previousPlaybackState)
+                this.videoRef.current.currentTime = previousCurrentTime
+            }, 500)
+        }
+
         if (nextProps.videoPlaybackState !== this.props.videoPlaybackState) {
-            switch (nextProps.videoPlaybackState) {
-                case 'playing':
-                    this.videoRef.current.play()
-                    break
-                case 'paused':
-                case 'waiting':
-                    this.videoRef.current.pause()
-                    break
-                default:
-                    console.error('Playback state of unknown type', nextProps.videoPlaybackState)
-            }
+            this.handlePlaybackState(nextProps.videoPlaybackState)
         }
 
         if (nextProps.videoJumpToTimeLastUpdate !== this.props.videoJumpToTimeLastUpdate) {
             this.videoRef.current.currentTime = nextProps.videoJumpToTimeLastUpdate
+        }
+    }
+
+    handlePlaybackState(state) {
+        switch (state) {
+            case 'playing':
+                this.videoRef.current.play()
+                break
+            case 'paused':
+            case 'waiting':
+                this.videoRef.current.pause()
+                break
+            default:
+                console.error('Playback state of unknown type', state)
         }
     }
 
@@ -64,6 +77,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
+    setPlaybackState,
     setVideoCurrentTime,
     setVideoTotalTime
 }
