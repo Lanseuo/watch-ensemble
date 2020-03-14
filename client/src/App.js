@@ -4,16 +4,12 @@ import './App.css'
 import MainPart from './components/MainPart'
 import SideBar from './components/SideBar'
 
-import { connect } from 'react-redux'
 import { connectToWebsocket } from './redux/actions/websocket'
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-
-        this.props.connectToWebsocket()
-
-        this.state = {}
+    constructor() {
+        super()
+        connectToWebsocket()
     }
 
     render() {
@@ -33,8 +29,4 @@ let styles = {
     }
 }
 
-const mapDispatchToProps = {
-    connectToWebsocket
-}
-
-export default connect(null, mapDispatchToProps)(App)
+export default App
