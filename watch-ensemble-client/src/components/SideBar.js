@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { setVideoUrl } from '../redux/actions/video';
+import { requestVideo } from '../redux/actions/video';
 
 class SideBar extends Component {
     constructor(props) {
@@ -12,7 +12,7 @@ class SideBar extends Component {
     }
 
     submitVideoURL = () => {
-        this.props.setVideoUrl(this.state.videoURL)
+        requestVideo(this.state.videoURL)
     }
 
     render() {
@@ -93,8 +93,4 @@ const mapStateToProps = state => ({
     videoPlaybackState: state.video.playbackState
 })
 
-const mapDispatchToProps = {
-    setVideoUrl
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SideBar)
+export default connect(mapStateToProps)(SideBar)

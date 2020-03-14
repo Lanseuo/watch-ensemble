@@ -1,11 +1,11 @@
 import {
-    SET_PLAYBACK_STATE, SET_URL, SET_CURRENT_TIME,
+    SET_DETAILS, SET_PLAYBACK_STATE, SET_CURRENT_TIME,
     SET_TOTAL_TIME, SET_JUMP_TO_TIME_LAST_UPDATE
 } from "../actionTypes/video"
 
 const initialState = {
+    details: null,
     playbackState: 'paused',
-    url: null,
     currentTime: 0,
     totalTime: 0,
     jumpToTimeLastUpdate: 0
@@ -19,10 +19,10 @@ export default function (state = initialState, action) {
                 playbackState: action.payload
             }
 
-        case SET_URL:
+        case SET_DETAILS:
             return {
                 ...state,
-                url: action.payload
+                details: action.payload
             }
 
         case SET_CURRENT_TIME:

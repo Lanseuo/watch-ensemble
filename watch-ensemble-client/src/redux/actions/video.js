@@ -1,5 +1,5 @@
 import {
-    SET_PLAYBACK_STATE, SET_URL, SET_CURRENT_TIME,
+    SET_PLAYBACK_STATE, SET_CURRENT_TIME,
     SET_TOTAL_TIME, SET_JUMP_TO_TIME_LAST_UPDATE
 } from '../actionTypes/video'
 import { sendMessageToWebsocket } from './websocket'
@@ -23,13 +23,8 @@ export const setPlaybackState = content => {
     }
 }
 
-export const setVideoUrl = url => {
-    sendMessageToWebsocket('setVideo', url)
-
-    return {
-        type: SET_URL,
-        payload: url
-    }
+export const requestVideo = url => {
+    sendMessageToWebsocket('requestVideo', url)
 }
 
 export const setVideoCurrentTime = seconds => ({

@@ -24,7 +24,7 @@ class Controls extends Component {
     }
 
     render() {
-        let visible = this.props.videoUrl !== null
+        let visible = this.props.videoDetails !== null
         let buttonText = { paused: 'Play', playing: 'Pause', waiting: 'Waiting' }[this.props.videoPlaybackState]
         let sliderPercentage = this.props.videoCurrentTime / this.props.videoTotalTime || 0
 
@@ -54,8 +54,8 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
+    videoDetails: state.video.details,
     videoPlaybackState: state.video.playbackState,
-    videoUrl: state.video.url,
     videoCurrentTime: state.video.currentTime,
     videoTotalTime: state.video.totalTime
 })

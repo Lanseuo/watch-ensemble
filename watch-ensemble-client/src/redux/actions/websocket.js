@@ -1,5 +1,5 @@
 import { SET_WEBSOCKET, SET_IS_CONNECTED } from '../actionTypes/websocket'
-import { SET_PLAYBACK_STATE, SET_URL, SET_JUMP_TO_TIME_LAST_UPDATE } from '../actionTypes/video'
+import { SET_DETAILS, SET_PLAYBACK_STATE, SET_JUMP_TO_TIME_LAST_UPDATE } from '../actionTypes/video'
 import { handleReportStatus } from './video'
 import store from '../store'
 
@@ -51,10 +51,10 @@ function handleMessage(event) {
     console.log('Got message', message)
 
     switch (message.type) {
-        case 'setVideo':
+        case 'setVideoDetails':
             store.dispatch({
-                type: SET_URL,
-                payload: message.text
+                type: SET_DETAILS,
+                payload: message.videoDetails
             })
             break
 
