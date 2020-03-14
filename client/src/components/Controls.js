@@ -4,6 +4,23 @@ import { setPlaybackState, jumpToTime } from '../redux/actions/video'
 import { formatTime } from '../utils'
 
 class Controls extends Component {
+    componentDidMount() {
+        document.addEventListener('keydown', e => {
+            let letterK = 75
+
+            if (this.props.videoDetails === null) {
+                return
+            }
+
+            let event = document.all ? window.event : e;
+            if (!/^(?:input|textarea|select|button)$/i.test(e.target.tagName)) {
+                if (event.keyCode == letterK) {
+                    this.handleButton()
+                }
+            }
+        })
+    }
+
     handleButton = () => {
         switch (this.props.videoPlaybackState) {
             case 'playing':
