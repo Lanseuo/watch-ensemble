@@ -6,8 +6,7 @@ class SideBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            waitingForClients: false,
-            videoURL: 'https://pdvideosdaserste-a.akamaihd.net/de/2019/11/29/7d53ce2b-8662-4c07-85e6-090d7e7f1760/512-1_565546.mp4'
+            videoURL: 'https://www.arte.tv/de/videos/091142-010-A/stadt-land-kunst-spezial/'
         }
     }
 
@@ -17,6 +16,7 @@ class SideBar extends Component {
 
     render() {
         let waitingForClients = this.props.videoPlaybackState === 'waiting'
+        let language = 'de'
 
         return (
             <div className="side-bar" style={styles.container}>
@@ -32,6 +32,13 @@ class SideBar extends Component {
                     </div>
 
                     {waitingForClients && <p style={styles.waitingForClients}>Waiting for other clients ...</p>}
+
+                    {this.props.videoDetails && (
+                        <div>
+                            <h3>{this.props.videoDetails.title[language]}</h3>
+                            <p>{this.props.videoDetails.description[language]}</p>
+                        </div>
+                    )}
                 </main>
             </div>
         )
@@ -89,8 +96,9 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    isWebsocketConnected: state.websocket.isConnected,
-    videoPlaybackState: state.video.playbackState
+    videoDetails: state.video.details,
+    videoPlaybackState: state.video.playbackState,
+    isWebsocketConnected: state.websocket.isConnected
 })
 
 export default connect(mapStateToProps)(SideBar)
