@@ -23,7 +23,7 @@ class Video extends Component {
     }
 
     componentWillReceiveProps = nextProps => {
-        if (nextProps.language != this.props.language) {
+        if (nextProps.language !== this.props.language) {
             let previousPlaybackState = this.props.videoPlaybackState
             let previousCurrentTime = this.videoRef.current.currentTime
             setTimeout(() => {

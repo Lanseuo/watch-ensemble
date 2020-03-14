@@ -12,9 +12,9 @@ class Controls extends Component {
                 return
             }
 
-            let event = document.all ? window.event : e;
+            let event = document.all ? window.event : e
             if (!/^(?:input|textarea|select|button)$/i.test(e.target.tagName)) {
-                if (event.keyCode == letterK) {
+                if (event.keyCode === letterK) {
                     this.handleButton()
                 }
             }

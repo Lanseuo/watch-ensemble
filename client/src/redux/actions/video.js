@@ -58,9 +58,9 @@ export const setVideoJumpToTimeLastUpdate = seconds => ({
 })
 
 setInterval(() => {
-    let { url, currentTime, playbackState } = store.getState().video
+    let { details, currentTime, playbackState } = store.getState().video
 
-    if (!url) {
+    if (details === null) {
         return
     }
 

@@ -5,17 +5,18 @@ import store from '../store'
 
 export const connectToWebsocket = () => {
     console.log('Attempting WebSocket connection ...')
-    let socket = new WebSocket(`ws://${window.location.hostname}:8080/ws`)
+    let protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
+    let socket = new WebSocket(`${protocol}://${window.location.host}/ws`)
 
     socket.onopen = handleOpen
     socket.onerror = handleError
     socket.onclose = handleClose
     socket.onmessage = handleMessage
 
-    return {
+    store.dispatch({
         type: SET_WEBSOCKET,
         payload: socket
-    }
+    })
 }
 
 function handleOpen() {

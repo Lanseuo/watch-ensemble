@@ -36,10 +36,6 @@ type VideoDetails struct {
 	Languages   []string          `json:"languages"`
 }
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Home Page")
-}
-
 func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 
@@ -81,7 +77,6 @@ func handleMessages() {
 				ClientID:     "server",
 				Date:         0, // TODO
 			})
-			fmt.Println(details)
 		default:
 			sendMessageToAllClients(msg)
 		}
@@ -146,7 +141,8 @@ func getVideoDetailsFromArte(url string) (details VideoDetails, err error) {
 func main() {
 	go handleMessages()
 
-	http.HandleFunc("/", homePage)
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/", fs)
 	http.HandleFunc("/ws", wsEndpoint)
 
 	log.Println("Server running on http://localhost:8080")
