@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setPlaybackState, jumpToTime } from '../redux/actions'
+import { setPlaybackState, jumpToTime } from '../redux/actions/video'
 import { formatTime } from '../utils'
 
 class Controls extends Component {
@@ -54,10 +54,10 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    videoPlaybackState: state.videoPlaybackState,
-    videoUrl: state.videoUrl,
-    videoCurrentTime: state.videoCurrentTime,
-    videoTotalTime: state.videoTotalTime
+    videoPlaybackState: state.video.playbackState,
+    videoUrl: state.video.url,
+    videoCurrentTime: state.video.currentTime,
+    videoTotalTime: state.video.totalTime
 })
 
 const mapDispatchToProps = {

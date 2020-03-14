@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { setVideoUrl } from '../redux/actions';
+import { setVideoUrl } from '../redux/actions/video';
 
 class SideBar extends Component {
     constructor(props) {
@@ -89,8 +89,8 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    isWebsocketConnected: state.isWebsocketConnected,
-    videoPlaybackState: state.videoPlaybackState
+    isWebsocketConnected: state.websocket.isConnected,
+    videoPlaybackState: state.video.playbackState
 })
 
 const mapDispatchToProps = {

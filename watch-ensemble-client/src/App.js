@@ -5,7 +5,7 @@ import MainPart from './components/MainPart'
 import SideBar from './components/SideBar'
 
 import { connect } from 'react-redux'
-import { connectToWebsocket } from './redux/actions'
+import { connectToWebsocket } from './redux/actions/websocket'
 
 class App extends Component {
     constructor(props) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setVideoCurrentTime, setVideoTotalTime } from '../redux/actions'
+import { setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
 
 class Video extends Component {
     constructor(props) {
@@ -56,9 +56,9 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    videoPlaybackState: state.videoPlaybackState,
-    videoUrl: state.videoUrl,
-    videoJumpToTimeLastUpdate: state.videoJumpToTimeLastUpdate
+    videoPlaybackState: state.video.playbackState,
+    videoUrl: state.video.url,
+    videoJumpToTimeLastUpdate: state.video.jumpToTimeLastUpdate
 })
 
 const mapDispatchToProps = {
