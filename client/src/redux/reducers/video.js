@@ -1,9 +1,10 @@
 import {
-    SET_DETAILS, SET_PLAYBACK_STATE, SET_CURRENT_TIME,
+    SET_LANGUAGE, SET_DETAILS, SET_PLAYBACK_STATE, SET_CURRENT_TIME,
     SET_TOTAL_TIME, SET_JUMP_TO_TIME_LAST_UPDATE
 } from "../actionTypes/video"
 
 const initialState = {
+    language: 'fr',
     details: null,
     playbackState: 'paused',
     currentTime: 0,
@@ -13,6 +14,12 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case SET_LANGUAGE:
+            return {
+                ...state,
+                language: action.payload
+            }
+
         case SET_PLAYBACK_STATE:
             return {
                 ...state,

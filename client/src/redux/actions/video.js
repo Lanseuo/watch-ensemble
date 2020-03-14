@@ -1,9 +1,15 @@
 import {
-    SET_PLAYBACK_STATE, SET_CURRENT_TIME,
+    SET_LANGUAGE, SET_PLAYBACK_STATE, SET_CURRENT_TIME,
     SET_TOTAL_TIME, SET_JUMP_TO_TIME_LAST_UPDATE
 } from '../actionTypes/video'
 import { sendMessageToWebsocket } from './websocket'
 import store from '../store'
+
+
+export const setLanguage = language => ({
+    type: SET_LANGUAGE,
+    payload: language
+})
 
 export const setPlaybackState = content => {
     switch (content) {

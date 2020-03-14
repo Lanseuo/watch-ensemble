@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { requestVideo } from '../redux/actions/video';
+import { requestVideo } from '../redux/actions/video'
+import ChooseLanguage from './ChooseLanguage'
 
 class SideBar extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             videoURL: 'https://www.arte.tv/de/videos/091142-010-A/stadt-land-kunst-spezial/'
         }
@@ -16,7 +17,6 @@ class SideBar extends Component {
 
     render() {
         let waitingForClients = this.props.videoPlaybackState === 'waiting'
-        let language = 'de'
 
         return (
             <div className="side-bar" style={styles.container}>
@@ -35,8 +35,9 @@ class SideBar extends Component {
 
                     {this.props.videoDetails && (
                         <div>
-                            <h3>{this.props.videoDetails.title[language]}</h3>
-                            <p>{this.props.videoDetails.description[language]}</p>
+                            <h3>{this.props.videoDetails.title[this.props.language]}</h3>
+                            <p>{this.props.videoDetails.description[this.props.language]}</p>
+                            <ChooseLanguage />
                         </div>
                     )}
                 </main>
@@ -96,6 +97,7 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
+    language: state.video.language,
     videoDetails: state.video.details,
     videoPlaybackState: state.video.playbackState,
     isWebsocketConnected: state.websocket.isConnected

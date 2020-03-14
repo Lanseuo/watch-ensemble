@@ -43,8 +43,7 @@ class Video extends Component {
     }
 
     render() {
-        let language = 'de'
-        let videoUrl = this.props.videoDetails ? this.props.videoDetails.url[language] : ''
+        let videoUrl = this.props.videoDetails ? this.props.videoDetails.url[this.props.language] : ''
         return (
             <video className="video" style={styles.video} src={videoUrl} ref={this.videoRef}></video>
         )
@@ -58,6 +57,7 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
+    language: state.video.language,
     videoPlaybackState: state.video.playbackState,
     videoDetails: state.video.details,
     videoJumpToTimeLastUpdate: state.video.jumpToTimeLastUpdate
