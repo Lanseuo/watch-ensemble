@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import Controls from './Controls'
+import React, { Component } from 'react'
 import Video from './Video'
+import Controls from './Controls'
+import VideoDetails from './VideoDetails'
 
 class MainPart extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class MainPart extends Component {
                 <div style={styles.inner}>
                     <Video />
                     <Controls />
+                    <VideoDetails />
                 </div>
             </div>
         )
@@ -24,13 +26,14 @@ class MainPart extends Component {
 
 const styles = {
     container: {
+        margin: '50px 0',
         display: 'grid',
-        placeItems: 'center',
-        height: '100vh'
+        placeItems: 'center'
     },
 
     inner: {
-        width: '100%'
+        margin: '0 auto',
+        width: '50%'
     }
 }
 

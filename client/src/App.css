@@ -1,15 +1,22 @@
+:root {
+    --primary-color: #ff9f1c;
+    --primary-color-dark: #d18317;
+    --dark-background-color: #202124;
+    --dark-background-color-darker: #1d1e20;
+}
+
 * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    background: #3c4042;
-
+    height: 100vh;
+    background: var(--dark-background-color);
     color: white;
     font-family: sans-serif;
-
-    height: 100vh;
 
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -19,10 +26,19 @@ body {
     width: 100vw;
 }
 
+input {
+    background: var(--dark-background-color-darker);
+    width: 100%;
+    padding: 10px 5px;
+    border: 0;
+    color: white;
+}
+
 input[type="range"] {
     appearance: null;
     width: 100%;
     height: 5px;
+    padding: 0;
     background: rgba(255, 255, 255, 0.7);
     opacity: 0.7;
     transition: opacity .2s;
@@ -39,6 +55,24 @@ input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb
     appearance: none;
     width: 10px;
     height: 10px;
-    background: #ff9f1c;
+    background: var(--primary-color);
     cursor: pointer;
+}
+
+.button-wrapper {
+    display: grid;
+    place-items: end;
+    margin-top: 10px;
+}
+
+.button-wrapper button {
+    background: var(--primary-color);
+    border: 0;
+    color: white;
+    padding: 10px 5px;
+    cursor: pointer;
+}
+
+.button-wrapper button:hover {
+    background: var(--primary-color-dark);
 }

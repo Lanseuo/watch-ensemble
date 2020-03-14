@@ -61,8 +61,7 @@ const styles = {
         display: 'grid',
         gridTemplateColumns: 'auto auto 1fr auto',
         gridGap: 5,
-        placeItems: 'center',
-        padding: '0 5px'
+        placeItems: 'center'
     },
 
     time: {

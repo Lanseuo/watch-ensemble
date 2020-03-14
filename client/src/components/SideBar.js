@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { requestVideo } from '../redux/actions/video'
-import ChooseLanguage from './ChooseLanguage'
+import Modal from './Modal'
 
 class SideBar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            videoURL: 'https://www.arte.tv/de/videos/091142-010-A/stadt-land-kunst-spezial/'
+            videoURL: 'https://www.arte.tv/de/videos/091142-010-A/stadt-land-kunst-spezial/',
+            showModal: false
         }
     }
 
     submitVideoURL = () => {
+        this.setState({ showModal: false })
         requestVideo(this.state.videoURL)
     }
 
@@ -19,57 +21,61 @@ class SideBar extends Component {
         let waitingForClients = this.props.videoPlaybackState === 'waiting'
 
         return (
-            <div className="side-bar" style={styles.container}>
-                <h1 style={styles.heading}>
-                    <span>WatchEnsemble</span>
-                    <div style={{ ...styles.connectionIndicator, background: this.props.isWebsocketConnected ? 'green' : 'red' }}></div>
-                </h1>
+            <aside className="side-bar" style={styles.container}>
+                <h1 style={styles.heading}>Watch<br />Ensemble</h1>
 
-                <main style={styles.main}>
-                    <div style={styles.setVideoWrapper}>
-                        <input style={styles.setVideoInput} value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" />
+                <div style={styles.wrapper}>
+                    <div style={{ ...styles.connectionIndicator, background: this.props.isWebsocketConnected ? 'green' : 'red' }}></div>
+                </div>
+
+                <div style={styles.wrapper} onClick={() => this.setState({ showModal: true })}>
+                    <p style={styles.showButton}>Show</p>
+                </div>
+
+                <Modal title="Set Video" show={this.state.showModal} onClose={() => this.setState({ showModal: false })}>
+                    <input style={styles.setVideoInput} value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" />
+                    <div className="button-wrapper">
                         <button style={styles.setVideoButton} onClick={this.submitVideoURL}>Set Video</button>
                     </div>
+                </Modal>
 
-                    {waitingForClients && <p style={styles.waitingForClients}>Waiting for other clients ...</p>}
+                <div style={styles.setVideoWrapper}>
+                </div>
 
-                    {this.props.videoDetails && (
-                        <div>
-                            <h3>{this.props.videoDetails.title[this.props.language]}</h3>
-                            <p>{this.props.videoDetails.description[this.props.language]}</p>
-                            <ChooseLanguage />
-                        </div>
-                    )}
-                </main>
-            </div>
+                {waitingForClients && <p style={styles.waitingForClients}>Waiting for other clients ...</p>}
+            </aside>
         )
     }
 }
 
 const styles = {
     container: {
-        borderLeft: '5px solid white'
+        background: 'var(--dark-background-color-darker)'
     },
 
     heading: {
-        display: 'grid',
-        gridTemplateColumns: '1fr auto',
-        placeItems: 'center',
-
         margin: 0,
-        padding: '15px 10px',
+        padding: '15px 1px',
         background: '#ff9f1c',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 10
+    },
+
+    wrapper: {
+        display: 'grid',
+        placeItems: 'center',
+        height: 60,
+        borderBottom: '0.5px solid gray'
     },
 
     connectionIndicator: {
-        width: 10,
-        height: 10,
+        width: 15,
+        height: 15,
         borderRadius: 10
     },
 
-    main: {
-        margin: '30px 10px'
+    showButton: {
+        cursor: 'pointer'
     },
 
     setVideoWrapper: {
@@ -77,17 +83,6 @@ const styles = {
         gridTemplateColumns: '1fr auto',
         gridColumnGap: 10,
         marginBottom: 10
-    },
-
-    setVideoInput: {
-        padding: 5
-    },
-
-    setVideoButton: {
-        background: '#ff9f1c',
-        boxShadow: null,
-        border: 0,
-        color: 'white'
     },
 
     waitingForClients: {
