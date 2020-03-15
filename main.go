@@ -14,6 +14,7 @@ import (
 var clients = make(map[*websocket.Conn]bool) // connected clients
 var broadcast = make(chan Message)           // broadcast channel
 var upgrader = websocket.Upgrader{}
+var lastVideoDetails VideoDetails
 
 type Message struct {
 	Type     string `json:"type"`
@@ -48,6 +49,15 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	log.Println("Client successfully connected")
 	clients[ws] = true
 
+	if len(lastVideoDetails.URL) != 0 {
+		sendMessageToClient(ws, MessageWithVideoDetails{
+			Type:         "setVideoDetails",
+			VideoDetails: lastVideoDetails,
+			ClientID:     "server",
+			Date:         0, // TODO
+		})
+	}
+
 	for {
 		var msg Message
 		err := ws.ReadJSON(&msg)
@@ -71,6 +81,7 @@ func handleMessages() {
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
+			lastVideoDetails = details
 			sendMessageToAllClients(MessageWithVideoDetails{
 				Type:         "setVideoDetails",
 				VideoDetails: details,
@@ -85,12 +96,16 @@ func handleMessages() {
 
 func sendMessageToAllClients(msg interface{}) {
 	for client := range clients {
-		err := client.WriteJSON(msg)
-		if err != nil {
-			log.Println(err)
-			client.Close()
-			delete(clients, client)
-		}
+		sendMessageToClient(client, msg)
+	}
+}
+
+func sendMessageToClient(client *websocket.Conn, msg interface{}) {
+	err := client.WriteJSON(msg)
+	if err != nil {
+		log.Println(err)
+		client.Close()
+		delete(clients, client)
 	}
 }
 
