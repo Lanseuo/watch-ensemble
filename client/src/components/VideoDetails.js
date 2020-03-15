@@ -6,7 +6,6 @@ import CollapsableContainer from './CollapsableContainer'
 
 class VideoDetails extends Component {
     render() {
-        console.log(this.props);
         if (this.props.videoDetails === null) {
             return null
         }

@@ -61,8 +61,11 @@ input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb
 
 .button-wrapper {
     display: grid;
-    place-items: end;
     margin-top: 10px;
+}
+
+.button-wrapper.right {
+    place-items: end;
 }
 
 .button-wrapper button {

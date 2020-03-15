@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import PubSub from 'pubsub-js'
 import { requestVideo } from '../redux/actions/video'
 import Modal from './Modal'
 
@@ -10,6 +11,10 @@ class SideBar extends Component {
             videoURL: 'https://www.arte.tv/de/videos/091142-010-A/stadt-land-kunst-spezial/',
             showModal: false
         }
+
+        PubSub.subscribe('openSetVideoModal', () => {
+            this.setState({ showModal: true })
+        })
     }
 
     submitVideoURL = () => {
@@ -29,12 +34,12 @@ class SideBar extends Component {
                 </div>
 
                 <div style={styles.wrapper} onClick={() => this.setState({ showModal: true })}>
-                    <p style={styles.showButton}>Show</p>
+                    <p style={styles.showButton}>Set Video</p>
                 </div>
 
                 <Modal title="Set Video" show={this.state.showModal} onClose={() => this.setState({ showModal: false })}>
                     <input style={styles.setVideoInput} value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" />
-                    <div className="button-wrapper">
+                    <div className="button-wrapper right">
                         <button style={styles.setVideoButton} onClick={this.submitVideoURL}>Set Video</button>
                     </div>
                 </Modal>
@@ -62,6 +67,8 @@ const styles = {
     },
 
     wrapper: {
+        fontSize: 13,
+        textAlign: 'center',
         display: 'grid',
         placeItems: 'center',
         height: 60,
