@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 
 class Modal extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
+    componentDidMount() {
+        document.addEventListener('keydown', event => {
+            let escape = 27
 
-        }
+            if (event.keyCode === escape) {
+                this.props.onClose()
+            }
+        })
     }
 
     handleClick() {
