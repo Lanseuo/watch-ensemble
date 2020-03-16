@@ -44,5 +44,5 @@
 .body {
     background: var(--dark-background-color);
     padding: 15px 20px;
-    maxHeight: 80vh;
+    max-height: 80vh;
 }

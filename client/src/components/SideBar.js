@@ -32,7 +32,7 @@ class SideBar extends Component {
                 <h1 className={styles.heading}>Watch<br />Ensemble</h1>
 
                 <div className={styles.wrapper}>
-                    <div className={{ ...styles.connectionIndicator, background: this.props.isWebsocketConnected ? 'green' : 'red' }}></div>
+                    <div className={styles.connectionIndicator} style={{ background: this.props.isWebsocketConnected ? 'green' : 'red' }}></div>
                 </div>
 
                 <div className={styles.wrapper} onClick={() => this.setState({ showModal: true })}>
