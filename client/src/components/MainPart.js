@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PubSub from 'pubsub-js'
 
 import styles from './MainPart.module.css'
+import './MainPart.css'
 import Video from './Video'
 import Controls from './Controls'
 import VideoDetails from './VideoDetails'
@@ -31,10 +32,13 @@ class MainPart extends Component {
                             </div>
                         </div>
                     )}
-                    <div>
-                        <Video />
-                        <Controls />
-                    </div>
+
+                    {this.props.videoDetails !== null && (
+                        <div className={`${styles.player} player`}>
+                            <Video className={styles.video} />
+                            <Controls className={styles.controls} />
+                        </div>
+                    )}
                     <VideoDetails />
                 </div>
             </div>

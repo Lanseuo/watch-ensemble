@@ -12,3 +12,19 @@
 .selectInstructions {
     text-align: center;
 }
+
+.player {
+    position: relative;
+    overflow: hidden;
+}
+
+/* .player:fullscreen {
+    max-width: none;
+    width: 100%;
+}
+  
+.player:-webkit-full-screen {
+    max-width: none;
+    width: 100%;
+} */
+  
