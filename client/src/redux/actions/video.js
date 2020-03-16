@@ -11,6 +11,17 @@ export const setLanguage = language => ({
     payload: language
 })
 
+export const togglePlay = () => {
+    switch (store.getState().video.playbackState) {
+        case 'playing':
+            return setPlaybackState('paused')
+        case 'paused':
+            return setPlaybackState('playing')
+        default:
+            console.error(this.props.videoPlaybackState)
+    }
+}
+
 export const setPlaybackState = content => {
     switch (content) {
         case 'playing':
