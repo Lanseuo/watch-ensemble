@@ -16,6 +16,7 @@ class Controls extends Component {
     componentDidMount() {
         document.addEventListener('keydown', e => {
             let letterK = 75
+            let letterF = 70
 
             if (this.props.videoDetails === null) {
                 return
@@ -25,6 +26,8 @@ class Controls extends Component {
             if (!/^(?:input|textarea|select|button)$/i.test(e.target.tagName)) {
                 if (event.keyCode === letterK) {
                     this.togglePlay()
+                } else if (event.keyCode === letterF) {
+                    this.toggleFullscreen()
                 }
             }
         })
@@ -59,6 +62,14 @@ class Controls extends Component {
         let percentage = event.target.value / 1000
         let seconds = parseInt(percentage * this.props.videoTotalTime)
         this.props.jumpToTime(seconds)
+    }
+
+    toggleFullscreen = () => {
+        if (this.state.isFullscreen) {
+            this.exitFullscreen()
+        } else {
+            this.startFullscreen()
+        }
     }
 
     startFullscreen = () => {
