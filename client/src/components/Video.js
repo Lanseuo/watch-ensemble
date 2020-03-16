@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setPlaybackState, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
+import { togglePlay, setPlaybackState, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
 
 class Video extends Component {
     constructor(props) {
@@ -12,6 +12,7 @@ class Video extends Component {
     componentDidMount() {
         this.videoRef.current.addEventListener('timeupdate', this.timeUpdate)
         this.videoRef.current.addEventListener('durationchange', this.durationChange)
+        this.videoRef.current.addEventListener('click', this.props.togglePlay)
     }
 
     timeUpdate = () => {
@@ -77,6 +78,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
+    togglePlay,
     setPlaybackState,
     setVideoCurrentTime,
     setVideoTotalTime
