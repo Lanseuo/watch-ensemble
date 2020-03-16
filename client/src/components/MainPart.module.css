@@ -18,13 +18,10 @@
     overflow: hidden;
 }
 
-/* .player:fullscreen {
-    max-width: none;
-    width: 100%;
+:fullscreen .player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
 }
-  
-.player:-webkit-full-screen {
-    max-width: none;
-    width: 100%;
-} */
-  
