@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PubSub from 'pubsub-js'
-import { requestVideo } from '../redux/actions/video'
+
+import styles from './SideBar.module.css'
 import Modal from './Modal'
+import { requestVideo } from '../redux/actions/video'
 
 class SideBar extends Component {
     constructor(props) {
@@ -26,75 +28,30 @@ class SideBar extends Component {
         let waitingForClients = this.props.videoPlaybackState === 'waiting'
 
         return (
-            <aside className="side-bar" style={styles.container}>
-                <h1 style={styles.heading}>Watch<br />Ensemble</h1>
+            <aside className={styles.container}>
+                <h1 className={styles.heading}>Watch<br />Ensemble</h1>
 
-                <div style={styles.wrapper}>
-                    <div style={{ ...styles.connectionIndicator, background: this.props.isWebsocketConnected ? 'green' : 'red' }}></div>
+                <div className={styles.wrapper}>
+                    <div className={{ ...styles.connectionIndicator, background: this.props.isWebsocketConnected ? 'green' : 'red' }}></div>
                 </div>
 
-                <div style={styles.wrapper} onClick={() => this.setState({ showModal: true })}>
-                    <p style={styles.showButton}>Set Video</p>
+                <div className={styles.wrapper} onClick={() => this.setState({ showModal: true })}>
+                    <p className={styles.showButton}>Set Video</p>
                 </div>
 
                 <Modal title="Set Video" show={this.state.showModal} onClose={() => this.setState({ showModal: false })}>
-                    <input style={styles.setVideoInput} value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" />
+                    <input className={styles.setVideoInput} value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" />
                     <div className="button-wrapper right">
-                        <button style={styles.setVideoButton} onClick={this.submitVideoURL}>Set Video</button>
+                        <button className={styles.setVideoButton} onClick={this.submitVideoURL}>Set Video</button>
                     </div>
                 </Modal>
 
-                <div style={styles.setVideoWrapper}>
+                <div className={styles.setVideoWrapper}>
                 </div>
 
-                {waitingForClients && <p style={styles.waitingForClients}>Waiting for other clients ...</p>}
+                {waitingForClients && <p className={styles.waitingForClients}>Waiting for other clients ...</p>}
             </aside>
         )
-    }
-}
-
-const styles = {
-    container: {
-        background: 'var(--dark-background-color-darker)'
-    },
-
-    heading: {
-        margin: 0,
-        padding: '15px 1px',
-        background: '#ff9f1c',
-        textAlign: 'center',
-        fontSize: 10
-    },
-
-    wrapper: {
-        fontSize: 13,
-        textAlign: 'center',
-        display: 'grid',
-        placeItems: 'center',
-        height: 60,
-        borderBottom: '0.5px solid gray'
-    },
-
-    connectionIndicator: {
-        width: 15,
-        height: 15,
-        borderRadius: 10
-    },
-
-    showButton: {
-        cursor: 'pointer'
-    },
-
-    setVideoWrapper: {
-        display: 'grid',
-        gridTemplateColumns: '1fr auto',
-        gridColumnGap: 10,
-        marginBottom: 10
-    },
-
-    waitingForClients: {
-        color: 'red',
-        textAlign: 'center'
     }
 }
 

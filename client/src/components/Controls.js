@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+
+import styles from './Controls.module.css'
 import { setPlaybackState, jumpToTime } from '../redux/actions/video'
 import { formatTime } from '../utils'
 
@@ -46,26 +48,13 @@ class Controls extends Component {
         let sliderPercentage = this.props.videoCurrentTime / this.props.videoTotalTime || 0
 
         return (
-            <div className="controls" style={{ ...styles.container, visibility: visible ? 'visible' : 'hidden' }}>
+            <div className={styles.container} style={{ visibility: visible ? 'visible' : 'hidden' }}>
                 <button onClick={this.handleButton}>{buttonText}</button>
-                <p style={styles.time}>{formatTime(this.props.videoCurrentTime)}</p>
-                <input style={styles.slider} onChange={this.handleSlider} type="range" min="1" max="1000" value={sliderPercentage * 1000} />
-                <p style={styles.time}>{formatTime(this.props.videoTotalTime)}</p>
+                <p className={styles.time}>{formatTime(this.props.videoCurrentTime)}</p>
+                <input className={styles.slider} onChange={this.handleSlider} type="range" min="1" max="1000" value={sliderPercentage * 1000} />
+                <p className={styles.time}>{formatTime(this.props.videoTotalTime)}</p>
             </div>
         )
-    }
-}
-
-const styles = {
-    container: {
-        display: 'grid',
-        gridTemplateColumns: 'auto auto 1fr auto',
-        gridGap: 5,
-        placeItems: 'center'
-    },
-
-    time: {
-        fontSize: '0.75em'
     }
 }
 

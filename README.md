@@ -6,6 +6,9 @@ Watch Ensemble allows you to watch videos together with your friends online. Wat
 
 ```
 go run main.go
+
+docker build -t watch-ensemble .
+docker run -p 8080:8080 watch-ensemble
 ```
 
 ## Meta

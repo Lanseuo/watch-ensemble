@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PubSub from 'pubsub-js'
+
+import styles from './MainPart.module.css'
 import Video from './Video'
 import Controls from './Controls'
 import VideoDetails from './VideoDetails'
@@ -19,39 +21,24 @@ class MainPart extends Component {
 
     render() {
         return (
-            <div className="main-part" style={styles.container}>
-                <div style={styles.inner}>
+            <div className={styles.container}>
+                <div className={styles.inner}>
                     {this.props.videoDetails === null && (
                         <div>
-                            <p style={styles.selectInstructions}>Select a video to start watching</p>
+                            <p className={styles.selectInstructions}>Select a video to start watching</p>
                             <div className="button-wrapper">
                                 <button onClick={this.openSetVideoModal}>Select New Video</button>
                             </div>
                         </div>
                     )}
-                    <Video />
-                    <Controls />
+                    <div>
+                        <Video />
+                        <Controls />
+                    </div>
                     <VideoDetails />
                 </div>
             </div>
         )
-    }
-}
-
-const styles = {
-    container: {
-        margin: '50px 0',
-        display: 'grid',
-        placeItems: 'center'
-    },
-
-    inner: {
-        margin: '0 auto',
-        width: '50%'
-    },
-
-    selectInstructions: {
-        textAlign: 'center'
     }
 }
 

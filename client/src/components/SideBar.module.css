@@ -1,0 +1,42 @@
+.container {
+    background: var(--dark-background-color-darker)
+}
+
+.heading {
+    margin: 0;
+    padding: 15px 1px;
+    background: #ff9f1c;
+    text-align: center;
+    font-size: 10px
+}
+
+.wrapper {
+    font-size: 13;
+    text-align: center;
+    display: grid;
+    place-items: center;
+    height: 60;
+    border-bottom: 0.5px solid gray
+}
+
+.connectionIndicator {
+    width: 15;
+    height: 15;
+    border-radius: 10
+}
+
+.showButton {
+    cursor: pointer
+}
+
+.setVideoWrapper {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-column-gap: 10;
+    margin-bottom: 10
+}
+
+.waitingForClients {
+    color: red;
+    text-align: center
+}

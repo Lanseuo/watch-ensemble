@@ -1,0 +1,11 @@
+.toggle {
+    color: gray;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    place-items: center start;
+    cursor: pointer;
+}
+
+.container svg {
+    fill: gray;
+}

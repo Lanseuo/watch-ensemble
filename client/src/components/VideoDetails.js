@@ -11,7 +11,7 @@ class VideoDetails extends Component {
         }
 
         return (
-            <div className="VideoDetails" style={styles.container}>
+            <div>
                 <CollapsableContainer title="Video Details">
                     <h3>{this.props.videoDetails.title[this.props.language]}</h3>
                     <p>{this.props.videoDetails.description[this.props.language]}</p>
@@ -19,11 +19,6 @@ class VideoDetails extends Component {
                 </CollapsableContainer>
             </div>
         )
-    }
-}
-
-const styles = {
-    container: {
     }
 }
 
