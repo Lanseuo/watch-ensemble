@@ -1,4 +1,4 @@
-module github.com/Lanseuo/watch-ensemble
+module watchensemble
 
 go 1.13
 
