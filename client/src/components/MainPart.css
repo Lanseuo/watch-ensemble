@@ -1,3 +1,4 @@
-.player:hover .controls {
+body:not(.fullscreen) .player:hover .controls,
+.player.show-controls .controls {
     transform: translateY(0px);
 }

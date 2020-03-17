@@ -9,11 +9,25 @@ import Controls from './Controls'
 import VideoDetails from './VideoDetails'
 
 class MainPart extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super()
         this.state = {
-
+            showControlsInFullscreen: false
         }
+    }
+
+    componentDidMount() {
+        let timer
+        document.addEventListener('mousemove', () => {
+            let isFullscreen = (!window.screenTop && !window.screenY)
+            if (isFullscreen) {
+                this.setState({ showControlsInFullscreen: true })
+                clearTimeout(timer)
+                timer = setTimeout(() => {
+                    this.setState({ showControlsInFullscreen: false })
+                }, 750)
+            }
+        })
     }
 
     openSetVideoModal() {
@@ -21,6 +35,7 @@ class MainPart extends Component {
     }
 
     render() {
+        let showControlsClassName = this.state.showControlsInFullscreen ? 'show-controls' : ''
         return (
             <div className={styles.container}>
                 <div className={styles.inner}>
@@ -34,8 +49,8 @@ class MainPart extends Component {
                     )}
 
                     {this.props.videoDetails !== null && (
-                        <div className={`${styles.player} player`}>
-                            <Video className={styles.video} />
+                        <div className={`${styles.player} player ${showControlsClassName}`}>
+                            <Video className={`styles.video`} />
                             <Controls className={styles.controls} />
                         </div>
                     )}

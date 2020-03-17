@@ -38,10 +38,17 @@ class Controls extends Component {
     }
 
     handleFullscreenChange = () => {
+        let bodyElement = document.querySelector('body')
         // On [Esc]: Event fired before fullscreen applies
         setTimeout(() => {
             let isFullscreen = (!window.screenTop && !window.screenY)
             this.setState({ isFullscreen })
+
+            if (isFullscreen) {
+                bodyElement.classList.add('fullscreen')
+            } else {
+                bodyElement.classList.remove('fullscreen')
+            }
         }, 100)
     }
 
