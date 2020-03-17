@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PubSub from 'pubsub-js'
+import screenfull from 'screenfull'
 
 import styles from './MainPart.module.css'
 import './MainPart.css'
@@ -19,8 +20,7 @@ class MainPart extends Component {
     componentDidMount() {
         let timer
         document.addEventListener('mousemove', () => {
-            let isFullscreen = (!window.screenTop && !window.screenY)
-            if (isFullscreen) {
+            if (screenfull.isFullscreen) {
                 this.setState({ showControlsInFullscreen: true })
                 clearTimeout(timer)
                 timer = setTimeout(() => {

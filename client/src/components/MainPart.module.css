@@ -20,6 +20,10 @@
 }
 
 :fullscreen .player {
+    display: grid;
+    place-items: center;
+    background: black;
+    
     position: absolute;
     top: 0;
     left: 0;
