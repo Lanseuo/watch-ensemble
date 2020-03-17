@@ -40,7 +40,8 @@ class SideBar extends Component {
                 </div>
 
                 <Modal title="Set Video" show={this.state.showModal} onClose={() => this.setState({ showModal: false })}>
-                    <input className={styles.setVideoInput} value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" />
+                    <p>Paste the url of an ARTE video below to start watching</p>
+                    <input className={styles.setVideoInput} value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" placeholder="https://www.arte.tv/fr/videos/012345-678-A/mon-video" />
                     <div className="button-wrapper right">
                         <button className={styles.setVideoButton} onClick={this.submitVideoURL}>Set Video</button>
                     </div>
