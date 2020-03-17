@@ -25,10 +25,10 @@ export const togglePlay = () => {
 export const setPlaybackState = content => {
     switch (content) {
         case 'playing':
-            sendMessageToWebsocket('play')
+            sendMessageToWebsocket('setPlaybackState', { text: 'playing' })
             break
         case 'paused':
-            sendMessageToWebsocket('pause')
+            sendMessageToWebsocket('setPlaybackState', { text: 'paused' })
             break
         default:
             console.error('Playback state of unknown type', content);
@@ -41,7 +41,7 @@ export const setPlaybackState = content => {
 }
 
 export const requestVideo = url => {
-    sendMessageToWebsocket('requestVideo', url)
+    sendMessageToWebsocket('requestVideo', { text: url })
 }
 
 export const setVideoCurrentTime = seconds => ({
@@ -55,7 +55,7 @@ export const setVideoTotalTime = seconds => ({
 })
 
 export const jumpToTime = seconds => {
-    sendMessageToWebsocket('jumpToTime', seconds.toString())
+    sendMessageToWebsocket('jumpToTime', { seconds: parseInt(seconds) })
 
     return {
         type: SET_JUMP_TO_TIME_LAST_UPDATE,
@@ -75,30 +75,10 @@ setInterval(() => {
         return
     }
 
-    sendMessageToWebsocket('reportStatus', `${currentTime}-${playbackState}`)
-}, 5000)
-
-export function handleReportStatus(timeStamp, status) {
-    if (status === 'waiting') {
-        return
-    }
-
-    let timeDifference = store.getState().video.currentTime - parseInt(timeStamp)
-    if (Math.abs(timeDifference) < 5) {
-        return
-    }
-
-    if (status === 'playing') {
-        if (timeDifference > 10) {
-            store.dispatch({
-                type: SET_PLAYBACK_STATE,
-                payload: 'waiting'
-            })
-        } else {
-            store.dispatch({
-                type: SET_PLAYBACK_STATE,
-                payload: 'playing'
-            })
+    sendMessageToWebsocket('reportStatus', {
+        status: {
+            playbackState,
+            currentTime: parseInt(currentTime)
         }
-    }
-}
+    })
+}, 5000)

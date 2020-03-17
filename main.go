@@ -11,23 +11,25 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-var clients = make(map[*websocket.Conn]bool) // connected clients
-var broadcast = make(chan Message)           // broadcast channel
+var clients = make(map[string]*Client) // connected clients
+var broadcast = make(chan Message)     // broadcast channel
 var upgrader = websocket.Upgrader{}
 var lastVideoDetails VideoDetails
 
-type Message struct {
-	Type     string `json:"type"`
-	Text     string `json:"text"`
-	ClientID string `json:"clientId"`
-	Date     int    `json:"date"`
+type Client struct {
+	clientID   string
+	ws         *websocket.Conn
+	lastStatus Status
 }
 
-type MessageWithVideoDetails struct {
-	Type         string       `json:"type"`
-	VideoDetails VideoDetails `json:"videoDetails"`
-	ClientID     string       `json:"clientId"`
-	Date         int          `json:"date"`
+type Message struct {
+	Type         string        `json:"type"`
+	Text         string        `json:"text"`
+	VideoDetails *VideoDetails `json:"videoDetails,omitempty"`
+	Seconds      int           `json:"seconds,omitempty"`
+	Status       *Status       `json:"status,omitempty"`
+	ClientID     string        `json:"clientId,omitempty"`
+	Date         int           `json:"date"`
 }
 
 type VideoDetails struct {
@@ -37,22 +39,40 @@ type VideoDetails struct {
 	Languages   []string          `json:"languages"`
 }
 
+type Status struct {
+	PlaybackState string `json:"playbackState"`
+	CurrentTime   int    `json:"currentTime"`
+}
+
 func wsEndpoint(w http.ResponseWriter, r *http.Request) {
+	clientIDs, ok := r.URL.Query()["clientId"]
+	if !ok || len(clientIDs) == 0 {
+		fmt.Println("Parameter 'clientId' not present in websocket url")
+		w.WriteHeader(400)
+		return
+	}
+	clientID := clientIDs[0]
+
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
+		return
 	}
 	defer ws.Close()
 
-	log.Println("Client successfully connected")
-	clients[ws] = true
+	log.Printf("Client %v successfully connected", clientID)
+	client := &Client{
+		clientID: clientID,
+		ws:       ws,
+	}
+	clients[clientID] = client
 
 	if len(lastVideoDetails.URL) != 0 {
-		sendMessageToClient(ws, MessageWithVideoDetails{
+		sendMessageToClient(client, Message{
 			Type:         "setVideoDetails",
-			VideoDetails: lastVideoDetails,
+			VideoDetails: &lastVideoDetails,
 			ClientID:     "server",
 			Date:         0, // TODO
 		})
@@ -63,10 +83,10 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 		err := ws.ReadJSON(&msg)
 		if err != nil {
 			log.Println(err)
-			delete(clients, ws)
+			delete(clients, clientID)
 			break
 		}
-		log.Println("New message", msg)
+		log.Printf("New message: %+v", msg)
 		broadcast <- msg
 	}
 }
@@ -76,36 +96,126 @@ func handleMessages() {
 		msg := <-broadcast
 
 		switch msg.Type {
+		case "setPlaybackState":
+			sendMessageToAllClients(msg)
+
 		case "requestVideo":
 			details, err := getVideoDetailsFromArte(msg.Text)
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
 			lastVideoDetails = details
-			sendMessageToAllClients(MessageWithVideoDetails{
+			sendMessageToAllClients(Message{
 				Type:         "setVideoDetails",
-				VideoDetails: details,
+				VideoDetails: &details,
 				ClientID:     "server",
 				Date:         0, // TODO
 			})
-		default:
+
+		case "jumpToTime":
 			sendMessageToAllClients(msg)
+
+		case "reportStatus":
+			handleReportStatus(msg)
+
+		default:
+			fmt.Printf("Error: Unknown message type '%v'\n", msg.Type)
 		}
 	}
 }
 
-func sendMessageToAllClients(msg interface{}) {
-	for client := range clients {
+func sendMessageToAllClients(msg Message) {
+	for _, client := range clients {
+		// TODO: Except to message sender
 		sendMessageToClient(client, msg)
 	}
 }
 
-func sendMessageToClient(client *websocket.Conn, msg interface{}) {
-	err := client.WriteJSON(msg)
+func sendMessageToClient(client *Client, msg Message) {
+	err := client.ws.WriteJSON(msg)
 	if err != nil {
 		log.Println(err)
-		client.Close()
-		delete(clients, client)
+		client.ws.Close()
+		delete(clients, client.clientID)
+	}
+}
+
+func handleReportStatus(msg Message) {
+	fmt.Printf("\nmsg.Status %v: %v\n", msg.ClientID, msg.Status)
+
+	clients[msg.ClientID].lastStatus = *msg.Status
+
+	for _, client := range clients {
+		// Don't compare with itself
+		if client.clientID == msg.ClientID {
+			continue
+		}
+
+		fmt.Printf("client %v: %v\n", client.clientID, client.lastStatus)
+
+		timeDifference := msg.Status.CurrentTime - client.lastStatus.CurrentTime
+
+		if msg.Status.PlaybackState == "playing" {
+			if client.lastStatus.PlaybackState == "playing" {
+				if timeDifference > 15 {
+					// Message sender waits
+					fmt.Println("Message sender waits")
+					sendMessageToClient(clients[msg.ClientID], Message{
+						Type:     "setPlaybackState",
+						Text:     "waiting",
+						ClientID: "server",
+						Date:     0,
+					})
+				} else if timeDifference < -15 {
+					// client waits
+					fmt.Printf("Client %v waits\n", client.clientID)
+					sendMessageToClient(client, Message{
+						Type:     "setPlaybackState",
+						Text:     "waiting",
+						ClientID: "server",
+						Date:     0,
+					})
+				}
+			} else if client.lastStatus.PlaybackState == "paused" {
+				// not possible
+			} else if client.lastStatus.PlaybackState == "waiting" {
+				if timeDifference > -5 {
+					// client can play
+					fmt.Printf("Client %v can play\n", client.clientID)
+					sendMessageToClient(client, Message{
+						Type:     "setPlaybackState",
+						Text:     "playing",
+						ClientID: "server",
+						Date:     0,
+					})
+				}
+			}
+		} else if msg.Status.PlaybackState == "paused" {
+			if client.lastStatus.PlaybackState == "playing" {
+				// not possible
+			} else if client.lastStatus.PlaybackState == "paused" {
+				// nothing
+			} else if client.lastStatus.PlaybackState == "waiting" {
+				// nothing
+			}
+		} else if msg.Status.PlaybackState == "waiting" {
+			if client.lastStatus.PlaybackState == "playing" {
+				if timeDifference < 5 {
+					// Message sender can play
+					fmt.Println("Message sender can play")
+					sendMessageToClient(clients[msg.ClientID], Message{
+						Type:     "setPlaybackState",
+						Text:     "playing",
+						ClientID: "server",
+						Date:     0,
+					})
+				}
+			} else if client.lastStatus.PlaybackState == "paused" {
+				// not possible
+			} else if client.lastStatus.PlaybackState == "waiting" {
+				// not possible
+			}
+		}
 	}
 }
 
