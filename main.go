@@ -126,7 +126,11 @@ func handleMessages() {
 
 func sendMessageToAllClients(msg Message) {
 	for _, client := range clients {
-		// TODO: Except to message sender
+		// Don't send back to sender
+		if client.clientID == msg.ClientID {
+			return
+		}
+
 		sendMessageToClient(client, msg)
 	}
 }
