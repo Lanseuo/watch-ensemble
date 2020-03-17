@@ -26,7 +26,7 @@ type Message struct {
 	Type         string        `json:"type"`
 	Text         string        `json:"text"`
 	VideoDetails *VideoDetails `json:"videoDetails,omitempty"`
-	Seconds      int           `json:"seconds,omitempty"`
+	Seconds      int           `json:"seconds"`
 	Status       *Status       `json:"status,omitempty"`
 	ClientID     string        `json:"clientId,omitempty"`
 	Date         int           `json:"date"`
@@ -128,7 +128,7 @@ func sendMessageToAllClients(msg Message) {
 	for _, client := range clients {
 		// Don't send back to sender
 		if client.clientID == msg.ClientID {
-			return
+			continue
 		}
 
 		sendMessageToClient(client, msg)
@@ -144,10 +144,19 @@ func sendMessageToClient(client *Client, msg Message) {
 	}
 }
 
-func handleReportStatus(msg Message) {
-	fmt.Printf("\nmsg.Status %v: %v\n", msg.ClientID, msg.Status)
+func findMax(a []int) (max int) {
+	max = a[0]
+	for _, value := range a {
+		if value > max {
+			max = value
+		}
+	}
+	return max
+}
 
+func handleReportStatus(msg Message) {
 	clients[msg.ClientID].lastStatus = *msg.Status
+	var timeDifferences []int
 
 	for _, client := range clients {
 		// Don't compare with itself
@@ -155,70 +164,37 @@ func handleReportStatus(msg Message) {
 			continue
 		}
 
-		fmt.Printf("client %v: %v\n", client.clientID, client.lastStatus)
+		if client.lastStatus.PlaybackState != "playing" {
+			continue
+		}
 
 		timeDifference := msg.Status.CurrentTime - client.lastStatus.CurrentTime
+		timeDifferences = append(timeDifferences, timeDifference)
+	}
 
-		if msg.Status.PlaybackState == "playing" {
-			if client.lastStatus.PlaybackState == "playing" {
-				if timeDifference > 15 {
-					// Message sender waits
-					fmt.Println("Message sender waits")
-					sendMessageToClient(clients[msg.ClientID], Message{
-						Type:     "setPlaybackState",
-						Text:     "waiting",
-						ClientID: "server",
-						Date:     0,
-					})
-				} else if timeDifference < -15 {
-					// client waits
-					fmt.Printf("Client %v waits\n", client.clientID)
-					sendMessageToClient(client, Message{
-						Type:     "setPlaybackState",
-						Text:     "waiting",
-						ClientID: "server",
-						Date:     0,
-					})
-				}
-			} else if client.lastStatus.PlaybackState == "paused" {
-				// not possible
-			} else if client.lastStatus.PlaybackState == "waiting" {
-				if timeDifference > -5 {
-					// client can play
-					fmt.Printf("Client %v can play\n", client.clientID)
-					sendMessageToClient(client, Message{
-						Type:     "setPlaybackState",
-						Text:     "playing",
-						ClientID: "server",
-						Date:     0,
-					})
-				}
-			}
-		} else if msg.Status.PlaybackState == "paused" {
-			if client.lastStatus.PlaybackState == "playing" {
-				// not possible
-			} else if client.lastStatus.PlaybackState == "paused" {
-				// nothing
-			} else if client.lastStatus.PlaybackState == "waiting" {
-				// nothing
-			}
-		} else if msg.Status.PlaybackState == "waiting" {
-			if client.lastStatus.PlaybackState == "playing" {
-				if timeDifference < 5 {
-					// Message sender can play
-					fmt.Println("Message sender can play")
-					sendMessageToClient(clients[msg.ClientID], Message{
-						Type:     "setPlaybackState",
-						Text:     "playing",
-						ClientID: "server",
-						Date:     0,
-					})
-				}
-			} else if client.lastStatus.PlaybackState == "paused" {
-				// not possible
-			} else if client.lastStatus.PlaybackState == "waiting" {
-				// not possible
-			}
+	if len(timeDifferences) == 0 {
+		return
+	}
+
+	maxTimeDifference := findMax(timeDifferences)
+
+	if msg.Status.PlaybackState == "playing" {
+		if maxTimeDifference > 15 {
+			sendMessageToClient(clients[msg.ClientID], Message{
+				Type:     "setPlaybackState",
+				Text:     "waiting",
+				ClientID: "server",
+				Date:     0,
+			})
+		}
+	} else if msg.Status.PlaybackState == "waiting" {
+		if maxTimeDifference < 5 {
+			sendMessageToClient(clients[msg.ClientID], Message{
+				Type:     "setPlaybackState",
+				Text:     "playing",
+				ClientID: "server",
+				Date:     0,
+			})
 		}
 	}
 }

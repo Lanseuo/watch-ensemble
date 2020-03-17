@@ -70,7 +70,7 @@ function handleMessage(event) {
         case 'jumpToTime':
             store.dispatch({
                 type: SET_JUMP_TO_TIME_LAST_UPDATE,
-                payload: message.text
+                payload: message.seconds
             })
             break
 
