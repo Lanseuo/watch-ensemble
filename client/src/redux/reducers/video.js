@@ -29,6 +29,7 @@ export default function (state = initialState, action) {
         case SET_DETAILS:
             return {
                 ...state,
+                jumpToTimeLastUpdate: 0,
                 details: action.payload
             }
 
