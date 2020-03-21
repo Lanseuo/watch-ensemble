@@ -14,3 +14,7 @@
     background: white;
     border: 3px solid white;
 }
+
+.hide {
+    display: none;
+}
