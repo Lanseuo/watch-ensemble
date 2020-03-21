@@ -10,8 +10,11 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 
-COPY main.go .
-RUN CGO_ENABLED=0 go build -o app main.go
+COPY cmd /go/src/app/cmd
+COPY internal /go/src/app/internal
+COPY pkg /go/src/app/pkg
+RUN ls
+RUN CGO_ENABLED=0 go build -o app cmd/watchensemble/main.go
 
 FROM node:13-alpine as frontend-builder
 WORKDIR /app
