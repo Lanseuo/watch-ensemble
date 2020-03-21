@@ -8,6 +8,7 @@ import './MainPart.css'
 import Video from './Video'
 import Controls from './Controls'
 import VideoDetails from './VideoDetails'
+import ChooseLanguageModal from './ChooseLanguageModal'
 
 class MainPart extends Component {
     constructor() {
@@ -54,6 +55,7 @@ class MainPart extends Component {
                             <Controls className={styles.controls} />
                         </div>
                     )}
+                    <ChooseLanguageModal />
                     <VideoDetails />
                 </div>
             </div>
