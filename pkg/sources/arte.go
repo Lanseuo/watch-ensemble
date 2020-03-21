@@ -9,7 +9,8 @@ import (
 )
 
 func arteCanHandle(url string) bool {
-	return true
+	re := regexp.MustCompile(`arte\.tv\/\w\w\/videos\/\d+-\d+-A`)
+	return re.MatchString(url)
 }
 
 func arteGet(url string) (details VideoDetails, err error) {
@@ -17,14 +18,14 @@ func arteGet(url string) (details VideoDetails, err error) {
 	details.Description = make(map[string]string)
 	details.URL = make(map[string]string)
 
-	r, _ := regexp.Compile(`\d+-\d+-A`)
-	videoID := r.FindString(url)
+	re := regexp.MustCompile(`\d+-\d+-A`)
+	videoID := re.FindString(url)
 
 	if videoID == "" {
 		return details, errors.New("Can't find video")
 	}
 
-	for _, language := range []string{"de", "fr"} {
+	for _, language := range []string{"fr", "de"} {
 		apiURL := fmt.Sprintf("https://api.arte.tv/api/player/v1/config/%s/%s?platform=ARTE_NEXT", language, videoID)
 		resp, err := http.Get(apiURL)
 		if err != nil {
