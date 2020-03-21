@@ -4,7 +4,7 @@ import {
 } from "../actionTypes/video"
 
 const initialState = {
-    language: 'fr',
+    language: '',
     details: null,
     playbackState: 'paused',
     currentTime: 0,
@@ -27,10 +27,12 @@ export default function (state = initialState, action) {
             }
 
         case SET_DETAILS:
+            let language = action.payload.languages.includes(state.language) ? state.language : action.payload.languages[0]
             return {
                 ...state,
                 jumpToTimeLastUpdate: 0,
-                details: action.payload
+                details: action.payload,
+                language
             }
 
         case SET_CURRENT_TIME:
