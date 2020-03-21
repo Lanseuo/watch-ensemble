@@ -14,5 +14,9 @@ func GetVideoDetails(url string) (VideoDetails, error) {
 		return arteGet(url)
 	}
 
+	if mp4CanHandle(url) {
+		return mp4Get(url)
+	}
+
 	return VideoDetails{}, errors.New("No source found to handle + '" + url + "'")
 }
