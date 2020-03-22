@@ -1,7 +1,8 @@
-import { SET_SHOW_LANGUAGE_MODAL } from "../actionTypes/main"
+import { SET_SHOW_LANGUAGE_MODAL, SET_IS_TOUCH_DEVICE } from "../actionTypes/main"
 
 const initialState = {
-    showLanguageModal: false
+    showLanguageModal: false,
+    isTouchDevice: false
 }
 
 export default function (state = initialState, action) {
@@ -10,6 +11,12 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 showLanguageModal: action.payload
+            }
+
+        case SET_IS_TOUCH_DEVICE:
+            return {
+                ...state,
+                isTouchDevice: action.payload
             }
 
         default:

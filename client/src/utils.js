@@ -17,3 +17,23 @@ export function formatTime(totalSeconds) {
         return `${pad(minutes)}:${pad(seconds)}`
     }
 }
+
+export function isTouchDevice() {
+    // https://stackoverflow.com/a/4819886/9269863
+    let prefixes = ' -webkit- -moz- -o- -ms- '.split(' ')
+
+    let mq = function (query) {
+        return window.matchMedia(query).matches
+    }
+
+    /*eslint-disable no-undef*/
+    if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+        return true
+    }
+    /*eslint-enable no-undef*/
+
+    // include the 'heartz' as a way to have a non matching MQ to help terminate the join
+    // https://git.io/vznFH
+    let query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('')
+    return mq(query)
+}
