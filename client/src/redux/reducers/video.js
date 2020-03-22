@@ -50,6 +50,7 @@ export default function (state = initialState, action) {
         case SET_JUMP_TO_TIME_LAST_UPDATE:
             return {
                 ...state,
+                currentTime: action.payload,
                 jumpToTimeLastUpdate: action.payload
             }
 
