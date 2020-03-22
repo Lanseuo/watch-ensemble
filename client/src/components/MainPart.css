@@ -1,5 +1,6 @@
-body:not(.fullscreen) .player:hover .controls,
+body:not(.fullscreen):not(.touch-device) .player:hover .controls,
 .player.show-controls .controls,
 .controls:hover {
-    transform: translateY(0px);
+    /* Show controls */
+    transform: translateY(0px) !important;
 }

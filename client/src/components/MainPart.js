@@ -14,18 +14,20 @@ class MainPart extends Component {
     constructor() {
         super()
         this.state = {
-            showControlsInFullscreen: false
+            showControls: false
         }
     }
 
     componentDidMount() {
         let timer
         document.addEventListener('mousemove', () => {
+            if (this.props.isTouchDevice) return
+
             if (screenfull.isFullscreen) {
-                this.setState({ showControlsInFullscreen: true })
+                this.setState({ showControls: true })
                 clearTimeout(timer)
                 timer = setTimeout(() => {
-                    this.setState({ showControlsInFullscreen: false })
+                    this.setState({ showControls: false })
                 }, 750)
             }
         })
@@ -35,8 +37,14 @@ class MainPart extends Component {
         PubSub.publish('openSetVideoModal')
     }
 
+    handleVideoClick = () => {
+        if (this.props.isTouchDevice) {
+            this.setState({ showControls: !this.state.showControls })
+        }
+    }
+
     render() {
-        let showControlsClassName = this.state.showControlsInFullscreen ? 'show-controls' : ''
+        let showControlsClassName = this.state.showControls ? 'show-controls' : ''
         return (
             <div className={styles.container}>
                 <div className={styles.inner}>
@@ -51,7 +59,7 @@ class MainPart extends Component {
 
                     {this.props.videoDetails !== null && (
                         <div className={`${styles.player} player ${showControlsClassName}`}>
-                            <Video className={`styles.video`} />
+                            <Video onClick={this.handleVideoClick} className={`styles.video`} />
                             <Controls className={styles.controls} />
                         </div>
                     )}
@@ -64,6 +72,7 @@ class MainPart extends Component {
 }
 
 const mapStateToProps = state => ({
+    isTouchDevice: state.main.isTouchDevice,
     videoDetails: state.video.details
 })
 

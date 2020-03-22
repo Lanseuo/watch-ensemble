@@ -12,7 +12,13 @@ class Video extends Component {
     componentDidMount() {
         this.videoRef.current.addEventListener('timeupdate', this.timeUpdate)
         this.videoRef.current.addEventListener('durationchange', this.durationChange)
-        this.videoRef.current.addEventListener('click', this.props.togglePlay)
+    }
+
+    handleClick = () => {
+        this.props.onClick()
+        if (!this.props.isTouchDevice) {
+            this.props.togglePlay()
+        }
     }
 
     timeUpdate = () => {
@@ -59,7 +65,7 @@ class Video extends Component {
     render() {
         let videoUrl = this.props.videoDetails ? this.props.videoDetails.url[this.props.language] : ''
         return (
-            <video className="video" style={styles.video} src={videoUrl} ref={this.videoRef}></video>
+            <video className="video" onClick={this.handleClick} style={styles.video} src={videoUrl} ref={this.videoRef}></video>
         )
     }
 }
@@ -71,6 +77,7 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
+    isTouchDevice: state.main.isTouchDevice,
     language: state.video.language,
     videoPlaybackState: state.video.playbackState,
     videoDetails: state.video.details,
