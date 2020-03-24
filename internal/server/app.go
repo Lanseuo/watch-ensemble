@@ -83,13 +83,14 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	for {
 		var msg Message
-		err := ws.ReadJSON(&msg)
+		msgString, err := parseWebsocketJSON(ws, &msg)
 		if err != nil {
 			log.Println(err)
 			delete(clients, clientID)
 			break
 		}
-		log.Printf("New message: %+v", msg)
+
+		fmt.Printf("New message: %+v\n", msgString)
 		broadcast <- msg
 	}
 }
@@ -98,32 +99,36 @@ func handleMessages() {
 	for {
 		msg := <-broadcast
 
-		switch msg.Type {
-		case "setPlaybackState":
-			sendMessageToAllClients(msg)
+		go func(msg Message) {
+			switch msg.Type {
+			case "setPlaybackState":
+				sendMessageToAllClients(msg)
 
-		case "requestVideo":
-			details, err := sources.GetVideoDetails(msg.Text)
-			if err != nil {
-				fmt.Println("Error:", err)
+			case "requestVideo":
+				details, err := sources.GetVideoDetails(msg.Text)
+				if err != nil {
+					fmt.Println("Error:", err)
+				}
+				lastVideoDetails = details
+				resetLastStatuses()
+				sendMessageToAllClients(Message{
+					Type:         "setVideoDetails",
+					VideoDetails: &details,
+					ClientID:     "server",
+					Date:         0, // TODO
+				})
+
+			case "jumpToTime":
+				resetLastStatuses()
+				sendMessageToAllClients(msg)
+
+			case "reportStatus":
+				handleReportStatus(msg)
+
+			default:
+				fmt.Printf("Error: Unknown message type '%v'\n", msg.Type)
 			}
-			lastVideoDetails = details
-			sendMessageToAllClients(Message{
-				Type:         "setVideoDetails",
-				VideoDetails: &details,
-				ClientID:     "server",
-				Date:         0, // TODO
-			})
-
-		case "jumpToTime":
-			sendMessageToAllClients(msg)
-
-		case "reportStatus":
-			handleReportStatus(msg)
-
-		default:
-			fmt.Printf("Error: Unknown message type '%v'\n", msg.Type)
-		}
+		}(msg)
 	}
 }
 

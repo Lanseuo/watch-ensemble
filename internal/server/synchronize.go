@@ -44,3 +44,9 @@ func handleReportStatus(msg Message) {
 		}
 	}
 }
+
+func resetLastStatuses() {
+	for _, client := range clients {
+		client.lastStatus = Status{}
+	}
+}
