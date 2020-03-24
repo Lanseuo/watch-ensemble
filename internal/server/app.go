@@ -72,14 +72,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 	clients[clientID] = client
 
-	if len(lastVideoDetails.URL) != 0 {
-		sendMessageToClient(client, Message{
-			Type:         "setVideoDetails",
-			VideoDetails: &lastVideoDetails,
-			ClientID:     "server",
-			Date:         0, // TODO
-		})
-	}
+	go welcomeClient(client)
 
 	for {
 		var msg Message
@@ -116,7 +109,6 @@ func handleMessages() {
 					Type:         "setVideoDetails",
 					VideoDetails: &details,
 					ClientID:     "server",
-					Date:         0, // TODO
 				})
 
 			case "jumpToTime":
@@ -145,10 +137,67 @@ func sendMessageToAllClients(msg Message) {
 }
 
 func sendMessageToClient(client *Client, msg Message) {
+	// TODO: Set date
+
 	err := client.ws.WriteJSON(msg)
 	if err != nil {
 		log.Println(err)
 		client.ws.Close()
 		delete(clients, client.clientID)
+	}
+}
+
+func welcomeClient(client *Client) {
+	if len(lastVideoDetails.URL) == 0 {
+		return
+	}
+
+	sendMessageToClient(client, Message{
+		Type:         "setVideoDetails",
+		VideoDetails: &lastVideoDetails,
+		ClientID:     "server",
+	})
+
+	var currentTimes []int
+	otherClientsArePlaying := false
+	for _, c := range clients {
+		if client.clientID == c.clientID {
+			continue
+		}
+
+		if c.lastStatus.PlaybackState == "" {
+			continue
+		}
+
+		if c.lastStatus.PlaybackState != "paused" {
+			fmt.Println("lastStatus:", c.lastStatus.PlaybackState)
+			otherClientsArePlaying = true
+		}
+
+		currentTimes = append(currentTimes, c.lastStatus.CurrentTime)
+	}
+
+	fmt.Println("currentTimes", currentTimes)
+
+	if len(currentTimes) == 0 {
+		return
+	}
+	maxCurrentTime := findMax(currentTimes)
+	if maxCurrentTime != 0 {
+		sendMessageToClient(client, Message{
+			Type:     "jumpToTime",
+			Seconds:  maxCurrentTime,
+			ClientID: "server",
+		})
+	}
+
+	fmt.Println(otherClientsArePlaying)
+
+	if otherClientsArePlaying {
+		sendMessageToClient(client, Message{
+			Type:     "setPlaybackState",
+			Text:     "playing",
+			ClientID: "server",
+		})
 	}
 }

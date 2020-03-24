@@ -30,7 +30,6 @@ func handleReportStatus(msg Message) {
 				Type:     "setPlaybackState",
 				Text:     "waiting",
 				ClientID: "server",
-				Date:     0,
 			})
 		}
 	} else if msg.Status.PlaybackState == "waiting" {
@@ -39,7 +38,6 @@ func handleReportStatus(msg Message) {
 				Type:     "setPlaybackState",
 				Text:     "playing",
 				ClientID: "server",
-				Date:     0,
 			})
 		}
 	}
