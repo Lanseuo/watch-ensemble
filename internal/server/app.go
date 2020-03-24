@@ -99,7 +99,7 @@ func handleMessages() {
 	for {
 		msg := <-broadcast
 
-		go func(msg Message) {
+		go func() {
 			switch msg.Type {
 			case "setPlaybackState":
 				sendMessageToAllClients(msg)
@@ -108,6 +108,7 @@ func handleMessages() {
 				details, err := sources.GetVideoDetails(msg.Text)
 				if err != nil {
 					fmt.Println("Error:", err)
+					return
 				}
 				lastVideoDetails = details
 				resetLastStatuses()
@@ -128,7 +129,7 @@ func handleMessages() {
 			default:
 				fmt.Printf("Error: Unknown message type '%v'\n", msg.Type)
 			}
-		}(msg)
+		}()
 	}
 }
 

@@ -18,5 +18,5 @@ func GetVideoDetails(url string) (VideoDetails, error) {
 		return mp4Get(url)
 	}
 
-	return VideoDetails{}, errors.New("No source found to handle + '" + url + "'")
+	return VideoDetails{}, errors.New("No source found to handle '" + url + "'")
 }
