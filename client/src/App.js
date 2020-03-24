@@ -10,6 +10,14 @@ class App extends Component {
     constructor() {
         super()
         setIsTouchDevice()
+
+        this.state = {
+            didUserJoinRoom: false
+        }
+    }
+
+    joinRoom = () => {
+        this.setState({ didUserJoinRoom: true })
         connectToWebsocket()
     }
 
@@ -17,7 +25,14 @@ class App extends Component {
         return (
             <div style={styles.container}>
                 <SideBar />
-                <MainPart />
+                {this.state.didUserJoinRoom && <MainPart />}
+                {!this.state.didUserJoinRoom &&
+                    <div style={styles.joinRoomWrapper}>
+                        <div className="button-wrapper">
+                            <button onClick={this.joinRoom}>Join Room</button>
+                        </div>
+                    </div>
+                }
             </div>
         )
     }
@@ -27,6 +42,11 @@ let styles = {
     container: {
         display: 'grid',
         gridTemplateColumns: '60px auto'
+    },
+
+    joinRoomWrapper: {
+        display: 'grid',
+        placeItems: 'center'
     }
 }
 
