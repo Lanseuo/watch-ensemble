@@ -48,8 +48,10 @@ export default function (state = initialState, action) {
             }
 
         case SET_JUMP_TO_TIME_LAST_UPDATE:
+            let playbackState = state.playbackState == 'waiting' ? 'playing' : state.playbackState
             return {
                 ...state,
+                playbackState,
                 currentTime: action.payload,
                 jumpToTimeLastUpdate: action.payload
             }
