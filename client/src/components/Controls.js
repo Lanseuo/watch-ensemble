@@ -17,6 +17,7 @@ class Controls extends Component {
 
     componentDidMount() {
         document.addEventListener('keydown', e => {
+            let spaceKey = 32
             let letterK = 75
             let letterF = 70
 
@@ -26,7 +27,7 @@ class Controls extends Component {
 
             let event = document.all ? window.event : e
             if (!/^(?:input|textarea|select|button)$/i.test(e.target.tagName)) {
-                if (event.keyCode === letterK) {
+                if (event.keyCode === letterK || event.keyCode === spaceKey) {
                     this.togglePlay()
                 } else if (event.keyCode === letterF) {
                     screenfull.toggle()
