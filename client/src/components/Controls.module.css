@@ -11,7 +11,10 @@
     width: 100%;
     transform: translateY(100%);
     transition: all .3s;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
+
+    /* Safari: Fix show controls on top of video */
+    z-index: 500;
 }
 
 .container svg {

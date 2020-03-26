@@ -2,36 +2,24 @@
 body:not(.fullscreen):not(.touch-device) .player:hover .controls {
     /* Show controls */
     transform: translateY(0px) !important;
-
-    /* Safari: Fix show controls on top of video */
-    -webkit-transform: translate3d(0, 0, 0);
 }
 
 /* Full screen: mouse moved recently */
 .fullscreen .player.mouse-moved-recently .controls {
     /* Show controls */
     transform: translateY(0px) !important;
-
-    /* Safari: Fix show controls on top of video */
-    -webkit-transform: translate3d(0, 0, 0);
 }
 
 /* Video paused/waiting */
 .video-not-playing .controls {
     /* Show controls */
     transform: translateY(0px) !important;
-
-    /* Safari: Fix show controls on top of video */
-    -webkit-transform: translate3d(0, 0, 0);
 }
 
 /* Hover on controls */
 .controls:hover {
     /* Show controls */
     transform: translateY(0px) !important;
-
-    /* Safari: Fix show controls on top of video */
-    -webkit-transform: translate3d(0, 0, 0);
 
     cursor: auto !important;
 }
