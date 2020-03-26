@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PubSub from 'pubsub-js'
-import screenfull from 'screenfull'
 
 import styles from './MainPart.module.css'
 import './MainPart.css'

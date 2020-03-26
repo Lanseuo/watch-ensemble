@@ -26,7 +26,7 @@ class Controls extends Component {
             }
 
             let event = document.all ? window.event : e
-            if (e.target.tagName == 'INPUT' && e.target.type != 'range') {
+            if (e.target.tagName === 'INPUT' && e.target.type !== 'range') {
                 return
             }
 
