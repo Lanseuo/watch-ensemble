@@ -1,5 +1,22 @@
-body:not(.fullscreen):not(.touch-device) .player:hover .controls,
-.player.show-controls .controls,
+/* Not full screen: hover */
+body:not(.fullscreen):not(.touch-device) .player:hover .controls {
+    /* Show controls */
+    transform: translateY(0px) !important;
+}
+
+/* Full screen: mouse moved recently */
+.fullscreen .player.mouse-moved-recently .controls {
+    /* Show controls */
+    transform: translateY(0px) !important;
+}
+
+/* Video paused/waiting */
+.video-not-playing .controls {
+    /* Show controls */
+    transform: translateY(0px) !important;
+}
+
+/* Hover on controls */
 .controls:hover {
     /* Show controls */
     transform: translateY(0px) !important;

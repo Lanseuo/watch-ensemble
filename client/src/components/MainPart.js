@@ -14,22 +14,18 @@ class MainPart extends Component {
     constructor() {
         super()
         this.state = {
-            showControls: false
+            mouseMovedRecently: false
         }
     }
 
     componentDidMount() {
         let timer
         document.addEventListener('mousemove', () => {
-            if (this.props.isTouchDevice) return
-
-            if (screenfull.isFullscreen) {
-                this.setState({ showControls: true })
-                clearTimeout(timer)
-                timer = setTimeout(() => {
-                    this.setState({ showControls: false })
-                }, 750)
-            }
+            this.setState({ mouseMovedRecently: true })
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+                this.setState({ mouseMovedRecently: false })
+            }, 1000)
         })
     }
 
@@ -39,12 +35,14 @@ class MainPart extends Component {
 
     handleVideoClick = () => {
         if (this.props.isTouchDevice) {
-            this.setState({ showControls: !this.state.showControls })
+            this.setState({ mouseMovedRecently: true })
         }
     }
 
     render() {
-        let showControlsClassName = this.state.showControls ? 'show-controls' : ''
+        let mouseMovedRecentlyClassName = this.state.mouseMovedRecently ? `mouse-moved-recently` : ''
+        let videoNotPlayingClassName = this.props.videoPlaybackState !== 'playing' ? 'video-not-playing' : ''
+
         return (
             <div className={styles.container}>
                 <div className={styles.inner}>
@@ -58,7 +56,7 @@ class MainPart extends Component {
                     )}
 
                     {this.props.videoDetails !== null && (
-                        <div className={`${styles.player} player ${showControlsClassName}`}>
+                        <div className={`${styles.player} player ${mouseMovedRecentlyClassName} ${videoNotPlayingClassName}`}>
                             <Video onClick={this.handleVideoClick} className={`styles.video`} />
                             <Controls className={styles.controls} />
                         </div>
@@ -73,7 +71,8 @@ class MainPart extends Component {
 
 const mapStateToProps = state => ({
     isTouchDevice: state.main.isTouchDevice,
-    videoDetails: state.video.details
+    videoDetails: state.video.details,
+    videoPlaybackState: state.video.playbackState
 })
 
 export default connect(mapStateToProps)(MainPart)
