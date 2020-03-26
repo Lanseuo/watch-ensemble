@@ -26,6 +26,8 @@ function handleOpen() {
         type: SET_IS_CONNECTED,
         payload: true
     })
+
+    sendMessageToWebsocket('join', { text: store.getState().main.userName })
 }
 
 function handleError(error) {
@@ -53,6 +55,10 @@ function handleMessage(event) {
     console.log('Got message', message)
 
     switch (message.type) {
+        case 'userJoined':
+            console.log('userJoined :', message)
+            break
+
         case 'setVideoDetails':
             store.dispatch({
                 type: SET_DETAILS,

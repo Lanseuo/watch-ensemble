@@ -1,4 +1,4 @@
-import { SET_SHOW_LANGUAGE_MODAL, SET_IS_TOUCH_DEVICE } from '../actionTypes/main'
+import { SET_SHOW_LANGUAGE_MODAL, SET_IS_TOUCH_DEVICE, SET_USER_NAME } from '../actionTypes/main'
 import { isTouchDevice } from '../../utils'
 import store from '../store'
 
@@ -22,3 +22,8 @@ export const setIsTouchDevice = () => {
         payload: value
     })
 }
+
+export const setUserName = name => ({
+    type: SET_USER_NAME,
+    payload: name
+})
