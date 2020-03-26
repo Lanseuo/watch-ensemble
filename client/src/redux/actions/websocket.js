@@ -1,3 +1,4 @@
+import { SET_CLIENTS } from '../actionTypes/main'
 import { SET_WEBSOCKET, SET_IS_CONNECTED } from '../actionTypes/websocket'
 import { SET_DETAILS, SET_PLAYBACK_STATE, SET_JUMP_TO_TIME_LAST_UPDATE } from '../actionTypes/video'
 import store from '../store'
@@ -62,6 +63,13 @@ function handleMessage(event) {
 
         case 'clientLeft':
             store.dispatch(setNotification('info', `${message.text} left the room`))
+            break
+
+        case 'setClientList':
+            store.dispatch({
+                type: SET_CLIENTS,
+                payload: message.clientList
+            })
             break
 
         case 'setVideoDetails':

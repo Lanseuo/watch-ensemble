@@ -12,8 +12,8 @@ class Clients extends Component {
         return (
             <div className={styles.container}>
                 <p>Clients</p>
-                {this.props.clients.map(client => (
-                    <div className={styles.client}>
+                {this.props.clients.map((client, index) => (
+                    <div className={styles.client} key={index}>
                         <div className={styles.clientInner}>
                             <p>
                                 {this.getFirstLetter(client)}

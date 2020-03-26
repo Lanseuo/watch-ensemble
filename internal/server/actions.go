@@ -19,6 +19,7 @@ func join(msg Message) {
 	}
 
 	sendMessageToAllClientsExcept(notificationMsg, msg.ClientID)
+	setClientList()
 }
 
 func clientLeftRoom(clientID string) {
@@ -38,6 +39,20 @@ func clientLeftRoom(clientID string) {
 	}
 
 	sendMessageToAllClientsExcept(notificationMsg, clientID)
+}
+
+func setClientList() {
+	var clientList []string
+	for _, client := range clients {
+		clientList = append(clientList, client.name)
+	}
+
+	msg := Message{
+		Type:       "setClientList",
+		ClientList: clientList,
+	}
+
+	sendMessageToAllClients(msg)
 }
 
 func setPlaybackState(msg Message) {

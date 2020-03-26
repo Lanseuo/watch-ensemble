@@ -24,10 +24,11 @@ type Client struct {
 
 type Message struct {
 	Type         string                `json:"type"`
-	Text         string                `json:"text"`
+	Text         string                `json:"text,omitempty"`
 	VideoDetails *sources.VideoDetails `json:"videoDetails,omitempty"`
-	Seconds      int                   `json:"seconds"`
+	Seconds      int                   `json:"seconds,omitempty"`
 	Status       *Status               `json:"status,omitempty"`
+	ClientList   []string              `json:"clientList,omitempty"`
 	ClientID     string                `json:"clientId,omitempty"`
 	Date         int                   `json:"date"`
 }
@@ -82,6 +83,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 			clientLeftRoom(client.clientID)
 			log.Println(err)
 			delete(clients, clientID)
+			setClientList()
 			break
 		}
 
