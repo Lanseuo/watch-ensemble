@@ -19,6 +19,7 @@ type Client struct {
 	clientID   string
 	ws         *websocket.Conn
 	lastStatus Status
+	name       string
 }
 
 type Message struct {
@@ -94,26 +95,17 @@ func handleMessages() {
 
 		go func() {
 			switch msg.Type {
+			case "join":
+				join(msg)
+
 			case "setPlaybackState":
-				sendMessageToAllClients(msg)
+				setPlaybackState(msg)
 
 			case "requestVideo":
-				details, err := sources.GetVideoDetails(msg.Text)
-				if err != nil {
-					fmt.Println("Error:", err)
-					return
-				}
-				lastVideoDetails = details
-				resetLastStatuses()
-				sendMessageToAllClients(Message{
-					Type:         "setVideoDetails",
-					VideoDetails: &details,
-					ClientID:     "server",
-				})
+				requestVideo(msg)
 
 			case "jumpToTime":
-				resetLastStatuses()
-				sendMessageToAllClients(msg)
+				jumpToTime(msg)
 
 			case "reportStatus":
 				handleReportStatus(msg)
@@ -122,28 +114,6 @@ func handleMessages() {
 				fmt.Printf("Error: Unknown message type '%v'\n", msg.Type)
 			}
 		}()
-	}
-}
-
-func sendMessageToAllClients(msg Message) {
-	for _, client := range clients {
-		// Don't send back to sender
-		if client.clientID == msg.ClientID {
-			continue
-		}
-
-		sendMessageToClient(client, msg)
-	}
-}
-
-func sendMessageToClient(client *Client, msg Message) {
-	// TODO: Set date
-
-	err := client.ws.WriteJSON(msg)
-	if err != nil {
-		log.Println(err)
-		client.ws.Close()
-		delete(clients, client.clientID)
 	}
 }
 
@@ -177,8 +147,6 @@ func welcomeClient(client *Client) {
 		currentTimes = append(currentTimes, c.lastStatus.CurrentTime)
 	}
 
-	fmt.Println("currentTimes", currentTimes)
-
 	if len(currentTimes) == 0 {
 		return
 	}
@@ -190,8 +158,6 @@ func welcomeClient(client *Client) {
 			ClientID: "server",
 		})
 	}
-
-	fmt.Println(otherClientsArePlaying)
 
 	if otherClientsArePlaying {
 		sendMessageToClient(client, Message{

@@ -10,6 +10,8 @@ type VideoDetails struct {
 }
 
 func GetVideoDetails(url string) (VideoDetails, error) {
+	// TODO: Regex for URL
+
 	if arteCanHandle(url) {
 		return arteGet(url)
 	}

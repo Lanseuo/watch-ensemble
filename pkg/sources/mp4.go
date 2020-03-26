@@ -11,7 +11,7 @@ func mp4CanHandle(url string) bool {
 }
 
 func mp4Get(url string) (details VideoDetails, err error) {
-	// Get host (https://github.com/Lanuseo -> github.com)
+	// Get host (https://github.com/Lanseuo -> github.com)
 	re := regexp.MustCompile(`\/\/([^\/]*)`)
 	host := re.FindStringSubmatch(url)[1]
 
