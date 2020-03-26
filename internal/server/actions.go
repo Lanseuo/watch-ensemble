@@ -14,11 +14,30 @@ func join(msg Message) {
 	}
 
 	notificationMsg := Message{
-		Type: "userJoined",
+		Type: "clientJoined",
 		Text: msg.Text,
 	}
 
 	sendMessageToAllClientsExcept(notificationMsg, msg.ClientID)
+}
+
+func clientLeftRoom(clientID string) {
+	fmt.Printf("Client %v left\n", clientID)
+	var clientName string
+
+	for _, client := range clients {
+		if client.clientID == clientID {
+			clientName = client.name
+			break
+		}
+	}
+
+	notificationMsg := Message{
+		Type: "clientLeft",
+		Text: clientName,
+	}
+
+	sendMessageToAllClientsExcept(notificationMsg, clientID)
 }
 
 func setPlaybackState(msg Message) {

@@ -14,12 +14,12 @@ class App extends Component {
         setIsTouchDevice()
 
         this.state = {
-            didUserJoinRoom: false
+            didJoinRoom: false
         }
     }
 
-    userJoined = () => {
-        this.setState({ didUserJoinRoom: true })
+    joined = () => {
+        this.setState({ didJoinRoom: true })
         connectToWebsocket()
     }
 
@@ -27,9 +27,9 @@ class App extends Component {
         return (
             <div style={styles.container}>
                 <SideBar />
-                {this.state.didUserJoinRoom && <MainPart />}
+                {this.state.didJoinRoom && <MainPart />}
 
-                <JoinRoomModal didUserJoinRoom={this.state.didUserJoinRoom} userJoined={this.userJoined} />
+                <JoinRoomModal didJoinRoom={this.state.didJoinRoom} joined={this.joined} />
                 <Notification />
             </div>
         )

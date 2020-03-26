@@ -15,12 +15,12 @@ class JoinRoomModal extends Component {
 
     joinRoom = () => {
         this.props.setUserName(this.state.userName)
-        this.props.userJoined()
+        this.props.joined()
     }
 
     render() {
         return (
-            <Modal title="Join Room" show={!this.props.didUserJoinRoom} onClose={() => { }}>
+            <Modal title="Join Room" show={!this.props.didJoinRoom} onClose={() => { }}>
                 <div className="JoinRoomModal">
                     <div>
                         <input placeholder="Your Name" value={this.state.userName} onChange={e => { this.setState({ userName: e.target.value }) }} type="text" />

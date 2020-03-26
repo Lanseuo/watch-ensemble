@@ -56,8 +56,12 @@ function handleMessage(event) {
     console.log('Got message', message)
 
     switch (message.type) {
-        case 'userJoined':
+        case 'clientJoined':
             store.dispatch(setNotification('info', `${message.text} joined the room`))
+            break
+
+        case 'clientLeft':
+            store.dispatch(setNotification('info', `${message.text} left the room`))
             break
 
         case 'setVideoDetails':

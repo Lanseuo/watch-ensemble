@@ -79,6 +79,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 		var msg Message
 		msgString, err := parseWebsocketJSON(ws, &msg)
 		if err != nil {
+			clientLeftRoom(client.clientID)
 			log.Println(err)
 			delete(clients, clientID)
 			break
