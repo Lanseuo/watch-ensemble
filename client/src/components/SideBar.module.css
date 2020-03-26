@@ -1,6 +1,8 @@
 .container {
     background: var(--dark-background-color-darker);
     min-height: 100vh;
+    font-size: 13px;
+    text-align: center;
 }
 
 .heading {
@@ -12,8 +14,6 @@
 }
 
 .wrapper {
-    font-size: 13px;
-    text-align: center;
     display: grid;
     place-items: center;
     height: 60px;

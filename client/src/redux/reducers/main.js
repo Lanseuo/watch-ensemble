@@ -1,10 +1,11 @@
-import { SET_SHOW_LANGUAGE_MODAL, SET_IS_TOUCH_DEVICE, SET_USER_NAME, SET_NOTIFICATION } from "../actionTypes/main"
+import { SET_SHOW_LANGUAGE_MODAL, SET_IS_TOUCH_DEVICE, SET_USER_NAME, SET_NOTIFICATION, SET_CLIENTS } from "../actionTypes/main"
 
 const initialState = {
     showLanguageModal: false,
     isTouchDevice: false,
     userName: null,
-    notification: null
+    notification: null,
+    clients: []
 }
 
 export default function (state = initialState, action) {
@@ -31,6 +32,12 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 notification: action.payload
+            }
+
+        case SET_CLIENTS:
+            return {
+                ...state,
+                clients: action.payload
             }
 
         default:

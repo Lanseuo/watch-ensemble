@@ -1,0 +1,41 @@
+.client {
+    text-align: center;
+    display: grid;
+    place-items: center;
+    height: 60px;
+}
+
+.client .clientInner {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+}
+
+.client p {
+    font-size: 30px;
+    margin: 0;
+
+    position: relative;
+    display: inline-block;
+}
+
+.client p .tooltip {
+    font-size: 13px;
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    left: 50px;
+
+    position: absolute;
+    z-index: 1;
+}
+
+.client p:hover .tooltip {
+    visibility: visible;
+}

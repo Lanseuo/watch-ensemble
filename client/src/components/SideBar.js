@@ -4,6 +4,7 @@ import PubSub from 'pubsub-js'
 
 import styles from './SideBar.module.css'
 import Modal from './Modal'
+import Clients from './Clients'
 import { requestVideo } from '../redux/actions/video'
 
 class SideBar extends Component {
@@ -47,8 +48,7 @@ class SideBar extends Component {
                     </div>
                 </Modal>
 
-                <div className={styles.setVideoWrapper}>
-                </div>
+                <Clients />
 
                 {waitingForClients && <p className={styles.waitingForClients}>Waiting for other clients ...</p>}
             </aside>
