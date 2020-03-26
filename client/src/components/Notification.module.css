@@ -1,0 +1,35 @@
+.container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    min-width: 400px;
+
+    background: var(--white-background-color);
+    color: black;
+    box-shadow: 0 0 5px gray;
+
+    padding: 0 15px;
+}
+
+.infoType {
+    border-top: 5px solid var(--primary-color);
+}
+
+.successType {
+    border-top: 5px solid green;
+}
+
+.errorType {
+    border-top: 5px solid red;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.close {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}

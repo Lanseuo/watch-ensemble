@@ -1,6 +1,7 @@
 import { SET_WEBSOCKET, SET_IS_CONNECTED } from '../actionTypes/websocket'
 import { SET_DETAILS, SET_PLAYBACK_STATE, SET_JUMP_TO_TIME_LAST_UPDATE } from '../actionTypes/video'
 import store from '../store'
+import { setNotification } from './main'
 
 export const connectToWebsocket = () => {
     console.log('Attempting WebSocket connection ...')
@@ -56,7 +57,7 @@ function handleMessage(event) {
 
     switch (message.type) {
         case 'userJoined':
-            console.log('userJoined :', message)
+            store.dispatch(setNotification('info', `${message.text} joined the room`))
             break
 
         case 'setVideoDetails':

@@ -19,7 +19,8 @@ func sendMessageToAllClientsExcept(msg Message, clientID string) {
 }
 
 func sendMessageToClient(client *Client, msg Message) {
-	// TODO: Set date
+	msg.ClientID = "server"
+	msg.ClientID = "TODO"
 
 	err := client.ws.WriteJSON(msg)
 	if err != nil {
