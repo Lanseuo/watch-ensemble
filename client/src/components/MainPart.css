@@ -20,4 +20,9 @@ body:not(.fullscreen):not(.touch-device) .player:hover .controls {
 .controls:hover {
     /* Show controls */
     transform: translateY(0px) !important;
+    cursor: auto !important;
+}
+
+.fullscreen .player:not(.mouse-moved-recently):not(.video-not-playing) {
+    cursor: none
 }
