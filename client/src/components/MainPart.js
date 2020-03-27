@@ -5,6 +5,7 @@ import PubSub from 'pubsub-js'
 import styles from './MainPart.module.css'
 import './MainPart.css'
 import Video from './Video'
+import YouTubeVideo from './YouTubeVideo'
 import Controls from './Controls'
 import VideoDetails from './VideoDetails'
 import ChooseLanguageModal from './ChooseLanguageModal'
@@ -56,7 +57,13 @@ class MainPart extends Component {
 
                     {this.props.videoDetails !== null && (
                         <div className={`${styles.player} player ${mouseMovedRecentlyClassName} ${videoNotPlayingClassName}`}>
-                            <Video onClick={this.handleVideoClick} className={`styles.video`} />
+                            {this.props.videoDetails.source !== 'youtube' && (
+                                <Video onClick={this.handleVideoClick} />
+                            )}
+                            {this.props.videoDetails.source === 'youtube' && (
+                                <YouTubeVideo onClick={this.handleVideoClick} />
+                            )}
+
                             <Controls className={styles.controls} />
                         </div>
                     )}

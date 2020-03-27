@@ -23,8 +23,6 @@ class YouTubeVideo extends Component {
         })
         this.setState({ player })
 
-        player.load('GKSRyLdjsPA')
-
         player.on('timeupdate', this.timeUpdate)
     }
 
@@ -41,6 +39,11 @@ class YouTubeVideo extends Component {
     }
 
     componentWillReceiveProps = nextProps => {
+        if (nextProps.videoDetails.url !== this.props.videoDetails.url) {
+            let url = nextProps.videoDetails.url.undefined
+            this.state.player.load(url)
+        }
+
         if (nextProps.videoPlaybackState !== this.props.videoPlaybackState) {
             this.handlePlaybackState(nextProps.videoPlaybackState)
         }
