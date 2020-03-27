@@ -53,6 +53,7 @@ func arteGet(url string) (details VideoDetails, err error) {
 		details.URL[language] = response.Details.VSR["HTTPS_SQ_1"].URL
 		details.Languages = append(details.Languages, language)
 	}
+	details.Source = "arte"
 
 	return details, nil
 }

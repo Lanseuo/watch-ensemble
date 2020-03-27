@@ -23,6 +23,7 @@ func mp4Get(url string) (details VideoDetails, err error) {
 	details.URL = make(map[string]string)
 	details.URL[language] = url
 	details.Languages = append(details.Languages, language)
+	details.Source = host
 
 	return details, nil
 }
