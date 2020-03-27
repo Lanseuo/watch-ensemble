@@ -10,7 +10,7 @@ class Clients extends Component {
 
     getRandomColor = () => {
         let colors = ['#1565c0', '#ff1744', '#388e3c', '#9c27b0', '#4dd0e1', '#ffc107', '#f4511e', '#afb42b', '#0091ea', '#827717']
-        return colors[Math.floor(Math.random() * colors.length)];
+        return colors[Math.floor(Math.random() * colors.length)]
     }
 
     render() {

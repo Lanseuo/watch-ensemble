@@ -31,7 +31,7 @@ export const setPlaybackState = content => {
             sendMessageToWebsocket('setPlaybackState', { text: 'paused' })
             break
         default:
-            console.error('Playback state of unknown type', content);
+            console.error('Playback state of unknown type', content)
     }
 
     return {

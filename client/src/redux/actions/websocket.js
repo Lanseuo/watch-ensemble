@@ -94,7 +94,7 @@ function handleMessage(event) {
             break
 
         default:
-            console.error('Message of unknown type', message.type);
+            console.error('Message of unknown type', message.type)
     }
 }
 
