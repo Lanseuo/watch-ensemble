@@ -4,7 +4,7 @@ import (
 	"regexp"
 )
 
-var re = regexp.MustCompile(`youtube\.com\/watch\?v=(\w{11})`)
+var re = regexp.MustCompile(`youtube\.com\/watch\?v=(.{11})`)
 
 func youtubeCanHandle(url string) bool {
 	return re.MatchString(url)
