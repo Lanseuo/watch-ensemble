@@ -74,14 +74,29 @@ class YouTubeVideo extends Component {
 
     render() {
         return (
-            <div id="youtube-video" style={styles.video}></div>
+            <div className="youtube-video-wrapper" style={styles.container}>
+                <div id="youtube-video" style={styles.video}></div>
+                <div style={styles.overlapIframe} onClick={this.handleClick}></div>
+            </div>
         )
     }
 }
 
 const styles = {
+    container: {
+        position: 'relative'
+    },
+
     video: {
         width: '100%'
+    },
+
+    // Make iframe unclickable
+    overlapIframe: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        top: 0
     }
 }
 
