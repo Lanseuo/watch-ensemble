@@ -23,6 +23,11 @@ class YouTubeVideo extends Component {
         })
         this.setState({ player })
 
+        let url = this.props.videoDetails.url.undefined
+        if (url) {
+            player.load(url)
+        }
+
         player.on('timeupdate', this.timeUpdate)
     }
 
