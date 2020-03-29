@@ -74,7 +74,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 	clients[clientID] = client
 
-	go welcomeClient(client)
+	welcomeClient(client)
 
 	for {
 		var msg Message
@@ -96,7 +96,7 @@ func handleMessages() {
 	for {
 		msg := <-broadcast
 
-		go func() {
+		func() {
 			switch msg.Type {
 			case "join":
 				join(msg)
