@@ -3,11 +3,13 @@ package sources
 import "errors"
 
 type VideoDetails struct {
-	Title       map[string]string `json:"title"`
-	Source      string            `json:"source"`
-	Description map[string]string `json:"description"`
-	URL         map[string]string `json:"url"`
-	Languages   []string          `json:"languages"`
+	Title             map[string]string `json:"title"`
+	Source            string            `json:"source"`
+	Description       map[string]string `json:"description"`
+	URL               map[string]string `json:"url"`
+	Languages         []string          `json:"languages"`
+	AspectRatioWidth  int               `json:"aspectRatioWidth,omitempty"`
+	AspectRatioHeight int               `json:"aspectRatioHeight,omitempty"`
 }
 
 func GetVideoDetails(url string) (VideoDetails, error) {
