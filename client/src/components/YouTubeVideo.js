@@ -9,12 +9,16 @@ class YouTubeVideo extends Component {
         super(props)
 
         this.state = {
-            player: null
+            player: null,
+            elementHeight: 0
         }
+
+        this.videoWrapperRef = React.createRef()
     }
 
     componentDidMount() {
         const player = new YTPlayer('#youtube-video', {
+            height: '100%',
             controls: false,
             keyboard: false,
             related: false,
@@ -29,6 +33,9 @@ class YouTubeVideo extends Component {
         }
 
         player.on('timeupdate', this.timeUpdate)
+
+        this.setAspectRatio(this.props.videoDetails)
+        window.addEventListener('resize', this.setAspectRatio.bind(this, null))
     }
 
     handleClick = () => {
@@ -43,10 +50,23 @@ class YouTubeVideo extends Component {
         this.props.setVideoTotalTime(this.state.player.getDuration())
     }
 
+    setAspectRatio = videoDetails => {
+        if (!videoDetails) {
+            videoDetails = this.props.videoDetails
+        }
+
+        let elementWidth = this.videoWrapperRef.current.offsetWidth
+        let videoAspectRatio = videoDetails.aspectRatioWidth / videoDetails.aspectRatioHeight
+        let elementHeight = elementWidth / videoAspectRatio
+        this.setState({ elementHeight })
+    }
+
     componentWillReceiveProps = nextProps => {
-        if (nextProps.videoDetails.url !== this.props.videoDetails.url) {
+        if (nextProps.videoDetails !== this.props.videoDetails) {
             let url = nextProps.videoDetails.url.undefined
             this.state.player.load(url)
+
+            this.setAspectRatio(nextProps.videoDetails)
         }
 
         if (nextProps.videoPlaybackState !== this.props.videoPlaybackState) {
@@ -74,7 +94,7 @@ class YouTubeVideo extends Component {
 
     render() {
         return (
-            <div className="youtube-video-wrapper" style={styles.container}>
+            <div className="youtube-video-wrapper" ref={this.videoWrapperRef} style={{ ...styles.container, height: this.state.elementHeight }}>
                 <div id="youtube-video" style={styles.video}></div>
                 <div style={styles.overlapIframe} onClick={this.handleClick}></div>
             </div>
