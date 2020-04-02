@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import YTPlayer from 'yt-player'
 
+import styles from './YouTubeVideo.module.css'
 import { togglePlay, setPlaybackState, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
 
 class YouTubeVideo extends Component {
@@ -94,29 +95,11 @@ class YouTubeVideo extends Component {
 
     render() {
         return (
-            <div className="youtube-video-wrapper" ref={this.videoWrapperRef} style={{ ...styles.container, height: this.state.elementHeight }}>
-                <div id="youtube-video" style={styles.video}></div>
-                <div style={styles.overlapIframe} onClick={this.handleClick}></div>
+            <div className={styles.container} ref={this.videoWrapperRef} style={{ height: this.state.elementHeight }}>
+                <div id="youtube-video" className={styles.video}></div>
+                <div className={styles.overlapIframe} onClick={this.handleClick}></div>
             </div>
         )
-    }
-}
-
-const styles = {
-    container: {
-        position: 'relative'
-    },
-
-    video: {
-        width: '100%'
-    },
-
-    // Make iframe unclickable
-    overlapIframe: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        top: 0
     }
 }
 
