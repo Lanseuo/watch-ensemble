@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import styles from './ChooseLanguageModal.module.css'
 import { setUserName } from '../redux/actions/main'
 import Modal from './Modal'
 
@@ -9,12 +8,14 @@ class JoinRoomModal extends Component {
     constructor() {
         super()
         this.state = {
-            userName: ''
+            userName: localStorage.getItem('userName')
         }
     }
 
     joinRoom = () => {
         if (this.state.userName === '') return
+
+        localStorage.setItem('userName', this.state.userName)
 
         this.props.setUserName(this.state.userName)
         this.props.joined()
