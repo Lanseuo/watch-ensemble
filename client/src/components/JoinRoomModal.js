@@ -31,7 +31,7 @@ class JoinRoomModal extends Component {
             <Modal title="Join Room" show={!this.props.didJoinRoom} onClose={() => { }}>
                 <div className="JoinRoomModal">
                     <div>
-                        <input placeholder="Your Name" value={this.state.userName} onKeyPress={this.inputOnKeyPress} onChange={e => { this.setState({ userName: e.target.value }) }} type="text" />
+                        <input placeholder="Your Name" value={this.state.userName} autoFocus onKeyPress={this.inputOnKeyPress} onChange={e => { this.setState({ userName: e.target.value }) }} type="text" />
                         <div className="button-wrapper">
                             <button onClick={this.joinRoom} disabled={this.state.userName === ''}>Join Room</button>
                         </div>
