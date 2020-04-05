@@ -10,15 +10,16 @@ class YouTubeVideo extends Component {
         super(props)
 
         this.state = {
-            player: null,
             elementHeight: 0
         }
 
+        this.player = null
         this.videoWrapperRef = React.createRef()
     }
 
     componentDidMount() {
-        const player = new YTPlayer('#youtube-video', {
+        this.player = new YTPlayer('#youtube-video', {
+            autoplay: false,
             height: '100%',
             controls: false,
             keyboard: false,
@@ -26,14 +27,17 @@ class YouTubeVideo extends Component {
             modestBranding: true,
             showinfo: false
         })
-        this.setState({ player })
 
         let url = this.props.videoDetails.url.undefined
         if (url) {
-            player.load(url)
+            this.setVideoByURL(url)
         }
 
-        player.on('timeupdate', this.timeUpdate)
+        this.player.on('cued', () => {
+            this.handlePlaybackState(this.props.videoPlaybackState)
+        })
+
+        this.player.on('timeupdate', this.timeUpdate)
 
         this.setAspectRatio(this.props.videoDetails)
         window.addEventListener('resize', this.setAspectRatio.bind(this, null))
@@ -46,9 +50,17 @@ class YouTubeVideo extends Component {
         }
     }
 
+    setVideoByURL = url => {
+        this.player.load({
+            videoId: url,
+            startSeconds: this.props.videoJumpToTimeLastUpdate,
+            endSeconds: 20
+        })
+    }
+
     timeUpdate = seconds => {
         this.props.setVideoCurrentTime(seconds)
-        this.props.setVideoTotalTime(this.state.player.getDuration())
+        this.props.setVideoTotalTime(this.player.getDuration())
     }
 
     setAspectRatio = videoDetails => {
@@ -64,8 +76,7 @@ class YouTubeVideo extends Component {
 
     componentWillReceiveProps = nextProps => {
         if (nextProps.videoDetails !== this.props.videoDetails) {
-            let url = nextProps.videoDetails.url.undefined
-            this.state.player.load(url)
+            this.setVideoByURL(nextProps.videoDetails.url.undefined)
 
             this.setAspectRatio(nextProps.videoDetails)
         }
@@ -75,18 +86,18 @@ class YouTubeVideo extends Component {
         }
 
         if (nextProps.videoJumpToTimeLastUpdate !== this.props.videoJumpToTimeLastUpdate) {
-            this.state.player.seek(nextProps.videoJumpToTimeLastUpdate)
+            this.player.seek(nextProps.videoJumpToTimeLastUpdate)
         }
     }
 
     handlePlaybackState(state) {
         switch (state) {
             case 'playing':
-                this.state.player.play()
+                this.player.play()
                 break
             case 'paused':
             case 'waiting':
-                this.state.player.pause()
+                this.player.pause()
                 break
             default:
                 console.error('Playback state of unknown type', state)
@@ -108,7 +119,8 @@ const mapStateToProps = state => ({
     language: state.video.language,
     videoPlaybackState: state.video.playbackState,
     videoDetails: state.video.details,
-    videoJumpToTimeLastUpdate: state.video.jumpToTimeLastUpdate
+    videoJumpToTimeLastUpdate: state.video.jumpToTimeLastUpdate,
+    videoCurrentTime: state.video.currentTime
 })
 
 const mapDispatchToProps = {
