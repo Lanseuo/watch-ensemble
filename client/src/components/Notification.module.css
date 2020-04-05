@@ -9,6 +9,8 @@
     box-shadow: 0 0 5px gray;
 
     padding: 0 15px;
+
+    z-index: 900;
 }
 
 .infoType {

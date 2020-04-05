@@ -14,7 +14,7 @@
     background: rgba(0, 0, 0, 0.7);
 
     /* Safari: Fix show controls on top of video */
-    z-index: 500;
+    z-index: 100;
 }
 
 .container svg {
