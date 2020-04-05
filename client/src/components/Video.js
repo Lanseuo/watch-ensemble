@@ -12,6 +12,14 @@ class Video extends Component {
     componentDidMount() {
         this.videoRef.current.addEventListener('timeupdate', this.timeUpdate)
         this.videoRef.current.addEventListener('durationchange', this.durationChange)
+
+        this.handlePlaybackState(this.props.videoPlaybackState)
+        this.videoRef.current.currentTime = this.props.videoJumpToTimeLastUpdate
+    }
+
+    componentWillUnmount() {
+        this.videoRef.current.removeEventListener('timeupdate', this.timeUpdate)
+        this.videoRef.current.removeEventListener('durationchange', this.durationChange)
     }
 
     handleClick = () => {

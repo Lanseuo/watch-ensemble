@@ -64,6 +64,8 @@ class Controls extends Component {
             case 'paused':
                 this.props.setPlaybackState('playing')
                 break
+            case 'waiting':
+                break
             default:
                 console.error(this.props.videoPlaybackState)
         }

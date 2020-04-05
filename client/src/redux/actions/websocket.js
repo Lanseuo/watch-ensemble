@@ -75,7 +75,7 @@ function handleMessage(event) {
         case 'setVideoDetails':
             store.dispatch({
                 type: SET_DETAILS,
-                payload: message.videoDetails
+                payload: message
             })
             break
 

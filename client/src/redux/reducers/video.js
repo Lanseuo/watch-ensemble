@@ -26,14 +26,17 @@ export default function (state = initialState, action) {
                 playbackState: action.payload
             }
 
-        case SET_DETAILS:
-            let language = action.payload.languages.includes(state.language) ? state.language : action.payload.languages[0]
+        case SET_DETAILS: {
+            let { videoDetails, seconds, playbackState } = action.payload
+            let language = videoDetails.languages.includes(state.language) ? videoDetails.language : videoDetails.languages[0]
             return {
                 ...state,
-                jumpToTimeLastUpdate: 0,
-                details: action.payload,
+                playbackState: playbackState || 'paused',
+                jumpToTimeLastUpdate: seconds || 0,
+                details: videoDetails,
                 language
             }
+        }
 
         case SET_CURRENT_TIME:
             return {

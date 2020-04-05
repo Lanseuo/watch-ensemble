@@ -23,14 +23,15 @@ type Client struct {
 }
 
 type Message struct {
-	Type         string                `json:"type"`
-	Text         string                `json:"text,omitempty"`
-	VideoDetails *sources.VideoDetails `json:"videoDetails,omitempty"`
-	Seconds      int                   `json:"seconds,omitempty"`
-	Status       *Status               `json:"status,omitempty"`
-	ClientList   []string              `json:"clientList,omitempty"`
-	ClientID     string                `json:"clientId,omitempty"`
-	Date         int                   `json:"date"`
+	Type          string                `json:"type"`
+	Text          string                `json:"text,omitempty"`
+	PlaybackState string                `json:"playbackState,omitempty"`
+	VideoDetails  *sources.VideoDetails `json:"videoDetails,omitempty"`
+	Seconds       int                   `json:"seconds,omitempty"`
+	Status        *Status               `json:"status,omitempty"`
+	ClientList    []string              `json:"clientList,omitempty"`
+	ClientID      string                `json:"clientId,omitempty"`
+	Date          int                   `json:"date"`
 }
 
 type Status struct {
@@ -125,12 +126,6 @@ func welcomeClient(client *Client) {
 		return
 	}
 
-	sendMessageToClient(client, Message{
-		Type:         "setVideoDetails",
-		VideoDetails: &lastVideoDetails,
-		ClientID:     "server",
-	})
-
 	var currentTimes []int
 	otherClientsArePlaying := false
 	for _, c := range clients {
@@ -143,30 +138,24 @@ func welcomeClient(client *Client) {
 		}
 
 		if c.lastStatus.PlaybackState != "paused" {
-			fmt.Println("lastStatus:", c.lastStatus.PlaybackState)
 			otherClientsArePlaying = true
 		}
 
 		currentTimes = append(currentTimes, c.lastStatus.CurrentTime)
 	}
 
-	if len(currentTimes) == 0 {
-		return
-	}
 	maxCurrentTime := findMax(currentTimes)
-	if maxCurrentTime != 0 {
-		sendMessageToClient(client, Message{
-			Type:     "jumpToTime",
-			Seconds:  maxCurrentTime,
-			ClientID: "server",
-		})
+
+	playbackState := "paused"
+	if otherClientsArePlaying {
+		playbackState = "playing"
 	}
 
-	if otherClientsArePlaying {
-		sendMessageToClient(client, Message{
-			Type:     "setPlaybackState",
-			Text:     "playing",
-			ClientID: "server",
-		})
-	}
+	sendMessageToClient(client, Message{
+		Type:          "setVideoDetails",
+		VideoDetails:  &lastVideoDetails,
+		Seconds:       maxCurrentTime,
+		PlaybackState: playbackState,
+		ClientID:      "server",
+	})
 }
