@@ -18,7 +18,7 @@ export const togglePlay = () => {
         case 'paused':
             return setPlaybackState('playing')
         default:
-            console.error(this.props.videoPlaybackState)
+            console.error(store.getState().video.playbackState)
     }
 }
 
