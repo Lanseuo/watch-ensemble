@@ -30,9 +30,12 @@ export const setUserName = name => ({
 
 let notificationDeletionTimer
 export const setNotification = (type, title, message) => {
+    let timeoutSeconds = type === 'error' ? 5000 : 1500
+
+    clearTimeout(notificationDeletionTimer)
     notificationDeletionTimer = setTimeout(() => {
         store.dispatch(deleteNotification())
-    }, 1500)
+    }, timeoutSeconds)
 
     return {
         type: SET_NOTIFICATION,
