@@ -10,6 +10,12 @@ body:not(.fullscreen):not(.touch-device) .player:hover .controls {
     transform: translateY(0px) !important;
 }
 
+/* Touch device: mouse moved recently */
+.touch-device .player.mouse-moved-recently .controls {
+    /* Show controls */
+    transform: translateY(0px) !important;
+}
+
 /* Video paused/waiting */
 .video-not-playing .controls {
     /* Show controls */
