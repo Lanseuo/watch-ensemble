@@ -40,7 +40,13 @@ class YouTubeVideo extends Component {
         this.player.on('timeupdate', this.timeUpdate)
 
         this.setAspectRatio(this.props.videoDetails)
-        window.addEventListener('resize', this.setAspectRatio.bind(this, null))
+        window.addEventListener('resize', this.setAspectRatioFromProps)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.setAspectRatioFromProps)
+        // TODO: Remove event listener
+        this.player.on('timeupdate', this.timeUpdate)
     }
 
     handleClick = () => {
@@ -62,11 +68,11 @@ class YouTubeVideo extends Component {
         this.props.setVideoTotalTime(this.player.getDuration())
     }
 
-    setAspectRatio = videoDetails => {
-        if (!videoDetails) {
-            videoDetails = this.props.videoDetails
-        }
+    setAspectRatioFromProps = () => {
+        this.setAspectRatio(this.props.videoDetails)
+    }
 
+    setAspectRatio = videoDetails => {
         let elementWidth = this.videoWrapperRef.current.offsetWidth
         let videoAspectRatio = videoDetails.aspectRatioWidth / videoDetails.aspectRatioHeight
         let elementHeight = elementWidth / videoAspectRatio
