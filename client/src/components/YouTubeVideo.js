@@ -37,7 +37,7 @@ class YouTubeVideo extends Component {
             this.handlePlaybackState(this.props.videoPlaybackState)
         })
 
-        this.player.on('timeupdate', this.timeUpdate)
+        this.player.addListener('timeupdate', this.timeUpdate)
 
         this.setAspectRatio(this.props.videoDetails)
         window.addEventListener('resize', this.setAspectRatioFromProps)
@@ -45,8 +45,7 @@ class YouTubeVideo extends Component {
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.setAspectRatioFromProps)
-        // TODO: Remove event listener
-        this.player.on('timeupdate', this.timeUpdate)
+        this.player.removeListener('timeupdate', this.timeUpdate)
     }
 
     handleClick = () => {
