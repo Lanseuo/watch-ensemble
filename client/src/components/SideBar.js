@@ -26,8 +26,6 @@ class SideBar extends Component {
     }
 
     render() {
-        let waitingForClients = this.props.videoPlaybackState === 'waiting'
-
         return (
             <aside className={styles.container}>
                 <h1 className={styles.heading}>Watch<br />Ensemble</h1>
@@ -41,7 +39,7 @@ class SideBar extends Component {
                 </div>
 
                 <Modal title="Set Video" show={this.state.showModal} onClose={() => this.setState({ showModal: false })}>
-                    <p>Paste the url of an ARTE video below to start watching</p>
+                    <p>Paste the url of a video below to start watching. WatchEnsemble currently supports YouTube-, ARTE- and MP4-videos.</p>
                     <input className={styles.setVideoInput} autoFocus value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" placeholder="https://www.arte.tv/fr/videos/012345-678-A/ma-vidéo" />
                     <div className="button-wrapper right">
                         <button className={styles.setVideoButton} onClick={this.submitVideoURL}>Set Video</button>
@@ -49,17 +47,12 @@ class SideBar extends Component {
                 </Modal>
 
                 <Clients />
-
-                {waitingForClients && <p className={styles.waitingForClients}>Waiting for other clients ...</p>}
             </aside>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    language: state.video.language,
-    videoDetails: state.video.details,
-    videoPlaybackState: state.video.playbackState,
     isWebsocketConnected: state.websocket.isConnected
 })
 
