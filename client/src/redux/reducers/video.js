@@ -32,6 +32,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 playbackState: playbackState || 'paused',
+                currentTime: 0,
                 jumpToTimeLastUpdate: seconds || 0,
                 details: videoDetails,
                 language

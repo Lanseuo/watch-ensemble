@@ -53,8 +53,7 @@ class YouTubeVideo extends Component {
     setVideoByURL = url => {
         this.player.load({
             videoId: url,
-            startSeconds: this.props.videoJumpToTimeLastUpdate,
-            endSeconds: 20
+            startSeconds: this.props.videoJumpToTimeLastUpdate
         })
     }
 
