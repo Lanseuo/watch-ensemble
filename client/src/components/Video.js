@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { togglePlay, setPlaybackState, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
+import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
+import { setNotification } from '../redux/actions/main'
 
 class Video extends Component {
     constructor(props) {
@@ -59,7 +60,7 @@ class Video extends Component {
     handlePlaybackState(state) {
         switch (state) {
             case 'playing':
-                this.videoRef.current.play()
+                this.videoRef.current.play().catch(this.handlePlaybackError)
                 break
             case 'paused':
             case 'waiting':
@@ -68,6 +69,15 @@ class Video extends Component {
             default:
                 console.error('Playback state of unknown type', state)
         }
+    }
+
+    handlePlaybackError = error => {
+        // Safari doesn't allow autoplay
+        let isAutoplayNotAllowedError = `${error}`.includes('NotAllowedError: The request is not allowed by the user agent or the platform')
+        if (isAutoplayNotAllowedError) {
+            this.props.setNotification('error', 'Can\'t autostart video', 'Please start video using play button or allow autoplay of videos in the Safari settings')
+        }
+        this.props.setPlaybackStateWithoutMessage('paused')
     }
 
     render() {
@@ -95,8 +105,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     togglePlay,
     setPlaybackState,
+    setPlaybackStateWithoutMessage,
     setVideoCurrentTime,
-    setVideoTotalTime
+    setVideoTotalTime,
+    setNotification
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Video)

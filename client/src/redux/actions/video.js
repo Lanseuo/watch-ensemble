@@ -34,11 +34,14 @@ export const setPlaybackState = content => {
             console.error('Playback state of unknown type', content)
     }
 
-    return {
-        type: SET_PLAYBACK_STATE,
-        payload: content
-    }
+    return setPlaybackStateWithoutMessage(content)
 }
+
+export const setPlaybackStateWithoutMessage = content => ({
+    type: SET_PLAYBACK_STATE,
+    payload: content
+})
+
 
 export const requestVideo = url => {
     sendMessageToWebsocket('requestVideo', { text: url })
