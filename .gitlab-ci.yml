@@ -1,0 +1,31 @@
+variables:
+  CONTAINER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+
+stages:
+  - build
+  - deploy
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+
+build:
+  stage: build
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker build -t $CONTAINER_IMAGE .
+    - docker push $CONTAINER_IMAGE
+  
+deploy_production:
+  stage: deploy
+  image: docker:stable
+  only:
+    - master
+  when: manual
+  services:
+    - docker:dind
+  script:
+    - docker pull $CONTAINER_IMAGE
+    - docker tag $CONTAINER_IMAGE $CI_REGISTRY_IMAGE:production
+    - docker push $CI_REGISTRY_IMAGE:production
