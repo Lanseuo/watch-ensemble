@@ -7,15 +7,21 @@ import (
 	"regexp"
 )
 
-var re = regexp.MustCompile(`youtube\.com\/watch\?v=(.{11})`)
+var re1 = regexp.MustCompile(`youtube\.com\/watch\?v=(.{11})`)
+var re2 = regexp.MustCompile(`youtu\.be\/(.{11})`)
 var language = "undefined"
 
 func youtubeCanHandle(url string) bool {
-	return re.MatchString(url)
+	return re1.MatchString(url) || re2.MatchString(url)
 }
 
 func youtubeGet(url string) (details VideoDetails, err error) {
-	videoID := re.FindStringSubmatch(url)[1]
+	var videoID string
+	if re1.MatchString(url) {
+		videoID = re1.FindStringSubmatch(url)[1]
+	} else {
+		videoID = re2.FindStringSubmatch(url)[1]
+	}
 
 	details.Title = make(map[string]string)
 	details.Description = make(map[string]string)
