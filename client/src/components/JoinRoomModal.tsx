@@ -1,14 +1,23 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 
 import { setUserName } from '../redux/actions/main'
 import Modal from './Modal'
 
-class JoinRoomModal extends Component {
-    constructor() {
-        super()
+interface Props extends ConnectedProps<typeof connector> {
+    didJoinRoom: boolean
+    joined(): void
+}
+
+interface State {
+    userName: string
+}
+
+class JoinRoomModal extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
         this.state = {
-            userName: localStorage.getItem('userName')
+            userName: localStorage.getItem('userName') || ''
         }
     }
 
@@ -21,7 +30,7 @@ class JoinRoomModal extends Component {
         this.props.joined()
     }
 
-    inputOnKeyPress = event => {
+    inputOnKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             this.joinRoom()
         }
@@ -47,4 +56,5 @@ const mapDispatchToProps = {
     setUserName
 }
 
-export default connect(null, mapDispatchToProps)(JoinRoomModal)
+const connector = connect(null, mapDispatchToProps)
+export default connector(JoinRoomModal)

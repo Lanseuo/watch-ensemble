@@ -2,7 +2,13 @@ import React, { Component } from 'react'
 
 import styles from './Modal.module.css'
 
-class Modal extends Component {
+interface Props {
+    show: boolean
+    title: string
+    onClose(): void
+}
+
+class Modal extends Component<Props> {
     componentDidMount() {
         document.addEventListener('keydown', event => {
             let escape = 27

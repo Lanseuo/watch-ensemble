@@ -1,22 +1,32 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import screenfull from 'screenfull'
+import { connect, ConnectedProps } from 'react-redux'
 
 import styles from './Controls.module.css'
 import { setShowLanguageModal } from '../redux/actions/main'
 import { setPlaybackState, jumpToTime } from '../redux/actions/video'
 import { formatTime } from '../utils'
+import { AppState } from '../redux/reducers'
 
-class Controls extends Component {
-    constructor() {
-        super()
+const screenfull = require('screenfull')
+
+interface Props extends ConnectedProps<typeof connector> {
+    className: string
+}
+
+interface State {
+    isFullscreen: boolean
+}
+
+class Controls extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
         this.state = {
             isFullscreen: screenfull.isFullscreen,
         }
     }
 
     componentDidMount() {
-        document.addEventListener('keydown', e => {
+        document.addEventListener('keydown', event => {
             let spaceKey = 32
             let letterK = 75
             let letterF = 70
@@ -25,8 +35,8 @@ class Controls extends Component {
                 return
             }
 
-            let event = document.all ? window.event : e
-            if (e.target.tagName === 'INPUT' && e.target.type !== 'range') {
+            const eventTarget = event.target as HTMLInputElement
+            if (eventTarget.tagName === 'INPUT' && eventTarget.type !== 'range') {
                 return
             }
 
@@ -41,7 +51,7 @@ class Controls extends Component {
     }
 
     handleFullscreenChange = () => {
-        let bodyElement = document.querySelector('body')
+        let bodyElement = document.querySelector('body')!
 
         if (screenfull.isFullscreen) {
             bodyElement.classList.add('fullscreen')
@@ -49,7 +59,7 @@ class Controls extends Component {
             bodyElement.classList.remove('fullscreen')
         }
 
-        this.setState({ isFullscreen: screenfull.isFullscreen })
+        this.setState({ isFullscreen: (screenfull as any).isFullscreen })
     }
 
     toggleFullscreen = () => {
@@ -71,9 +81,9 @@ class Controls extends Component {
         }
     }
 
-    handleSlider = event => {
-        let percentage = event.target.value / 1000
-        let seconds = parseInt(percentage * this.props.videoTotalTime)
+    handleSlider = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let percentage = parseInt(event.target.value) / 1000
+        let seconds = Math.trunc(percentage * this.props.videoTotalTime)
         this.props.jumpToTime(seconds)
     }
 
@@ -93,10 +103,10 @@ class Controls extends Component {
                 <input className={styles.slider} onChange={this.handleSlider} type="range" min="1" max="1000" value={sliderPercentage * 1000} />
                 <p className={styles.time}>{formatTime(this.props.videoTotalTime)}</p>
 
-                {this.props.videoDetails.languages.length !== 1 &&
+                {this.props.videoDetails!.languages.length !== 1 &&
                     <svg onClick={() => this.props.setShowLanguageModal(true)} xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z" /></svg>
                 }
-                {this.props.videoDetails.languages.length === 1 &&
+                {this.props.videoDetails!.languages.length === 1 &&
                     <svg width="0" height="0"></svg>
                 }
 
@@ -111,7 +121,7 @@ class Controls extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
     videoDetails: state.video.details,
     videoPlaybackState: state.video.playbackState,
     videoCurrentTime: state.video.currentTime,
@@ -124,4 +134,5 @@ const mapDispatchToProps = {
     setShowLanguageModal
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Controls)
+const connector = connect(mapStateToProps, mapDispatchToProps)
+export default connector(Controls)

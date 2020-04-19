@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import PubSub from 'pubsub-js'
 
 import styles from './SideBar.module.css'
 import Modal from './Modal'
 import Clients from './Clients'
 import { requestVideo } from '../redux/actions/video'
+import { AppState } from '../redux/reducers'
 
-class SideBar extends Component {
-    constructor(props) {
+interface Props extends ConnectedProps<typeof connector> { }
+
+interface State {
+    videoURL: string
+    showModal: boolean
+}
+
+class SideBar extends Component<Props, State> {
+    constructor(props: Props) {
         super(props)
         this.state = {
             videoURL: 'https://www.arte.tv/de/videos/091142-010-A/stadt-land-kunst-spezial/',
@@ -52,8 +60,9 @@ class SideBar extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
     isWebsocketConnected: state.websocket.isConnected
 })
 
-export default connect(mapStateToProps)(SideBar)
+const connector = connect(mapStateToProps)
+export default connector(SideBar)

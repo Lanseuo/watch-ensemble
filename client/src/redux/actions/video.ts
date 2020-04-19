@@ -59,7 +59,7 @@ export const setVideoTotalTime = (seconds: number): VideoActionTypes => ({
 })
 
 export const jumpToTime = (seconds: number): VideoActionTypes => {
-    sendMessageToWebsocket('jumpToTime', { seconds: parseInt(`${seconds}`) })
+    sendMessageToWebsocket('jumpToTime', { seconds: Math.trunc(seconds) })
 
     return {
         type: SET_JUMP_TO_TIME_LAST_UPDATE,
@@ -82,7 +82,7 @@ setInterval(() => {
     sendMessageToWebsocket('reportStatus', {
         status: {
             playbackState,
-            currentTime: parseInt(`${currentTime}`)
+            currentTime: Math.trunc(currentTime)
         }
     })
 }, 5000)

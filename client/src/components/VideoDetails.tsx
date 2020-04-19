@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 
 import CollapsableContainer from './CollapsableContainer'
+import { AppState } from '../redux/reducers'
 
-class VideoDetails extends Component {
+interface Props extends ConnectedProps<typeof connector> { }
+
+class VideoDetails extends Component<Props> {
     render() {
         if (this.props.videoDetails === null) {
             return null
@@ -20,9 +23,10 @@ class VideoDetails extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
     language: state.video.language,
     videoDetails: state.video.details
 })
 
-export default connect(mapStateToProps)(VideoDetails)
+const connector = connect(mapStateToProps)
+export default connector(VideoDetails)

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import PubSub from 'pubsub-js'
 
 import styles from './MainPart.module.css'
@@ -9,17 +9,24 @@ import YouTubeVideo from './YouTubeVideo'
 import Controls from './Controls'
 import VideoDetails from './VideoDetails'
 import ChooseLanguageModal from './ChooseLanguageModal'
+import { AppState } from '../redux/reducers'
 
-class MainPart extends Component {
-    constructor() {
-        super()
+interface Props extends ConnectedProps<typeof connector> { }
+
+interface State {
+    mouseMovedRecently: boolean
+}
+
+class MainPart extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
         this.state = {
             mouseMovedRecently: false
         }
     }
 
     componentDidMount() {
-        let timer
+        let timer: NodeJS.Timeout
         document.addEventListener('mousemove', () => {
             this.setState({ mouseMovedRecently: true })
             clearTimeout(timer)
@@ -30,7 +37,7 @@ class MainPart extends Component {
     }
 
     openSetVideoModal() {
-        PubSub.publish('openSetVideoModal')
+        PubSub.publish('openSetVideoModal', {})
     }
 
     handleVideoClick = () => {
@@ -75,10 +82,11 @@ class MainPart extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
     isTouchDevice: state.main.isTouchDevice,
     videoDetails: state.video.details,
     videoPlaybackState: state.video.playbackState
 })
 
-export default connect(mapStateToProps)(MainPart)
+const connector = connect(mapStateToProps)
+export default connector(MainPart)

@@ -2,9 +2,18 @@ import React, { Component } from 'react'
 
 import styles from './CollapsableContainer.module.css'
 
-class CollapsableContainer extends Component {
-    constructor() {
-        super()
+interface Props {
+    title: String
+    children: React.ReactNode
+}
+
+interface State {
+    open: boolean
+}
+
+class CollapsableContainer extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
         this.state = {
             open: false
         }

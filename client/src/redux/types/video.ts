@@ -1,10 +1,10 @@
 export type PlaybackState = 'playing' | 'paused' | 'waiting'
-export type Language = '' | 'de' | 'fr'
-interface VideoDetails {
-    title: {}
+export type Language = '' | 'de' | 'fr' | 'undefined'
+export interface VideoDetails {
+    title: Record<Language, string>
     source: string
-    description: {}
-    url: string[]
+    description: Record<Language, string>
+    url: Record<Language, string>
     languages: string[]
     aspectRatioWidth: number
     aspectRatioHeight: number

@@ -1,12 +1,19 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 
 import styles from './Notification.module.css'
 import { deleteNotification } from '../redux/actions/main'
+import { AppState } from '../redux/reducers'
 
-class Notification extends Component {
-    constructor() {
-        super()
+interface Props extends ConnectedProps<typeof connector> { }
+
+interface State {
+    userName: string
+}
+
+class Notification extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
         this.state = {
             userName: ''
         }
@@ -30,7 +37,7 @@ class Notification extends Component {
 
         return (
             <div className={`${styles.container} ${typeClassName}`}>
-                <span className={styles.close} onClick={this.deleteNotification}>X</span>
+                <span className={styles.close} onClick={this.props.deleteNotification}>X</span>
                 <p className={styles.title}>{this.props.notification.title}</p>
                 <p>{this.props.notification.message}</p>
             </div>
@@ -38,7 +45,7 @@ class Notification extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
     notification: state.main.notification
 })
 
@@ -46,4 +53,5 @@ const mapDispatchToProps = {
     deleteNotification
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Notification)
+const connector = connect(mapStateToProps, mapDispatchToProps)
+export default connector(Notification)

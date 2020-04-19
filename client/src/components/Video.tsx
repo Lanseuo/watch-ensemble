@@ -1,26 +1,32 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
 import { setNotification } from '../redux/actions/main'
+import { AppState } from '../redux/reducers'
+import { PlaybackState } from '../redux/types/video'
 
-class Video extends Component {
-    constructor(props) {
+interface Props extends ConnectedProps<typeof connector> {
+    onClick(): void
+}
+
+class Video extends Component<Props> {
+    videoRef = React.createRef<HTMLVideoElement>()
+
+    constructor(props: Props) {
         super(props)
-
-        this.videoRef = React.createRef()
     }
 
     componentDidMount() {
-        this.videoRef.current.addEventListener('timeupdate', this.timeUpdate)
-        this.videoRef.current.addEventListener('durationchange', this.durationChange)
+        this.videoRef.current!.addEventListener('timeupdate', this.timeUpdate)
+        this.videoRef.current!.addEventListener('durationchange', this.durationChange)
 
         this.handlePlaybackState(this.props.videoPlaybackState)
-        this.videoRef.current.currentTime = this.props.videoJumpToTimeLastUpdate
+        this.videoRef.current!.currentTime = this.props.videoJumpToTimeLastUpdate
     }
 
     componentWillUnmount() {
-        this.videoRef.current.removeEventListener('timeupdate', this.timeUpdate)
-        this.videoRef.current.removeEventListener('durationchange', this.durationChange)
+        this.videoRef.current!.removeEventListener('timeupdate', this.timeUpdate)
+        this.videoRef.current!.removeEventListener('durationchange', this.durationChange)
     }
 
     handleClick = () => {
@@ -31,20 +37,20 @@ class Video extends Component {
     }
 
     timeUpdate = () => {
-        this.props.setVideoCurrentTime(this.videoRef.current.currentTime)
+        this.props.setVideoCurrentTime(this.videoRef.current!.currentTime)
     }
 
     durationChange = () => {
-        this.props.setVideoTotalTime(this.videoRef.current.duration)
+        this.props.setVideoTotalTime(this.videoRef.current!.duration)
     }
 
-    componentWillReceiveProps = nextProps => {
+    componentWillReceiveProps = (nextProps: Props) => {
         if (nextProps.language !== this.props.language) {
             let previousPlaybackState = this.props.videoPlaybackState
-            let previousCurrentTime = this.videoRef.current.currentTime
+            let previousCurrentTime = this.videoRef.current!.currentTime
             setTimeout(() => {
                 this.handlePlaybackState(previousPlaybackState)
-                this.videoRef.current.currentTime = previousCurrentTime
+                this.videoRef.current!.currentTime = previousCurrentTime
             }, 500)
         }
 
@@ -53,25 +59,25 @@ class Video extends Component {
         }
 
         if (nextProps.videoJumpToTimeLastUpdate !== this.props.videoJumpToTimeLastUpdate) {
-            this.videoRef.current.currentTime = nextProps.videoJumpToTimeLastUpdate
+            this.videoRef.current!.currentTime = nextProps.videoJumpToTimeLastUpdate
         }
     }
 
-    handlePlaybackState(state) {
+    handlePlaybackState(state: PlaybackState) {
         switch (state) {
             case 'playing':
-                this.videoRef.current.play().catch(this.handlePlaybackError)
+                this.videoRef.current!.play().catch(this.handlePlaybackError)
                 break
             case 'paused':
             case 'waiting':
-                this.videoRef.current.pause()
+                this.videoRef.current!.pause()
                 break
             default:
                 console.error('Playback state of unknown type', state)
         }
     }
 
-    handlePlaybackError = error => {
+    handlePlaybackError = (error: Event) => {
         // Safari doesn't allow autoplay
         let isAutoplayNotAllowedError = `${error}`.includes('NotAllowedError: The request is not allowed by the user agent or the platform')
         if (isAutoplayNotAllowedError) {
@@ -94,7 +100,7 @@ const styles = {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
     isTouchDevice: state.main.isTouchDevice,
     language: state.video.language,
     videoPlaybackState: state.video.playbackState,
@@ -111,4 +117,5 @@ const mapDispatchToProps = {
     setNotification
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Video)
+const connector = connect(mapStateToProps, mapDispatchToProps)
+export default connector(Video)

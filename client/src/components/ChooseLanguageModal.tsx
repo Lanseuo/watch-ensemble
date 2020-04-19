@@ -1,27 +1,30 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 
 import styles from './ChooseLanguageModal.module.css'
 import { setShowLanguageModal } from '../redux/actions/main'
 import { setLanguage } from '../redux/actions/video'
+import { Language } from '../redux/types/video'
+import { AppState } from '../redux/reducers'
 import Modal from './Modal'
 
+interface Props extends ConnectedProps<typeof connector> { }
 
-class ChooseLanguage extends Component {
-    handleClick = language => {
+class ChooseLanguage extends Component<Props> {
+    handleClick = (language: Language) => {
         this.props.setShowLanguageModal(false)
         this.props.setLanguage(language)
     }
 
-    getStyle = language => {
+    getStyle = (language: Language) => {
         if (this.props.videoDetails === null) {
-            return {}
+            return ''
         } else if (this.props.language === language) {
             return styles.active
         } else if (!this.props.videoDetails.languages.includes(language)) {
             return styles.hide
         }
-        return {}
+        return ''
     }
 
     render() {
@@ -48,8 +51,7 @@ class ChooseLanguage extends Component {
     }
 }
 
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
     language: state.video.language,
     videoDetails: state.video.details,
     showLanguageModal: state.main.showLanguageModal,
@@ -60,4 +62,5 @@ const mapDispatchToProps = {
     setShowLanguageModal
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChooseLanguage)
+const connector = connect(mapStateToProps, mapDispatchToProps)
+export default connector(ChooseLanguage)
