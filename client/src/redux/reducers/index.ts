@@ -3,8 +3,11 @@ import main from './main'
 import video from './video'
 import websocket from './websocket'
 
-export default combineReducers({
+const rootReducer = combineReducers({
     main,
     video,
     websocket
 })
+
+export type AppState = ReturnType<typeof rootReducer>
+export default rootReducer

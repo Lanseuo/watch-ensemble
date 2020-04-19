@@ -1,2 +1,0 @@
-export const SET_WEBSOCKET = 'SET_WEBSOCKET'
-export const SET_IS_CONNECTED = 'SET_IS_CONNECTED'

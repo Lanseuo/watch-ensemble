@@ -1,6 +1,6 @@
-import { SET_CLIENTS } from '../actionTypes/main'
-import { SET_WEBSOCKET, SET_IS_CONNECTED } from '../actionTypes/websocket'
-import { SET_DETAILS, SET_PLAYBACK_STATE, SET_JUMP_TO_TIME_LAST_UPDATE } from '../actionTypes/video'
+import { SET_CLIENTS } from '../types/main'
+import { SET_WEBSOCKET, SET_IS_CONNECTED } from '../types/websocket'
+import { SET_DETAILS, SET_PLAYBACK_STATE, SET_JUMP_TO_TIME_LAST_UPDATE } from '../types/video'
 import store from '../store'
 import { setNotification } from './main'
 
@@ -32,11 +32,11 @@ function handleOpen() {
     sendMessageToWebsocket('join', { text: store.getState().main.userName })
 }
 
-function handleError(error) {
+function handleError(error: Event) {
     console.error('Socket error', error)
 }
 
-function handleClose(event) {
+function handleClose(event: CloseEvent) {
     console.error('Socket closed connection', event)
     store.dispatch({
         type: SET_IS_CONNECTED,
@@ -46,23 +46,18 @@ function handleClose(event) {
     setTimeout(connectToWebsocket, 1000)
 }
 
-function handleMessage(event) {
+function handleMessage(event: MessageEvent) {
     let message = JSON.parse(event.data)
-
-    let sentFromCurrentClient = message.clientId === store.getState().clientId
-    if (sentFromCurrentClient) {
-        return
-    }
 
     console.log('Got message', message)
 
     switch (message.type) {
         case 'clientJoined':
-            store.dispatch(setNotification('info', `${message.text} joined the room`))
+            store.dispatch(setNotification('info', `${message.text} joined the room`, ''))
             break
 
         case 'clientLeft':
-            store.dispatch(setNotification('info', `${message.text} left the room`))
+            store.dispatch(setNotification('info', `${message.text} left the room`, ''))
             break
 
         case 'setClientList':
@@ -98,7 +93,7 @@ function handleMessage(event) {
     }
 }
 
-export function sendMessageToWebsocket(type, data) {
+export function sendMessageToWebsocket(type: string, data: object) {
     let { ws, isConnected, clientId } = store.getState().websocket
 
     let message = {
@@ -112,5 +107,5 @@ export function sendMessageToWebsocket(type, data) {
         console.log('Can\'t send message to websocket:', message)
         return
     }
-    ws.send(JSON.stringify(message))
+    ws!.send(JSON.stringify(message))
 }

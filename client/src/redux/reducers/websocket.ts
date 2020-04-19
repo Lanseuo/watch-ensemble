@@ -1,12 +1,15 @@
-import { SET_WEBSOCKET, SET_IS_CONNECTED } from "../actionTypes/websocket"
+import {
+    WebsocketState, VideoActionTypes,
+    SET_WEBSOCKET, SET_IS_CONNECTED
+} from "../types/websocket"
 
-const initialState = {
+const initialState: WebsocketState = {
     ws: null,
     isConnected: false,
     clientId: Math.random().toString(36).substring(7)
 }
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: VideoActionTypes): WebsocketState {
     switch (action.type) {
         case SET_WEBSOCKET:
             return {

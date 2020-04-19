@@ -1,12 +1,13 @@
 import {
+    VideoActionTypes, Language, PlaybackState,
     SET_LANGUAGE, SET_PLAYBACK_STATE, SET_CURRENT_TIME,
     SET_TOTAL_TIME, SET_JUMP_TO_TIME_LAST_UPDATE
-} from '../actionTypes/video'
+} from '../types/video'
 import { sendMessageToWebsocket } from './websocket'
 import store from '../store'
 
 
-export const setLanguage = language => ({
+export const setLanguage = (language: Language): VideoActionTypes => ({
     type: SET_LANGUAGE,
     payload: language
 })
@@ -22,7 +23,7 @@ export const togglePlay = () => {
     }
 }
 
-export const setPlaybackState = content => {
+export const setPlaybackState = (content: PlaybackState) => {
     switch (content) {
         case 'playing':
             sendMessageToWebsocket('setPlaybackState', { text: 'playing' })
@@ -37,28 +38,28 @@ export const setPlaybackState = content => {
     return setPlaybackStateWithoutMessage(content)
 }
 
-export const setPlaybackStateWithoutMessage = content => ({
+export const setPlaybackStateWithoutMessage = (content: PlaybackState): VideoActionTypes => ({
     type: SET_PLAYBACK_STATE,
     payload: content
 })
 
 
-export const requestVideo = url => {
+export const requestVideo = (url: string) => {
     sendMessageToWebsocket('requestVideo', { text: url })
 }
 
-export const setVideoCurrentTime = seconds => ({
+export const setVideoCurrentTime = (seconds: number): VideoActionTypes => ({
     type: SET_CURRENT_TIME,
     payload: seconds
 })
 
-export const setVideoTotalTime = seconds => ({
+export const setVideoTotalTime = (seconds: number): VideoActionTypes => ({
     type: SET_TOTAL_TIME,
     payload: seconds
 })
 
-export const jumpToTime = seconds => {
-    sendMessageToWebsocket('jumpToTime', { seconds: parseInt(seconds) })
+export const jumpToTime = (seconds: number): VideoActionTypes => {
+    sendMessageToWebsocket('jumpToTime', { seconds: parseInt(`${seconds}`) })
 
     return {
         type: SET_JUMP_TO_TIME_LAST_UPDATE,
@@ -66,7 +67,7 @@ export const jumpToTime = seconds => {
     }
 }
 
-export const setVideoJumpToTimeLastUpdate = seconds => ({
+export const setVideoJumpToTimeLastUpdate = (seconds: number): VideoActionTypes => ({
     type: SET_JUMP_TO_TIME_LAST_UPDATE,
     payload: seconds
 })
@@ -81,7 +82,7 @@ setInterval(() => {
     sendMessageToWebsocket('reportStatus', {
         status: {
             playbackState,
-            currentTime: parseInt(currentTime)
+            currentTime: parseInt(`${currentTime}`)
         }
     })
 }, 5000)
