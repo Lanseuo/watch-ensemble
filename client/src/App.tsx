@@ -8,9 +8,13 @@ import { connectToWebsocket } from './redux/actions/websocket'
 import JoinRoomModal from './components/JoinRoomModal'
 import Notification from './components/Notification'
 
-class App extends Component {
-    constructor() {
-        super()
+interface State {
+    didJoinRoom: boolean
+}
+
+class App extends Component<{}, State> {
+    constructor(props) {
+        super(props)
         setIsTouchDevice()
 
         this.state = {
@@ -18,7 +22,7 @@ class App extends Component {
         }
     }
 
-    joined = () => {
+    joined() {
         this.setState({ didJoinRoom: true })
         connectToWebsocket()
     }
