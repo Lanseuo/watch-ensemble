@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import YTPlayer from 'yt-player'
 
 import styles from './YouTubeVideo.module.css'
-import { togglePlay, setPlaybackState, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
+import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
 import { PlaybackState, VideoDetails } from '../redux/types/video'
 import { AppState } from '../redux/reducers'
 
@@ -49,7 +49,8 @@ class YouTubeVideo extends Component<Props, State> {
             this.handlePlaybackState(this.props.videoPlaybackState)
         })
 
-        this.player!.addListener('timeupdate', this.timeUpdate)
+        this.player!.addListener('timeupdate', this.onTimeUpdate)
+        this.player!.addListener('ended', this.onEnded)
 
         this.setAspectRatio(this.props.videoDetails!)
         window.addEventListener('resize', this.setAspectRatioFromProps)
@@ -57,7 +58,8 @@ class YouTubeVideo extends Component<Props, State> {
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.setAspectRatioFromProps)
-        this.player!.removeListener('timeupdate', this.timeUpdate)
+        this.player!.removeListener('timeupdate', this.onTimeUpdate)
+        this.player!.removeListener('ended', this.onEnded)
     }
 
     handleClick = () => {
@@ -76,9 +78,14 @@ class YouTubeVideo extends Component<Props, State> {
         })
     }
 
-    timeUpdate = (seconds: number) => {
+    onTimeUpdate = (seconds: number) => {
         this.props.setVideoCurrentTime(seconds)
         this.props.setVideoTotalTime(this.player!.getDuration())
+    }
+
+    onEnded = () => {
+        this.props.setPlaybackStateWithoutMessage('paused')
+        this.player!.seek(0)
     }
 
     setAspectRatioFromProps = () => {
@@ -142,6 +149,7 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = {
     togglePlay,
     setPlaybackState,
+    setPlaybackStateWithoutMessage,
     setVideoCurrentTime,
     setVideoTotalTime
 }

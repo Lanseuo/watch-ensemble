@@ -44,6 +44,7 @@ class Video extends Component<Props> {
 
     onVideoEnded = () => {
         this.props.setPlaybackStateWithoutMessage('paused')
+        this.videoRef.current!.currentTime = 0
     }
 
     componentWillReceiveProps = (nextProps: Props) => {
