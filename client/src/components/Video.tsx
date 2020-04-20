@@ -12,10 +12,6 @@ interface Props extends ConnectedProps<typeof connector> {
 class Video extends Component<Props> {
     videoRef = React.createRef<HTMLVideoElement>()
 
-    constructor(props: Props) {
-        super(props)
-    }
-
     componentDidMount() {
         this.videoRef.current!.addEventListener('timeupdate', this.timeUpdate)
         this.videoRef.current!.addEventListener('durationchange', this.durationChange)

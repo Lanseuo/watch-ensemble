@@ -1,11 +1,11 @@
 export function formatTime(totalSeconds: number) {
-    function pad(n: number) {
-        let width = 2
-        let z = '0'
-        let ns = Math.round(n) + ''
-        return ns.length >= width ? n : new Array(width - ns.length + 1).join(z) + ns
+    function pad(num: number): string {
+        let s = num + ''
+        while (s.length < 2) s = '0' + s
+        return s
     }
 
+    totalSeconds = Math.trunc(totalSeconds)
     let hours = Math.floor(totalSeconds / 3600)
     totalSeconds %= 3600
     let minutes = Math.floor(totalSeconds / 60)
