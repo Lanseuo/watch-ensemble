@@ -13,16 +13,18 @@ class Video extends Component<Props> {
     videoRef = React.createRef<HTMLVideoElement>()
 
     componentDidMount() {
-        this.videoRef.current!.addEventListener('timeupdate', this.timeUpdate)
-        this.videoRef.current!.addEventListener('durationchange', this.durationChange)
+        this.videoRef.current!.addEventListener('timeupdate', this.onTimeUpdate)
+        this.videoRef.current!.addEventListener('durationchange', this.onDurationChange)
+        this.videoRef.current!.addEventListener('ended', this.onVideoEnded)
 
         this.handlePlaybackState(this.props.videoPlaybackState)
         this.videoRef.current!.currentTime = this.props.videoJumpToTimeLastUpdate
     }
 
     componentWillUnmount() {
-        this.videoRef.current!.removeEventListener('timeupdate', this.timeUpdate)
-        this.videoRef.current!.removeEventListener('durationchange', this.durationChange)
+        this.videoRef.current!.removeEventListener('timeupdate', this.onTimeUpdate)
+        this.videoRef.current!.removeEventListener('durationchange', this.onDurationChange)
+        this.videoRef.current!.removeEventListener('ended', this.onVideoEnded)
     }
 
     handleClick = () => {
@@ -32,12 +34,16 @@ class Video extends Component<Props> {
         }
     }
 
-    timeUpdate = () => {
+    onTimeUpdate = () => {
         this.props.setVideoCurrentTime(this.videoRef.current!.currentTime)
     }
 
-    durationChange = () => {
+    onDurationChange = () => {
         this.props.setVideoTotalTime(this.videoRef.current!.duration)
+    }
+
+    onVideoEnded = () => {
+        this.props.setPlaybackStateWithoutMessage('paused')
     }
 
     componentWillReceiveProps = (nextProps: Props) => {
