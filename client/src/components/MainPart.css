@@ -5,7 +5,7 @@ body:not(.fullscreen):not(.touch-device) .player:hover .controls {
 }
 
 /* Full screen: mouse moved recently */
-.fullscreen .player.mouse-moved-recently .controls {
+.fullscreen .player.mouse-moved-recently:hover .controls {
     /* Show controls */
     transform: translateY(0px) !important;
 }
