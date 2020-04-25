@@ -5,12 +5,9 @@
     text-align: center;
 }
 
-.heading {
+.logo {
+    width: 75%;
     margin: 0;
-    padding: 15px 1px;
-    background: #ff9f1c;
-    text-align: center;
-    font-size: 10px
 }
 
 .wrapper {

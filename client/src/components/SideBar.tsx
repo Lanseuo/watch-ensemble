@@ -7,6 +7,7 @@ import Modal from './Modal'
 import Clients from './Clients'
 import { requestVideo } from '../redux/actions/video'
 import { AppState } from '../redux/reducers'
+import Logo from '../logo.svg';
 
 interface Props extends ConnectedProps<typeof connector> { }
 
@@ -36,7 +37,9 @@ class SideBar extends Component<Props, State> {
     render() {
         return (
             <aside className={styles.container}>
-                <h1 className={styles.heading}>Watch<br />Ensemble</h1>
+                <div className={styles.wrapper}>
+                    <img className={styles.logo} src={Logo} alt="WatchEnsemble Logo" />
+                </div>
 
                 <div className={styles.wrapper}>
                     <div className={styles.connectionIndicator} style={{ background: this.props.isWebsocketConnected ? 'green' : 'red' }}></div>
