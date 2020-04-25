@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
+import { Link } from "react-router-dom"
 import PubSub from 'pubsub-js'
 
 import styles from './SideBar.module.css'
@@ -37,9 +38,9 @@ class SideBar extends Component<Props, State> {
     render() {
         return (
             <aside className={styles.container}>
-                <div className={styles.wrapper}>
+                <Link to="/" className={styles.wrapper}>
                     <img className={styles.logo} src={Logo} alt="WatchEnsemble Logo" />
-                </div>
+                </Link>
 
                 <div className={styles.wrapper}>
                     <div className={styles.connectionIndicator} style={{ background: this.props.isWebsocketConnected ? 'green' : 'red' }}></div>
