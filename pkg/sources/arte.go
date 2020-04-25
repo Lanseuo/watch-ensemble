@@ -37,16 +37,25 @@ func arteGet(url string) (details VideoDetails, err error) {
 		type responseMediaVersion struct {
 			URL string `json:"url"`
 		}
+		type responseCustomMessage struct {
+			Message string `json:"msg"`
+			Type    string `json:"type"`
+		}
 		type responseVideoJSONPlayer struct {
-			Title       string                          `json:"VTI"`
-			Description string                          `json:"VDE"`
-			VSR         map[string]responseMediaVersion `json:"VSR"`
+			Title         string                          `json:"VTI"`
+			Description   string                          `json:"VDE"`
+			VSR           map[string]responseMediaVersion `json:"VSR"`
+			CustomMessage responseCustomMessage           `json:"customMsg"`
 		}
 		type responseStruct struct {
 			Details responseVideoJSONPlayer `json:"videoJsonPlayer"`
 		}
 		var response responseStruct
 		json.NewDecoder(resp.Body).Decode(&response)
+
+		if response.Details.CustomMessage.Type == "error" {
+			return details, errors.New("Video doesn't exist")
+		}
 
 		details.Title[language] = response.Details.Title
 		details.Description[language] = response.Details.Description

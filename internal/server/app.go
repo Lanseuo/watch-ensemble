@@ -15,6 +15,7 @@ var broadcast = make(chan Message)     // broadcast channel
 var upgrader = websocket.Upgrader{}
 var lastVideoDetails sources.VideoDetails
 
+// Client stores information about websocket client
 type Client struct {
 	clientID   string
 	ws         *websocket.Conn
@@ -22,6 +23,7 @@ type Client struct {
 	name       string
 }
 
+// Message holds websocket message
 type Message struct {
 	Type          string                `json:"type"`
 	Text          string                `json:"text,omitempty"`
@@ -34,11 +36,13 @@ type Message struct {
 	Date          int                   `json:"date"`
 }
 
+// Status stores information about current playback status of video
 type Status struct {
 	PlaybackState string `json:"playbackState"`
 	CurrentTime   int    `json:"currentTime"`
 }
 
+// StartServer starts the websocket
 func StartServer() {
 	go handleMessages()
 

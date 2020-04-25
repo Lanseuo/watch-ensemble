@@ -63,6 +63,10 @@ func requestVideo(msg Message) {
 	details, err := sources.GetVideoDetails(msg.Text)
 	if err != nil {
 		fmt.Println("Error:", err)
+		sendMessageToClient(clients[msg.ClientID], Message{
+			Type: "error",
+			Text: err.Error(),
+		})
 		return
 	}
 	lastVideoDetails = details

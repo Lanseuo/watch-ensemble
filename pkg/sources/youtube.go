@@ -2,6 +2,7 @@ package sources
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -46,6 +47,10 @@ func youtubeFetchDetails(videoID string, details *VideoDetails) error {
 	}
 
 	defer resp.Body.Close()
+
+	if resp.StatusCode != 202 {
+		return errors.New("Video not found")
+	}
 
 	type responseStruct struct {
 		Title      string `json:"title"`

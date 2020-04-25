@@ -88,6 +88,10 @@ function handleMessage(event: MessageEvent) {
             })
             break
 
+        case 'error':
+            store.dispatch(setNotification('error', 'Error', message.text))
+            break
+
         default:
             console.error('Message of unknown type', message.type)
     }
