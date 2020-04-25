@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 
 import styles from './ChooseLanguageModal.module.css'
-import { setShowLanguageModal } from '../redux/actions/main'
-import { setLanguage } from '../redux/actions/video'
-import { Language } from '../redux/types/video'
-import { AppState } from '../redux/reducers'
+import { setShowLanguageModal } from '../../redux/actions/main'
+import { setLanguage } from '../../redux/actions/video'
+import { Language } from '../../redux/types/video'
+import { AppState } from '../../redux/reducers'
 import Modal from './Modal'
 
 interface Props extends ConnectedProps<typeof connector> { }

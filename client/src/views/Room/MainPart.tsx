@@ -9,7 +9,7 @@ import YouTubeVideo from './YouTubeVideo'
 import Controls from './Controls'
 import VideoDetails from './VideoDetails'
 import ChooseLanguageModal from './ChooseLanguageModal'
-import { AppState } from '../redux/reducers'
+import { AppState } from '../../redux/reducers'
 
 interface Props extends ConnectedProps<typeof connector> { }
 

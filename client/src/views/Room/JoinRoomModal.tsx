@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { setUserName } from '../redux/actions/main'
+import { setUserName } from '../../redux/actions/main'
 import Modal from './Modal'
 
 interface Props extends ConnectedProps<typeof connector> {

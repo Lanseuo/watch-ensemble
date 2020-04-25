@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
-import { setNotification } from '../redux/actions/main'
-import { AppState } from '../redux/reducers'
-import { PlaybackState } from '../redux/types/video'
+import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime } from '../../redux/actions/video'
+import { setNotification } from '../../redux/actions/main'
+import { AppState } from '../../redux/reducers'
+import { PlaybackState } from '../../redux/types/video'
 
 interface Props extends ConnectedProps<typeof connector> {
     onClick(): void

@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 
 import styles from './Controls.module.css'
-import { setShowLanguageModal } from '../redux/actions/main'
-import { setPlaybackState, jumpToTime } from '../redux/actions/video'
-import { formatTime } from '../utils'
-import { AppState } from '../redux/reducers'
+import { setShowLanguageModal } from '../../redux/actions/main'
+import { setPlaybackState, jumpToTime } from '../../redux/actions/video'
+import { formatTime } from '../../utils'
+import { AppState } from '../../redux/reducers'
 
 const screenfull = require('screenfull')
 

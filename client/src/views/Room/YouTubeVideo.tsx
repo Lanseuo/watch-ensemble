@@ -3,9 +3,9 @@ import { connect, ConnectedProps } from 'react-redux'
 import YTPlayer from 'yt-player'
 
 import styles from './YouTubeVideo.module.css'
-import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime } from '../redux/actions/video'
-import { PlaybackState, VideoDetails } from '../redux/types/video'
-import { AppState } from '../redux/reducers'
+import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime } from '../../redux/actions/video'
+import { PlaybackState, VideoDetails } from '../../redux/types/video'
+import { AppState } from '../../redux/reducers'
 
 interface Props extends ConnectedProps<typeof connector> {
     onClick(): void

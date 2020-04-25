@@ -5,9 +5,9 @@ import PubSub from 'pubsub-js'
 import styles from './SideBar.module.css'
 import Modal from './Modal'
 import Clients from './Clients'
-import { requestVideo } from '../redux/actions/video'
-import { AppState } from '../redux/reducers'
-import Logo from '../logo.svg';
+import { requestVideo } from '../../redux/actions/video'
+import { AppState } from '../../redux/reducers'
+import Logo from '../../logo.svg';
 
 interface Props extends ConnectedProps<typeof connector> { }
 

@@ -2,33 +2,19 @@ import React, { Component } from 'react'
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import MainPart from './components/MainPart'
-import SideBar from './components/SideBar'
-import JoinRoomModal from './components/JoinRoomModal'
-import Notification from './components/Notification'
+import Home from './views/Home/Home'
+import Room from './views/Room/Room'
 
 import { setIsTouchDevice } from './redux/actions/main'
-import { connectToWebsocket } from './redux/actions/websocket'
 
 interface Props { }
 
-interface State {
-    didJoinRoom: boolean
-}
+interface State { }
 
 class App extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
         setIsTouchDevice()
-
-        this.state = {
-            didJoinRoom: false
-        }
-    }
-
-    joined = () => {
-        this.setState({ didJoinRoom: true })
-        connectToWebsocket()
     }
 
     render() {
@@ -36,27 +22,14 @@ class App extends Component<Props, State> {
             <Router>
                 <Switch>
                     <Route path="/" exact>
-                        <p>Home</p>
+                        <Home />
                     </Route>
                     <Route path="/room" exact>
-                        <div style={styles.container}>
-                            <SideBar />
-                            {this.state.didJoinRoom && <MainPart />}
-
-                            <JoinRoomModal didJoinRoom={this.state.didJoinRoom} joined={this.joined} />
-                            <Notification />
-                        </div>
+                        <Room />
                     </Route>
                 </Switch>
             </Router>
         )
-    }
-}
-
-let styles = {
-    container: {
-        display: 'grid',
-        gridTemplateColumns: '60px auto'
     }
 }
 

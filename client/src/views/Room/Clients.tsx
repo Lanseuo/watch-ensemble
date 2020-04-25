@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 
 import styles from './Clients.module.css'
-import { AppState } from '../redux/reducers'
+import { AppState } from '../../redux/reducers'
 
 interface Props extends ConnectedProps<typeof connector> { }
 

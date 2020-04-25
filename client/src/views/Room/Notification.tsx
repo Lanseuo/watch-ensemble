@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 
 import styles from './Notification.module.css'
-import { deleteNotification } from '../redux/actions/main'
-import { AppState } from '../redux/reducers'
+import { deleteNotification } from '../../redux/actions/main'
+import { AppState } from '../../redux/reducers'
 
 interface Props extends ConnectedProps<typeof connector> { }
 

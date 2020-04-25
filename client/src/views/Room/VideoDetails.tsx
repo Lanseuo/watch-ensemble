@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 
 import CollapsableContainer from './CollapsableContainer'
-import { AppState } from '../redux/reducers'
+import { AppState } from '../../redux/reducers'
 
 interface Props extends ConnectedProps<typeof connector> { }
 
