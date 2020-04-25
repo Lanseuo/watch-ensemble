@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import MainPart from './components/MainPart'
 import SideBar from './components/SideBar'
+import JoinRoomModal from './components/JoinRoomModal'
+import Notification from './components/Notification'
 
 import { setIsTouchDevice } from './redux/actions/main'
 import { connectToWebsocket } from './redux/actions/websocket'
-import JoinRoomModal from './components/JoinRoomModal'
-import Notification from './components/Notification'
 
 interface Props { }
 
@@ -31,13 +33,22 @@ class App extends Component<Props, State> {
 
     render() {
         return (
-            <div style={styles.container}>
-                <SideBar />
-                {this.state.didJoinRoom && <MainPart />}
+            <Router>
+                <Switch>
+                    <Route path="/" exact>
+                        <p>Home</p>
+                    </Route>
+                    <Route path="/room" exact>
+                        <div style={styles.container}>
+                            <SideBar />
+                            {this.state.didJoinRoom && <MainPart />}
 
-                <JoinRoomModal didJoinRoom={this.state.didJoinRoom} joined={this.joined} />
-                <Notification />
-            </div>
+                            <JoinRoomModal didJoinRoom={this.state.didJoinRoom} joined={this.joined} />
+                            <Notification />
+                        </div>
+                    </Route>
+                </Switch>
+            </Router>
         )
     }
 }
