@@ -1,0 +1,17 @@
+.nav {
+    background-color: var(--dark-background-color-darker);
+    height: 60px;
+    display: grid;
+    place-items: center;
+}
+
+.navInner {
+    height: 60px;
+    width: 95%;
+    max-width: 1000px;
+    padding: 10px 0;
+}
+
+.logo {
+    height: 100%;
+}
