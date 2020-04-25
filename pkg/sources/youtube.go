@@ -48,7 +48,7 @@ func youtubeFetchDetails(videoID string, details *VideoDetails) error {
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode != 202 {
+	if resp.StatusCode != 200 {
 		return errors.New("Video not found")
 	}
 
