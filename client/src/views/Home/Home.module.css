@@ -8,10 +8,16 @@
 .navInner {
     height: 60px;
     width: 95%;
-    max-width: 1000px;
+    max-width: 1200px;
     padding: 10px 0;
 }
 
 .logo {
     height: 100%;
+}
+
+.main {
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
 }

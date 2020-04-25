@@ -70,7 +70,9 @@ input[type="range"]::-moz-range-thumb {
     place-items: end;
 }
 
-.button-wrapper button {
+.button-wrapper button,
+.button-wrapper .button {
+    display: inline-block;
     background: var(--primary-color);
     border: 0;
     color: white;
@@ -78,7 +80,8 @@ input[type="range"]::-moz-range-thumb {
     cursor: pointer;
 }
 
-.button-wrapper button:hover {
+.button-wrapper button:hover,
+.button-wrapper .button:hover {
     background: var(--primary-color-dark);
 }
 
