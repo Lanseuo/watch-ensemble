@@ -35,6 +35,12 @@ class SideBar extends Component<Props, State> {
         requestVideo(this.state.videoURL)
     }
 
+    inputOnKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            this.submitVideoURL()
+        }
+    }
+
     render() {
         return (
             <aside className={styles.container}>
@@ -52,7 +58,7 @@ class SideBar extends Component<Props, State> {
 
                 <Modal title="Set Video" show={this.state.showModal} onClose={() => this.setState({ showModal: false })}>
                     <p>Paste the url of a video below to start watching. WatchEnsemble currently supports YouTube-, ARTE- and MP4-videos.</p>
-                    <input className={styles.setVideoInput} autoFocus value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" placeholder="https://www.arte.tv/fr/videos/012345-678-A/ma-vidéo" />
+                    <input className={styles.setVideoInput} autoFocus onKeyPress={this.inputOnKeyPress} value={this.state.videoURL} onChange={e => this.setState({ videoURL: e.target.value })} type="url" placeholder="https://www.arte.tv/fr/videos/012345-678-A/ma-vidéo" />
                     <div className="button-wrapper right">
                         <button className={styles.setVideoButton} onClick={this.submitVideoURL}>Set Video</button>
                     </div>
