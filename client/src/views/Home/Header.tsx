@@ -22,10 +22,10 @@ class Header extends Component<Props, State> {
             <div className={styles.container}>
                 <div className={styles.leftContainer}>
                     <div>
-                        <h2>WatchEnsemble</h2>
-                        <h3>Watch videos from ARTE, YouTube, and more together with friends</h3>
-                        <div className="button-wrapper right">
-                            <Link className="button" to="/room">Join Room</Link>
+                        <h2>Watch videos from ARTE, YouTube, and more together</h2>
+                        <p>WatchEnsemble allows you to watch videos from different kind of sources with your friends online. WatchEnsemble runs directly in your browser and synchronizes video playback between you and your friends.</p>
+                        <div className={styles.joinButtonWrapper}>
+                            <Link className={styles.joinButton} to="/room">Join Room</Link>
                         </div>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ class Home extends Component<Props, State> {
                 <nav className={styles.nav}>
                     <div className={styles.navInner}>
                         <img className={styles.logo} src={Logo} alt="WatchEnsemble Logo" />
+                        <h1>WatchEnsemble</h1>
                     </div>
                 </nav>
 
