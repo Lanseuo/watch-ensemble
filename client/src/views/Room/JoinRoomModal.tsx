@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 
 import { setUserName } from '../../redux/actions/main'
-import Modal from './Modal'
+import Modal from '../../components/Modal'
 
 interface Props extends ConnectedProps<typeof connector> {
     didJoinRoom: boolean

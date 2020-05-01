@@ -6,7 +6,7 @@ import { setShowLanguageModal } from '../../redux/actions/main'
 import { setLanguage } from '../../redux/actions/video'
 import { Language } from '../../redux/types/video'
 import { AppState } from '../../redux/reducers'
-import Modal from './Modal'
+import Modal from '../../components/Modal'
 
 interface Props extends ConnectedProps<typeof connector> { }
 

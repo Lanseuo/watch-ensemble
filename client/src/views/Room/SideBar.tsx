@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import PubSub from 'pubsub-js'
 
 import styles from './SideBar.module.css'
-import Modal from './Modal'
+import Modal from '../../components/Modal'
 import Clients from './Clients'
 import { requestVideo } from '../../redux/actions/video'
 import { AppState } from '../../redux/reducers'
