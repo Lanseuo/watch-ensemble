@@ -29,3 +29,9 @@
     max-width: 1200px;
     margin: 0 auto;
 }
+
+.divider {
+    width: 100%;
+    height: 3px;
+    background: var(--primary-color);
+}

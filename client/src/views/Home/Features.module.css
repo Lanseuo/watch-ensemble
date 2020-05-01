@@ -1,0 +1,31 @@
+.container {
+    padding-top: 50px;
+}
+
+.feature {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    grid-gap: 50px;
+    margin: 50px 0;
+}
+
+.feature.inverted {
+    grid-template-columns: 3fr 2fr;
+}
+
+.feature.inverted .smallArea {
+    order: 1
+}
+
+.smallArea {
+    display: grid;
+    place-items: center;
+}
+
+.smallArea h2 {
+    font-weight: normal;
+}
+
+.largeArea img {
+    width: 100%;
+}

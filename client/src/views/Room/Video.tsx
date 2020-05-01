@@ -4,7 +4,6 @@ import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoC
 import { setNotification } from '../../redux/actions/main'
 import { AppState } from '../../redux/reducers'
 import { PlaybackState } from '../../redux/types/video'
-import { formatTime } from '../../utils'
 
 interface Props extends ConnectedProps<typeof connector> {
     onClick(): void
