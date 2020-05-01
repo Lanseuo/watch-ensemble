@@ -1,7 +1,7 @@
 import {
     VideoState, VideoActionTypes, Language,
     SET_LANGUAGE, SET_DETAILS, SET_PLAYBACK_STATE, SET_CURRENT_TIME,
-    SET_TOTAL_TIME, SET_JUMP_TO_TIME_LAST_UPDATE
+    SET_TOTAL_TIME, SET_BUFFER_TIME, SET_JUMP_TO_TIME_LAST_UPDATE
 } from "../types/video"
 
 const initialState: VideoState = {
@@ -10,6 +10,7 @@ const initialState: VideoState = {
     playbackState: 'paused',
     currentTime: 0,
     totalTime: 0,
+    bufferTime: 0,
     jumpToTimeLastUpdate: 0
 }
 
@@ -50,6 +51,12 @@ export default function (state = initialState, action: VideoActionTypes): VideoS
             return {
                 ...state,
                 totalTime: action.payload
+            }
+
+        case SET_BUFFER_TIME:
+            return {
+                ...state,
+                bufferTime: action.payload
             }
 
         case SET_JUMP_TO_TIME_LAST_UPDATE:

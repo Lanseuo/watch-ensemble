@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime } from '../../redux/actions/video'
+import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime, setVideoBufferTime } from '../../redux/actions/video'
 import { setNotification } from '../../redux/actions/main'
 import { AppState } from '../../redux/reducers'
 import { PlaybackState } from '../../redux/types/video'
@@ -66,7 +66,7 @@ class Video extends Component<Props> {
             bufferEnd = 0
         }
 
-        console.log(formatTime(bufferEnd))
+        this.props.setVideoBufferTime(bufferEnd)
     }
 
     componentWillReceiveProps = (nextProps: Props) => {
@@ -139,6 +139,7 @@ const mapDispatchToProps = {
     setPlaybackStateWithoutMessage,
     setVideoCurrentTime,
     setVideoTotalTime,
+    setVideoBufferTime,
     setNotification
 }
 

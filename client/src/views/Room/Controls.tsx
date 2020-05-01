@@ -99,7 +99,7 @@ class Controls extends Component<Props, State> {
         return (
             <div className={`${styles.container} controls`} style={{ visibility: visible ? 'visible' : 'hidden' }}>
                 {icon}
-                <p className={styles.time}>{formatTime(this.props.videoCurrentTime)}</p>
+                <p className={styles.time}>{formatTime(this.props.videoCurrentTime)} ({formatTime(this.props.videoBufferTime)})</p>
                 <input className={styles.slider} onChange={this.handleSlider} type="range" min="1" max="1000" value={sliderPercentage * 1000} />
                 <p className={styles.time}>{formatTime(this.props.videoTotalTime)}</p>
 
@@ -125,7 +125,8 @@ const mapStateToProps = (state: AppState) => ({
     videoDetails: state.video.details,
     videoPlaybackState: state.video.playbackState,
     videoCurrentTime: state.video.currentTime,
-    videoTotalTime: state.video.totalTime
+    videoTotalTime: state.video.totalTime,
+    videoBufferTime: state.video.bufferTime
 })
 
 const mapDispatchToProps = {

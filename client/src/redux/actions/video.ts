@@ -1,7 +1,7 @@
 import {
     VideoActionTypes, Language, PlaybackState,
-    SET_LANGUAGE, SET_PLAYBACK_STATE, SET_CURRENT_TIME,
-    SET_TOTAL_TIME, SET_JUMP_TO_TIME_LAST_UPDATE
+    SET_LANGUAGE, SET_PLAYBACK_STATE, SET_CURRENT_TIME, SET_TOTAL_TIME,
+    SET_BUFFER_TIME, SET_JUMP_TO_TIME_LAST_UPDATE
 } from '../types/video'
 import { sendMessageToWebsocket } from './websocket'
 import store from '../store'
@@ -57,6 +57,12 @@ export const setVideoTotalTime = (seconds: number): VideoActionTypes => ({
     type: SET_TOTAL_TIME,
     payload: seconds
 })
+
+export const setVideoBufferTime = (seconds: number): VideoActionTypes => ({
+    type: SET_BUFFER_TIME,
+    payload: seconds
+})
+
 
 export const jumpToTime = (seconds: number): VideoActionTypes => {
     sendMessageToWebsocket('jumpToTime', { seconds: Math.trunc(seconds) })
