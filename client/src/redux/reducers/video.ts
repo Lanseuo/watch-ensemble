@@ -35,6 +35,7 @@ export default function (state = initialState, action: VideoActionTypes): VideoS
                 ...state,
                 playbackState: playbackState || 'paused',
                 currentTime: 0,
+                bufferTime: 0,
                 jumpToTimeLastUpdate: seconds || 0,
                 details: videoDetails,
                 language
