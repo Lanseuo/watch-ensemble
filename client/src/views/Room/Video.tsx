@@ -4,6 +4,7 @@ import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoC
 import { setNotification } from '../../redux/actions/main'
 import { AppState } from '../../redux/reducers'
 import { PlaybackState } from '../../redux/types/video'
+import { formatTime } from '../../utils'
 
 interface Props extends ConnectedProps<typeof connector> {
     onClick(): void
@@ -16,6 +17,7 @@ class Video extends Component<Props> {
         this.videoRef.current!.addEventListener('timeupdate', this.onTimeUpdate)
         this.videoRef.current!.addEventListener('durationchange', this.onDurationChange)
         this.videoRef.current!.addEventListener('ended', this.onVideoEnded)
+        this.videoRef.current!.addEventListener('progress', this.onProgress)
 
         this.handlePlaybackState(this.props.videoPlaybackState)
         this.videoRef.current!.currentTime = this.props.videoJumpToTimeLastUpdate
@@ -25,6 +27,7 @@ class Video extends Component<Props> {
         this.videoRef.current!.removeEventListener('timeupdate', this.onTimeUpdate)
         this.videoRef.current!.removeEventListener('durationchange', this.onDurationChange)
         this.videoRef.current!.removeEventListener('ended', this.onVideoEnded)
+        this.videoRef.current!.removeEventListener('progress', this.onProgress)
     }
 
     handleClick = () => {
@@ -45,6 +48,25 @@ class Video extends Component<Props> {
     onVideoEnded = () => {
         this.props.setPlaybackStateWithoutMessage('paused')
         this.videoRef.current!.currentTime = 0
+    }
+
+    onProgress = () => {
+        let video = this.videoRef.current!
+        let bufferEnd;
+
+        if (video.duration && video.buffered && video.buffered.length) {
+            // Get last buffered end (new buffer object is created on every jump to time)
+            bufferEnd = video.buffered.end(video.buffered.length - 1)
+
+            // Buffered end can be bigger than duration by a very small fraction
+            if (bufferEnd > video.duration) {
+                bufferEnd = video.duration;
+            }
+        } else {
+            bufferEnd = 0
+        }
+
+        console.log(formatTime(bufferEnd))
     }
 
     componentWillReceiveProps = (nextProps: Props) => {
@@ -92,7 +114,7 @@ class Video extends Component<Props> {
     render() {
         let videoUrl = this.props.videoDetails ? this.props.videoDetails.url[this.props.language] : ''
         return (
-            <video className="video" onClick={this.handleClick} style={styles.video} src={videoUrl} ref={this.videoRef}></video>
+            <video className="video" onClick={this.handleClick} style={styles.video} src={videoUrl} ref={this.videoRef} preload="auto"></video>
         )
     }
 }
