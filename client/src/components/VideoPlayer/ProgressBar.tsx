@@ -31,7 +31,7 @@ class ProgressBar extends Component<Props, State> {
 
     scrubOnMousemove = (event: MouseEvent) => {
         // If mousedown
-        if (event.buttons == 1) {
+        if (event.buttons === 1) {
             this.scrub(event)
         }
     }

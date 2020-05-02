@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime, setVideoBufferTime } from '../../redux/actions/video'
+import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime, setVideoBufferTime, setIsLoading } from '../../redux/actions/video'
 import { setNotification } from '../../redux/actions/main'
 import { AppState } from '../../redux/reducers'
 import { PlaybackState } from '../../redux/types/video'
@@ -17,6 +17,9 @@ class Video extends Component<Props> {
         this.videoRef.current!.addEventListener('durationchange', this.onDurationChange)
         this.videoRef.current!.addEventListener('ended', this.onVideoEnded)
         this.videoRef.current!.addEventListener('progress', this.onProgress)
+        this.videoRef.current!.addEventListener('seeking', this.onLoadingStart)
+        this.videoRef.current!.addEventListener('waiting', this.onLoadingStart)
+        this.videoRef.current!.addEventListener('canplay', this.onLoadingEnd)
 
         this.handlePlaybackState(this.props.videoPlaybackState)
         this.videoRef.current!.currentTime = this.props.videoJumpToTimeLastUpdate
@@ -27,6 +30,9 @@ class Video extends Component<Props> {
         this.videoRef.current!.removeEventListener('durationchange', this.onDurationChange)
         this.videoRef.current!.removeEventListener('ended', this.onVideoEnded)
         this.videoRef.current!.removeEventListener('progress', this.onProgress)
+        this.videoRef.current!.removeEventListener('seeking', this.onLoadingStart)
+        this.videoRef.current!.removeEventListener('waiting', this.onLoadingStart)
+        this.videoRef.current!.removeEventListener('canplay', this.onLoadingEnd)
     }
 
     handleClick = () => {
@@ -66,6 +72,14 @@ class Video extends Component<Props> {
         }
 
         this.props.setVideoBufferTime(bufferEnd)
+    }
+
+    onLoadingStart = () => {
+        this.props.setIsLoading(true)
+    }
+
+    onLoadingEnd = () => {
+        this.props.setIsLoading(false)
     }
 
     componentWillReceiveProps = (nextProps: Props) => {
@@ -139,7 +153,8 @@ const mapDispatchToProps = {
     setVideoCurrentTime,
     setVideoTotalTime,
     setVideoBufferTime,
-    setNotification
+    setNotification,
+    setIsLoading
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)

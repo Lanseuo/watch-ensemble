@@ -14,10 +14,11 @@ export interface VideoState {
     language: Language,
     details: VideoDetails | null,
     playbackState: PlaybackState,
-    currentTime: number,
-    totalTime: number,
-    bufferTime: number,
+    currentTime: number
+    totalTime: number
+    bufferTime: number
     jumpToTimeLastUpdate: number
+    isLoading: boolean
 }
 
 export const SET_LANGUAGE = 'SET_LANGUAGE'
@@ -27,6 +28,7 @@ export const SET_CURRENT_TIME = 'SET_CURRENT_TIME'
 export const SET_TOTAL_TIME = 'SET_TOTAL_TIME'
 export const SET_BUFFER_TIME = 'SET_BUFFER_TIME'
 export const SET_JUMP_TO_TIME_LAST_UPDATE = 'SET_JUMP_TO_TIME_LAST_UPDATE'
+export const SET_IS_LOADING = 'SET_IS_LOADING'
 
 export interface SetLanguageAction {
     type: typeof SET_LANGUAGE
@@ -67,4 +69,9 @@ export interface SetJumpToTimeLastUpdateAction {
     payload: number
 }
 
-export type VideoActionTypes = SetLanguageAction | SetDetailsAction | SetPlaybackStateAction | SetCurrentTimeAction | SetTotalTimeAction | SetBufferTimeAction | SetJumpToTimeLastUpdateAction
+export interface SetIsLoadingAction {
+    type: typeof SET_IS_LOADING
+    payload: boolean
+}
+
+export type VideoActionTypes = SetLanguageAction | SetDetailsAction | SetPlaybackStateAction | SetCurrentTimeAction | SetTotalTimeAction | SetBufferTimeAction | SetJumpToTimeLastUpdateAction | SetIsLoadingAction

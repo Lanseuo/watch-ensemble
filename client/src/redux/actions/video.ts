@@ -1,7 +1,7 @@
 import {
     VideoActionTypes, Language, PlaybackState,
     SET_LANGUAGE, SET_PLAYBACK_STATE, SET_CURRENT_TIME, SET_TOTAL_TIME,
-    SET_BUFFER_TIME, SET_JUMP_TO_TIME_LAST_UPDATE
+    SET_BUFFER_TIME, SET_JUMP_TO_TIME_LAST_UPDATE, SET_IS_LOADING
 } from '../types/video'
 import { sendMessageToWebsocket } from './websocket'
 import store from '../store'
@@ -76,6 +76,11 @@ export const jumpToTime = (seconds: number): VideoActionTypes => {
 export const setVideoJumpToTimeLastUpdate = (seconds: number): VideoActionTypes => ({
     type: SET_JUMP_TO_TIME_LAST_UPDATE,
     payload: seconds
+})
+
+export const setIsLoading = (value: boolean): VideoActionTypes => ({
+    type: SET_IS_LOADING,
+    payload: value
 })
 
 setInterval(() => {

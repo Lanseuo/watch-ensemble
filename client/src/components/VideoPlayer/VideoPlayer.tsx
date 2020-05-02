@@ -52,6 +52,8 @@ class VideoPlayer extends Component<Props, State> {
                     <YouTubeVideo onClick={this.handleVideoClick} />
                 )}
 
+                {this.props.videoIsLoading && <div className={styles.loadingSpinner}>Loading</div>}
+
                 <Controls className={styles.controls} />
             </div>
         )
@@ -61,7 +63,8 @@ class VideoPlayer extends Component<Props, State> {
 const mapStateToProps = (state: AppState) => ({
     isTouchDevice: state.main.isTouchDevice,
     videoDetails: state.video.details,
-    videoPlaybackState: state.video.playbackState
+    videoPlaybackState: state.video.playbackState,
+    videoIsLoading: state.video.isLoading
 })
 
 const connector = connect(mapStateToProps)
