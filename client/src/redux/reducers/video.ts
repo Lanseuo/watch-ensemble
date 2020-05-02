@@ -34,12 +34,13 @@ export default function (state = initialState, action: VideoActionTypes): VideoS
             let language = videoDetails.languages.includes(state.language) ? state.language : videoDetails.languages[0] as Language
             return {
                 ...state,
+                language,
+                details: videoDetails,
                 playbackState: playbackState || 'paused',
                 currentTime: 0,
                 bufferTime: 0,
                 jumpToTimeLastUpdate: seconds || 0,
-                details: videoDetails,
-                language
+                isLoading: false
             }
         }
 
