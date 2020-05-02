@@ -7,6 +7,8 @@ import { setPlaybackState, jumpToTime } from '../../redux/actions/video'
 import { formatTime } from '../../utils'
 import { AppState } from '../../redux/reducers'
 
+import ProgressBar from './ProgressBar'
+
 const screenfull = require('screenfull')
 
 interface Props extends ConnectedProps<typeof connector> {
@@ -81,9 +83,7 @@ class Controls extends Component<Props, State> {
         }
     }
 
-    handleSlider = (event: React.ChangeEvent<HTMLInputElement>) => {
-        let percentage = parseInt(event.target.value) / 1000
-        let seconds = Math.trunc(percentage * this.props.videoTotalTime)
+    updateCurrentTime = (seconds: number) => {
         this.props.jumpToTime(seconds)
     }
 
@@ -94,13 +94,19 @@ class Controls extends Component<Props, State> {
             playing: <svg onClick={this.togglePlay} xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /><path d="M0 0h24v24H0z" fill="none" /></svg>,
             waiting: <svg onClick={this.togglePlay} xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" /><path d="M0 0h24v24H0z" fill="none" /><path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" /></svg>
         }[this.props.videoPlaybackState]
-        let sliderPercentage = this.props.videoCurrentTime / this.props.videoTotalTime || 0
 
         return (
             <div className={`${styles.container} controls`} style={{ visibility: visible ? 'visible' : 'hidden' }}>
                 {icon}
                 <p className={styles.time}>{formatTime(this.props.videoCurrentTime)} ({formatTime(this.props.videoBufferTime)})</p>
-                <input className={styles.slider} onChange={this.handleSlider} type="range" min="1" max="1000" value={sliderPercentage * 1000} />
+
+                <ProgressBar
+                    currentTime={this.props.videoCurrentTime}
+                    bufferTime={this.props.videoBufferTime}
+                    totalTime={this.props.videoTotalTime}
+                    update={this.updateCurrentTime}
+                />
+
                 <p className={styles.time}>{formatTime(this.props.videoTotalTime)}</p>
 
                 {this.props.videoDetails!.languages.length !== 1 &&

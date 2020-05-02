@@ -1,0 +1,12 @@
+.container {
+    background: gray;
+    width: 100%;
+    height: 35%;
+    cursor: pointer;
+}
+
+.filled {
+    width: 50%;
+    height: 100%;
+    background: var(--primary-color);
+}
