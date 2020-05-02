@@ -16,15 +16,24 @@ class ProgressBar extends Component<Props, State> {
 
     componentDidMount() {
         this.containerRef.current!.addEventListener('click', this.scrub)
+        this.containerRef.current!.addEventListener('mousemove', this.scrubOnMousemove)
     }
 
     componentWillUnmount() {
         this.containerRef.current!.removeEventListener('click', this.scrub)
+        this.containerRef.current!.removeEventListener('mousemove', this.scrubOnMousemove)
     }
 
     scrub = (event: MouseEvent) => {
         const scrubTime = (event.offsetX / this.containerRef.current!.offsetWidth) * this.props.totalTime;
         this.props.update(scrubTime)
+    }
+
+    scrubOnMousemove = (event: MouseEvent) => {
+        // If mousedown
+        if (event.buttons == 1) {
+            this.scrub(event)
+        }
     }
 
     render() {
