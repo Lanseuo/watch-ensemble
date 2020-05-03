@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
 	"regexp"
 )
 
@@ -41,7 +40,7 @@ func youtubeGet(url string) (details VideoDetails, err error) {
 
 func youtubeFetchDetails(videoID string, details *VideoDetails) error {
 	apiURL := fmt.Sprintf("https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=%v&format=json", videoID)
-	resp, err := http.Get(apiURL)
+	resp, err := Client.Get(apiURL)
 	if err != nil {
 		return err
 	}
@@ -59,7 +58,10 @@ func youtubeFetchDetails(videoID string, details *VideoDetails) error {
 		Height     int    `json:"height"`
 	}
 	var response responseStruct
-	json.NewDecoder(resp.Body).Decode(&response)
+	err = json.NewDecoder(resp.Body).Decode(&response)
+	if err != nil {
+		return errors.New("An error occurred")
+	}
 
 	details.AspectRatioWidth = response.Width
 	details.AspectRatioHeight = response.Height
