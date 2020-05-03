@@ -1,12 +1,35 @@
 .container {
-    background: gray;
     width: 100%;
-    height: 35%;
+    height: 15%;
+    position: relative;
+    padding: 0;
+    background: gray;
+    flex: auto;
     cursor: pointer;
+    transition: height 0.2s ease-in-out;
+}
+
+:global(body.touch-device) .container {
+    height: 25%;
+}
+
+.container:hover {
+    height: 25%;
 }
 
 .filled {
+    display: block;
+    position: absolute;
     width: 50%;
     height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.buffer {
+    background: white;
+}
+
+.current {
     background: var(--primary-color);
 }

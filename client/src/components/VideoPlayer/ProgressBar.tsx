@@ -37,11 +37,13 @@ class ProgressBar extends Component<Props, State> {
     }
 
     render() {
-        let filledPercentage = this.props.currentTime / this.props.totalTime * 100 || 0
+        let bufferPercentage = this.props.bufferTime / this.props.totalTime * 100 || 0
+        let currentPercentage = this.props.currentTime / this.props.totalTime * 100 || 0
 
         return (
             <div className={styles.container} ref={this.containerRef}>
-                <div className={styles.filled} style={{ width: `${filledPercentage}%` }}></div>
+                <div className={`${styles.filled} ${styles.buffer}`} style={{ width: `${bufferPercentage}%` }}></div>
+                <div className={`${styles.filled} ${styles.current}`} style={{ width: `${currentPercentage}%` }}></div>
             </div>
         )
     }

@@ -98,7 +98,7 @@ class Controls extends Component<Props, State> {
         return (
             <div className={`${styles.container} controls`} style={{ visibility: visible ? 'visible' : 'hidden' }}>
                 {icon}
-                <p className={styles.time}>{formatTime(this.props.videoCurrentTime)} ({formatTime(this.props.videoBufferTime)})</p>
+                <p className={styles.time}>{formatTime(this.props.videoCurrentTime)}</p>
 
                 <ProgressBar
                     currentTime={this.props.videoCurrentTime}
