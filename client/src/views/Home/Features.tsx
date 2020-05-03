@@ -13,7 +13,7 @@ class Features extends Component<Props, State> {
                 <div className={styles.feature}>
                     <div className={styles.smallArea}>
                         <div>
-                            <h2>🧲 Synchronize video playback</h2>
+                            <h2><span role="img" aria-label="magnet">🧲</span> Synchronize video playback</h2>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, beatae minus. Ex dignissimos tenetur corporis quo sapiente amet ab ratione!</p>
                         </div>
                     </div>
@@ -25,7 +25,7 @@ class Features extends Component<Props, State> {
                 <div className={`${styles.feature} ${styles.inverted}`}>
                     <div className={styles.smallArea}>
                         <div>
-                            <h2>🌧️ Play videos from different kind of sources</h2>
+                            <h2><span role="img" aria-label="clouds">🌧️</span> Play videos from different kind of sources</h2>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, beatae minus. Ex dignissimos tenetur corporis quo sapiente amet ab ratione!</p>
                         </div>
                     </div>
@@ -37,7 +37,7 @@ class Features extends Component<Props, State> {
                 <div className={styles.feature}>
                     <div className={styles.smallArea}>
                         <div>
-                            <h2>💬 Integrated chat</h2>
+                            <h2><span role="img" aria-label="chat">💬</span> Integrated chat</h2>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, beatae minus. Ex dignissimos tenetur corporis quo sapiente amet ab ratione!</p>
                         </div>
                     </div>
