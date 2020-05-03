@@ -8,7 +8,7 @@ interface Props extends ConnectedProps<typeof connector> { }
 
 class Clients extends Component<Props> {
     getFirstLetter(name: string) {
-        return name.charAt(0)
+        return name.charAt(0).toUpperCase()
     }
 
     getRandomColor() {
