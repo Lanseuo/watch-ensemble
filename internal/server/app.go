@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"path"
 
 	"watchensemble/pkg/sources"
 
@@ -46,9 +48,18 @@ type Status struct {
 func StartServer() {
 	go handleMessages()
 
-	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/", fs)
 	http.HandleFunc("/ws", wsEndpoint)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fs := http.Dir("./static")
+		fsh := http.FileServer(fs)
+		_, err := fs.Open(path.Clean(r.URL.Path))
+		// Show index.html on every page due to React router
+		if os.IsNotExist(err) {
+			r.URL.Path = "/"
+		}
+
+		fsh.ServeHTTP(w, r)
+	})
 
 	log.Println("Server running on http://localhost:8080")
 	log.Fatalln(http.ListenAndServe(":8080", nil))
