@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import YTPlayer from 'yt-player'
 
 import styles from './YouTubeVideo.module.css'
-import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime } from '../../redux/actions/video'
+import { togglePlay, setPlaybackState, setPlaybackStateWithoutMessage, setVideoCurrentTime, setVideoTotalTime, setVideoBufferTime } from '../../redux/actions/video'
 import { PlaybackState, VideoDetails } from '../../redux/types/video'
 import { AppState } from '../../redux/reducers'
 
@@ -18,6 +18,7 @@ interface State {
 class YouTubeVideo extends Component<Props, State> {
     player: YTPlayer | null = null
     videoWrapperRef = React.createRef<HTMLDivElement>()
+    bufferInterval: NodeJS.Timeout | null = null
 
     constructor(props: Props) {
         super(props)
@@ -54,12 +55,14 @@ class YouTubeVideo extends Component<Props, State> {
 
         this.setAspectRatio(this.props.videoDetails!)
         window.addEventListener('resize', this.setAspectRatioFromProps)
+        this.bufferInterval = setInterval(this.setBufferTime, 400)
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.setAspectRatioFromProps)
         this.player!.removeListener('timeupdate', this.onTimeUpdate)
         this.player!.removeListener('ended', this.onEnded)
+        clearInterval(this.bufferInterval!)
     }
 
     handleClick = () => {
@@ -71,8 +74,8 @@ class YouTubeVideo extends Component<Props, State> {
 
     setVideoByURL = (url: string) => {
         // YTPlayer expects to be called without startSeconds
-        const p = this.player as any
-        p.load({
+        const player = this.player as any
+        player.load({
             videoId: url,
             startSeconds: this.props.videoJumpToTimeLastUpdate
         })
@@ -97,6 +100,15 @@ class YouTubeVideo extends Component<Props, State> {
         let videoAspectRatio = videoDetails.aspectRatioWidth / videoDetails.aspectRatioHeight
         let elementHeight = elementWidth / videoAspectRatio
         this.setState({ elementHeight })
+    }
+
+    setBufferTime = () => {
+        let player = this.player as any
+        if (!player._player.getVideoLoadedFraction) return
+
+        let bufferPercentage = player._player.getVideoLoadedFraction()
+        let bufferTime = this.player!.getDuration() * bufferPercentage
+        this.props.setVideoBufferTime(bufferTime)
     }
 
     componentWillReceiveProps = (nextProps: Props) => {
@@ -151,7 +163,8 @@ const mapDispatchToProps = {
     setPlaybackState,
     setPlaybackStateWithoutMessage,
     setVideoCurrentTime,
-    setVideoTotalTime
+    setVideoTotalTime,
+    setVideoBufferTime
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
