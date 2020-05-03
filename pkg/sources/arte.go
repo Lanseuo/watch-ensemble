@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
 	"regexp"
 )
 
@@ -27,7 +26,7 @@ func arteGet(url string) (details VideoDetails, err error) {
 
 	for _, language := range []string{"fr", "de"} {
 		apiURL := fmt.Sprintf("https://api.arte.tv/api/player/v1/config/%s/%s?platform=ARTE_NEXT", language, videoID)
-		resp, err := http.Get(apiURL)
+		resp, err := Client.Get(apiURL)
 		if err != nil {
 			return details, err
 		}
@@ -51,7 +50,10 @@ func arteGet(url string) (details VideoDetails, err error) {
 			Details responseVideoJSONPlayer `json:"videoJsonPlayer"`
 		}
 		var response responseStruct
-		json.NewDecoder(resp.Body).Decode(&response)
+		err = json.NewDecoder(resp.Body).Decode(&response)
+		if err != nil {
+			return details, errors.New("Error")
+		}
 
 		if response.Details.CustomMessage.Type == "error" {
 			return details, errors.New("Video doesn't exist")
