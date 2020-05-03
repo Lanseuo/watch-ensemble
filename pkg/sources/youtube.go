@@ -64,7 +64,7 @@ func youtubeFetchDetails(videoID string, details *VideoDetails) error {
 	details.AspectRatioWidth = response.Width
 	details.AspectRatioHeight = response.Height
 	details.Title[language] = response.Title
-	details.Description[language] = fmt.Sprintf("Video from %v", response.AuthorName)
+	details.Description[language] = fmt.Sprintf("Video by %v", response.AuthorName)
 
 	return nil
 }

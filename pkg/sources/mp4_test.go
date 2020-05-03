@@ -1,40 +1,26 @@
 package sources
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestMp4CanHandle(t *testing.T) {
-	if mp4CanHandle("https://example.com/video.mp4") != true {
-		t.Errorf("Mp4 was supposed to handle link")
-	}
+	canHandle := mp4CanHandle("https://example.com/video.mp4")
+	assert.True(t, canHandle)
 
-	if mp4CanHandle("https://example.com/video.mp4wrong") != false {
-		t.Errorf("Mp4 was not supposed to handle link")
-	}
+	canHandle = mp4CanHandle("https://example.com/video.mp4wrong")
+	assert.False(t, canHandle)
 }
 
 func TestMp4Get(t *testing.T) {
-	videoDetails, err := mp4Get("https://example.com/video.mp4")
-	if err != nil {
-		t.Errorf("Got error: %v", err)
-	}
+	details, err := mp4Get("https://example.com/video.mp4")
+	assert.Nil(t, err)
 
-	if videoDetails.Title["undefined"] != "Video from example.com" {
-		t.Errorf("Mp4 video details title, got: %v, want: %v", videoDetails.Title["undefined"], "Video from example.com")
-	}
-
-	if videoDetails.Source != "mp4" {
-		t.Errorf("Mp4 video details source, got: %v, want: %v", videoDetails.Source, "mp4")
-	}
-
-	if videoDetails.Description["undefined"] != "" {
-		t.Errorf("Mp4 video details description, got: %v, want: %v", videoDetails.Description["undefined"], "")
-	}
-
-	if videoDetails.URL["undefined"] != "https://example.com/video.mp4" {
-		t.Errorf("Mp4 video details url, got: %v, want: %v", videoDetails.URL["undefined"], "https://example.com/video.mp4")
-	}
-
-	if videoDetails.Languages[0] != "undefined" {
-		t.Errorf("Mp4 video details languages, got: %v, want: %v", videoDetails.Languages, []string{"undefined"})
-	}
+	assert.Equal(t, "Video from example.com", details.Title["undefined"])
+	assert.Equal(t, "mp4", details.Source)
+	assert.Equal(t, "", details.Description["undefined"])
+	assert.Equal(t, "https://example.com/video.mp4", details.URL["undefined"])
+	assert.Equal(t, []string{"undefined"}, details.Languages)
 }
