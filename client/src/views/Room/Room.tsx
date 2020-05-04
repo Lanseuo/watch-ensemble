@@ -8,8 +8,7 @@ import Chat from './../../components/Chat/Chat'
 
 import { connectToWebsocket } from '../../redux/actions/websocket'
 
-interface Props {
-}
+interface Props { }
 
 interface State {
     didJoinRoom: boolean
