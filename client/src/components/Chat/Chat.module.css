@@ -4,6 +4,7 @@
     background: var(--dark-background-color-darker);
     width: 400px;
     padding: 0 10px;
+    height: 100vh;
 }
 
 .header h3 {
