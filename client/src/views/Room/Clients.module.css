@@ -21,21 +21,7 @@
     display: inline-block;
 }
 
-.client p .tooltip {
-    font-size: 13px;
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px 0;
-    left: 50px;
 
-    position: absolute;
-    z-index: 1;
-}
-
-.client p:hover .tooltip {
+.client:hover .tooltip {
     visibility: visible;
 }

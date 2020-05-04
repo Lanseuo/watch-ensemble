@@ -25,7 +25,7 @@ class Clients extends Component<Props> {
                         <div className={styles.clientInner} style={{ background: this.getRandomColor() }}>
                             <p>
                                 {this.getFirstLetter(client)}
-                                <span className={styles.tooltip}>{client}</span>
+                                <span className={`${styles.tooltip} tooltip`}>{client}</span>
                             </p>
                         </div>
                     </div>
