@@ -9,3 +9,14 @@ export const addMessage = (message: Message) => ({
     type: ADD_MESSAGE,
     payload: message
 })
+
+export const sendMessage = (messageText: string) => {
+    return {
+        type: ADD_MESSAGE,
+        payload: {
+            type: 'sent',
+            author: '',
+            text: messageText
+        }
+    }
+}

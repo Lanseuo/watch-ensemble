@@ -6,7 +6,7 @@ export interface Message {
 
 export interface ChatState {
     showChatWindow: boolean
-    message: Message[]
+    messages: Message[]
 }
 
 export const SET_SHOW_CHAT_WINDOW = 'SET_SHOW_CHAT_WINDOW'
