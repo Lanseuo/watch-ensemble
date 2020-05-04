@@ -57,6 +57,10 @@
     visibility: visible;
 }
 
+:global(body.touch-device) .mouseDisplayTooltip {
+    visibility: hidden !important;
+}
+
 .container:hover .mouseDisplayTooltip {
     padding: 10px;
     font-size: 10px;
