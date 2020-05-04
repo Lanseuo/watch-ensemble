@@ -34,6 +34,7 @@ type Message struct {
 	Seconds       int                   `json:"seconds,omitempty"`
 	Status        *Status               `json:"status,omitempty"`
 	ClientList    []string              `json:"clientList,omitempty"`
+	SourceClient  string                `json:"sourceClient,omitempty"`
 	ClientID      string                `json:"clientId,omitempty"`
 	Date          int                   `json:"date"`
 }
@@ -128,6 +129,9 @@ func handleMessages() {
 
 			case "reportStatus":
 				handleReportStatus(msg)
+
+			case "chatMessage":
+				chatMessage(msg)
 
 			default:
 				fmt.Printf("Error: Unknown message type '%v'\n", msg.Type)

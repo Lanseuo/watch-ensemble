@@ -3,6 +3,7 @@ import { SET_WEBSOCKET, SET_IS_CONNECTED } from '../types/websocket'
 import { SET_DETAILS, SET_PLAYBACK_STATE, SET_JUMP_TO_TIME_LAST_UPDATE } from '../types/video'
 import store from '../store'
 import { setNotification } from './main'
+import { receivedMessage } from './chat'
 
 export const connectToWebsocket = () => {
     console.log('Attempting WebSocket connection ...')
@@ -86,6 +87,10 @@ function handleMessage(event: MessageEvent) {
                 type: SET_JUMP_TO_TIME_LAST_UPDATE,
                 payload: message.seconds
             })
+            break
+
+        case 'chatMessage':
+            receivedMessage({ type: 'received', author: message.sourceClient, text: message.text })
             break
 
         case 'error':

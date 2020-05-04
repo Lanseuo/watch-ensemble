@@ -83,3 +83,20 @@ func jumpToTime(msg Message) {
 	resetLastStatuses()
 	sendMessageToAllClientsExcept(msg, msg.ClientID)
 }
+
+func chatMessage(msg Message) {
+	var sourceClientName string
+	for _, client := range clients {
+		if client.clientID == msg.ClientID {
+			sourceClientName = client.name
+			break
+		}
+	}
+
+	notificationMsg := Message{
+		Type:         "chatMessage",
+		Text:         msg.Text,
+		SourceClient: sourceClientName,
+	}
+	sendMessageToAllClientsExcept(notificationMsg, msg.ClientID)
+}
