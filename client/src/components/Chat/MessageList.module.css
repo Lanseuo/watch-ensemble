@@ -1,0 +1,25 @@
+.message {
+    background: white;
+    color: black;
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.message.received {
+    margin-right: 25px;
+}
+
+.message.sent {
+    margin-left: 25px;
+}
+
+.message p {
+    margin: 0;
+}
+
+.message .author {
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    font-weight: bold;
+}
