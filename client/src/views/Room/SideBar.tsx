@@ -6,8 +6,9 @@ import PubSub from 'pubsub-js'
 import styles from './SideBar.module.css'
 import Modal from '../../components/Modal'
 import Clients from './Clients'
-import { requestVideo } from '../../redux/actions/video'
 import { AppState } from '../../redux/reducers'
+import { requestVideo } from '../../redux/actions/video'
+import { setShowChatWindow } from '../../redux/actions/chat'
 import Logo from '../../logo.svg';
 
 interface Props extends ConnectedProps<typeof connector> { }
@@ -41,6 +42,10 @@ class SideBar extends Component<Props, State> {
         }
     }
 
+    toggleShowChatWindow = () => {
+        this.props.setShowChatWindow(!this.props.chatShowWindow)
+    }
+
     render() {
         return (
             <aside className={styles.container}>
@@ -54,6 +59,10 @@ class SideBar extends Component<Props, State> {
 
                 <div className={styles.wrapper} onClick={() => this.setState({ showModal: true })}>
                     <p className={styles.showButton}>Set Video</p>
+                </div>
+
+                <div className={styles.wrapper} onClick={this.toggleShowChatWindow}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="28px" height="28px"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
                 </div>
 
                 <Modal title="Set Video" show={this.state.showModal} onClose={() => this.setState({ showModal: false })}>
@@ -71,8 +80,13 @@ class SideBar extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-    isWebsocketConnected: state.websocket.isConnected
+    isWebsocketConnected: state.websocket.isConnected,
+    chatShowWindow: state.chat.showChatWindow
 })
 
-const connector = connect(mapStateToProps)
+const mapDispatchToProps = {
+    setShowChatWindow
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps)
 export default connector(SideBar)

@@ -17,6 +17,10 @@
     border-bottom: 0.5px solid gray
 }
 
+.wrapper svg {
+    cursor: pointer
+}
+
 .connectionIndicator {
     width: 15px;
     height: 15px;
