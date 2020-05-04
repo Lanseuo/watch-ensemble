@@ -17,10 +17,6 @@
     border-bottom: 0.5px solid gray
 }
 
-.wrapper svg {
-    cursor: pointer
-}
-
 .connectionIndicator {
     width: 15px;
     height: 15px;
@@ -38,7 +34,28 @@
     margin-bottom: 10px
 }
 
-.waitingForClients {
-    color: red;
-    text-align: center
+.toggleChatWindowWrapper {
+    position: relative;
+}
+
+.unreadMessagesIndicator {
+    position: absolute;
+    background: red;
+    width: 8px;
+    height: 8px;
+    top: 34px;
+    right: 20px;
+    border-radius: 100%;
+    transition: all 0.2s ease-in-out;
+    animation: blink 2s infinite;
+}
+
+.toggleChatWindowWrapper svg {
+    cursor: pointer;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.0;
+    }
 }

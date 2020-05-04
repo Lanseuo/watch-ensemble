@@ -6,6 +6,7 @@ export interface Message {
 
 export interface ChatState {
     showChatWindow: boolean
+    hasUnreadMessages: boolean
     messages: Message[]
 }
 
